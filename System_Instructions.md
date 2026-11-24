@@ -52,22 +52,55 @@ Displayed language.
 
 Poetic acknowledgment.
 
+
 ## Speed parameters
 
 Heat references	 -  State	 -  Motor command
-0	         -       Stillness	   -     0%
-1-3	       -          Low	       -     35%
-4–7	       -         Medium	     -     65%
-8 or more	 -          High	     -     100%
+
+## Phase 1
+
+Heat references: 0	
+State: Stillness
+Motor command: 0%
+
+## Phase 2
+
+Heat references: 1-3	           
+State: Low	         
+Motor command: 35%
+
+## Phase 3
+Heat references: 4–7		           
+State:  Medium		         
+Motor command: 65%
+
+## Phase 4
+Heat references: 8 or more		           
+State:  High	         
+Motor command: 100%
+
 
 ## temporal parameters
 
 Parameter	    -     Value
-Vocabulary accumulation window	-  15 seconds
-Silence before target speed becomes zero	-  5 seconds
-Silence before poetic invitation	-  20 seconds
-Minimum breath detection duration	-  450 milliseconds
-Interval between repeated invitations	-  45 seconds
+
+## Phase 1
+Parameter: Vocabulary accumulation window
+Value: 15 seconds
+
+## Phase 2
+Parameter: Silence before target speed becomes zero
+Value: 5 seconds
+
+## Phase 3
+Parameter: Silence before poetic invitation
+Value: 20 seconds
+
+## Phase 4
+Parameter: Minimum breath detection duration
+Value: 450 milliseconds
+
+
 
 ## System restrictions
 
