@@ -46,7 +46,7 @@ The motor must not be powered directly through the Raspberry Pi GPIO pins.
 
 ## Project preparation
 
-Transfer the AERA project files to the Raspberry Pi.
+Transfer the Ally project files to the Raspberry Pi.
 
 Preserve the relative paths between the Python program and the English and Spanish vocabulary folders, or update the paths in the program accordingly.
 
