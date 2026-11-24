@@ -89,13 +89,17 @@
         text-underline-offset: 4px;
       }
 
+      .project-heading { padding-top: 42px; }
+      .project-heading .eyebrow { margin-bottom: 12px; }
+      .project-heading h1 { max-width: 1080px; margin-bottom: 0; font-size: clamp(48px, 6.6vw, 82px); }
+
       .hero {
-        min-height: 650px;
+        min-height: 560px;
         display: grid;
-        grid-template-columns: minmax(360px, .92fr) minmax(460px, 1.08fr);
+        grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr);
         align-items: center;
-        gap: 34px;
-        padding-block: 64px 60px;
+        gap: 24px;
+        padding-block: 30px 60px;
       }
 
       .hero-copy { max-width: 600px; }
@@ -172,10 +176,12 @@
 
       .fan-scene {
         position: relative;
-        min-height: 510px;
+        min-height: 470px;
         display: grid;
-        place-items: center;
-        overflow: hidden;
+        grid-template-columns: minmax(0, 1.05fr) minmax(280px, .9fr);
+        align-items: center;
+        gap: 20px;
+        overflow: visible;
       }
 
       .scene-index {
@@ -188,9 +194,10 @@
       }
 
       .fan-art {
-        width: min(100%, 560px);
+        width: min(100%, 430px);
         overflow: visible;
         filter: drop-shadow(0 20px 24px rgb(52 61 53 / 9%));
+        transform: translateX(42px);
       }
 
       .fan-rotor {
@@ -198,6 +205,7 @@
         animation: rotate-fan var(--spin-time, 0s) linear infinite;
       }
 
+      .fan-scene[data-speed="0"] .fan-rotor { animation: none; }
       .fan-scene[data-speed="1"] .fan-rotor { --spin-time: 2.2s; }
       .fan-scene[data-speed="2"] .fan-rotor { --spin-time: 1.35s; }
       .fan-scene[data-speed="3"] .fan-rotor { --spin-time: .8s; }
@@ -208,20 +216,6 @@
       .fan-scene[data-speed="3"] .air-lines { opacity: .8; }
 
       @keyframes rotate-fan { to { transform: rotate(360deg); } }
-
-      .fan-caption {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        width: max-content;
-        max-width: calc(100% - 32px);
-        transform: translateX(-50%);
-        color: var(--muted);
-        font-size: 9px;
-        letter-spacing: .16em;
-        text-align: center;
-        text-transform: uppercase;
-      }
 
       .principle-strip {
         display: grid;
@@ -281,41 +275,30 @@
         font-size: 10px;
       }
 
-      .interaction { padding-block: 112px 92px; }
-
-      .demo-card {
-        min-height: 370px;
-        display: grid;
-        grid-template-columns: .82fr 1.08fr .84fr;
-        background: var(--deep);
-        color: var(--paper);
-      }
-
-      .demo-intro, .display-panel, .demo-controls { padding: 34px; }
-
-      .demo-intro {
+      .ally-interface {
+        min-width: 0;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        border-right: 1px solid rgb(243 240 231 / 14%);
+        gap: 10px;
+        padding: 16px;
+        background: var(--deep);
+        color: var(--paper);
+        box-shadow: 0 18px 34px rgb(52 61 53 / 12%);
       }
 
-      .demo-intro .micro-label, .display-panel .micro-label {
-        color: #b6c4b8;
-      }
+      .ally-interface .micro-label { color: #b6c4b8; }
 
       .demo-intro h3 {
-        margin: 30px 0 13px;
+        margin: 5px 0 3px;
         font-family: var(--serif);
-        font-size: 34px;
+        font-size: 26px;
         font-weight: 400;
         letter-spacing: -.04em;
         line-height: 1.04;
       }
 
       .demo-intro > p {
-        max-width: 230px;
-        margin-bottom: auto;
+        margin: 0;
         color: #bfc6bc;
         font-size: 10px;
       }
@@ -325,8 +308,8 @@
         display: flex;
         align-items: center;
         gap: 9px;
-        margin-top: 35px;
-        padding-top: 16px;
+        margin-top: 8px;
+        padding-top: 8px;
         border-top: 1px solid rgb(243 240 231 / 18%);
         color: #d5dacd;
         font-size: 10px;
@@ -344,22 +327,24 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        border-right: 1px solid rgb(243 240 231 / 14%);
+        min-height: 190px;
+        padding: 12px;
+        border: 1px solid #718378;
         background: #26312c;
       }
 
       .display-window {
-        min-height: 190px;
+        min-height: 78px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin-top: 17px;
-        padding: 20px 4px;
+        margin-top: 10px;
+        padding: 8px 4px;
         border-top: 1px solid rgb(243 240 231 / 24%);
         border-bottom: 1px solid rgb(243 240 231 / 24%);
         font-family: var(--mono);
-        font-size: clamp(16px, 2vw, 22px);
-        line-height: 1.8;
+        font-size: clamp(14px, 1.3vw, 18px);
+        line-height: 1.45;
       }
 
       .display-line { min-height: 1.8em; }
@@ -411,7 +396,9 @@
       .demo-controls {
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 6px;
+        padding-top: 10px;
+        border-top: 1px solid rgb(243 240 231 / 14%);
       }
 
       .demo-controls h3 {
@@ -420,9 +407,9 @@
         font-weight: 500;
       }
 
-      .demo-controls > p { margin: -7px 0 0; color: #bfc6bc; font-size: 9px; }
+      .demo-controls > p { margin: -5px 0 0; color: #bfc6bc; font-size: 9px; }
 
-      .speech-controls { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+      .speech-controls { display: flex; flex-direction: column; gap: 6px; margin-top: 0; }
       .speech-controls label { color: #b6c4b8; font-size: 9px; }
 
       .speech-select {
@@ -437,14 +424,14 @@
         font-size: 10px;
       }
 
-      .speech-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .speech-actions { display: flex; gap: 8px; }
       .demo-controls .button { min-height: 42px; border-color: var(--terracotta); background: var(--terracotta); color: #201f1b; }
       .demo-controls .button:hover { background: #d58d68; }
-      .speech-actions .button { width: 100%; padding-inline: 8px; font-size: 9px; }
+      .speech-actions .button { flex: 1; padding-inline: 8px; font-size: 9px; }
       .speech-icon { width: 14px; height: 14px; flex: 0 0 auto; }
 
       .transcript-preview {
-        min-height: 43px;
+        min-height: 32px;
         margin: 0;
         padding: 8px 0;
         border-bottom: 1px solid rgb(243 240 231 / 20%);
@@ -471,8 +458,7 @@
       }
 
       .quiet-button:disabled { cursor: not-allowed; opacity: .45; }
-      .demo-feedback { min-height: 32px; margin: 0; color: #d3a18a; font-size: 9px; }
-      .timing-note { margin: 15px 0 0; color: var(--muted); font-size: 9px; }
+      .demo-feedback { min-height: 20px; margin: 0; color: #d3a18a; font-size: 9px; }
 
       .cycle { padding-block: 54px 106px; }
 
@@ -539,16 +525,12 @@
 
       .site-footer p { margin: 0; }
 
-      @media (max-width: 900px) {
+      @media (max-width: 960px) {
         .page-shell { width: min(100% - 48px, 680px); }
-        .hero { min-height: auto; grid-template-columns: 1fr; gap: 10px; padding-block: 72px 32px; }
+        .hero { min-height: auto; grid-template-columns: 1fr; gap: 10px; padding-block: 24px 32px; }
         .hero-copy { max-width: 650px; }
-        .fan-scene { min-height: 480px; }
+        .fan-scene { min-height: auto; grid-template-columns: minmax(0, 1.05fr) minmax(280px, .9fr); gap: 16px; }
         .fan-art { width: min(100%, 520px); }
-        .demo-card { grid-template-columns: 1fr 1fr; }
-        .demo-intro { border-bottom: 1px solid rgb(243 240 231 / 14%); }
-        .display-panel { grid-row: span 2; border-right: 0; }
-        .demo-controls { border-top: 1px solid rgb(243 240 231 / 14%); }
       }
 
       @media (max-width: 600px) {
@@ -556,24 +538,18 @@
         .page-shell { width: calc(100% - 36px); }
         .site-header { min-height: 64px; }
         .header-note { display: none; }
-        .hero { padding-top: 58px; }
-        h1 { font-size: clamp(56px, 17vw, 82px); }
+        .project-heading { padding-top: 30px; }
+        .project-heading h1 { font-size: clamp(42px, 11vw, 64px); }
+        .hero { padding-top: 18px; }
         .hero-description { font-size: 16px; }
-        .fan-scene { min-height: 360px; margin-inline: -11px; }
+        .fan-scene { grid-template-columns: 1fr; gap: 8px; min-height: auto; margin-inline: -11px; padding-bottom: 38px; }
+        .fan-art { width: min(100%, 390px); justify-self: center; transform: none; }
+        .ally-interface { width: min(100%, 440px); justify-self: center; }
         .scene-index { top: 9px; right: 15px; }
-        .fan-caption { bottom: 4px; }
         .principle-strip { grid-template-columns: 1fr; }
         .principle { min-height: auto; padding: 19px 0; }
         .principle + .principle { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
         .section-heading { align-items: flex-start; flex-direction: column; margin-bottom: 20px; }
-        .interaction { padding-block: 80px 55px; }
-        .demo-card { grid-template-columns: 1fr; }
-        .demo-intro, .display-panel, .demo-controls { padding: 25px 22px; }
-        .demo-intro { min-height: 235px; border-right: 0; }
-        .demo-intro h3 { margin-top: 22px; }
-        .display-panel { grid-row: auto; border-top: 1px solid rgb(243 240 231 / 14%); border-bottom: 1px solid rgb(243 240 231 / 14%); }
-        .display-window { min-height: 160px; }
-        .demo-controls { border-top: 0; }
         .cycle { padding-block: 40px 72px; }
         .cycle-track { grid-template-columns: 1fr; }
         .cycle-step, .cycle-step + .cycle-step { min-height: 95px; padding: 15px 28px 14px 0; border-left: 0; }
@@ -621,11 +597,14 @@
       </header>
 
       <main>
+        <div class="project-heading">
+          <p class="eyebrow">A voice-responsive fan concept</p>
+          <h1 id="hero-title">A breeze shaped by your <em>words.</em></h1>
+        </div>
+
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero-copy">
-            <p class="eyebrow">A voice-responsive fan concept</p>
-            <h1 id="hero-title">A breeze shaped by your <em>words.</em></h1>
-            <p class="hero-description">Heat gathers in what you say. When the conversation falls quiet, Ally finds its own words—and asks for a little air in return.</p>
+            <p class="hero-description">After five seconds of silence, the fan stops. At twenty seconds, a changing poem appears beside it until you blow into the microphone.</p>
             <div class="hero-actions">
               <a class="button" href="#interaction">Try the interaction <span aria-hidden="true">↗</span></a>
               <a class="button button-secondary" href="#how-it-works">Follow the exchange</a>
@@ -633,9 +612,9 @@
             <p class="hero-footnote">A browser-based study. Speak to the page; no physical fan is connected.</p>
           </div>
 
-          <div class="fan-scene" id="fan-scene" data-speed="0" role="img" aria-label="Illustration of Ally, a sage green ceiling fan with terracotta blades and a suspended display">
+          <div class="fan-scene" id="fan-scene" data-speed="0">
             <span class="scene-index">ALLY / 01 — RECIPROCAL AIR</span>
-            <svg class="fan-art" viewBox="0 0 500 570" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <svg class="fan-art" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage green ceiling fan with four terracotta blades">
               <defs>
                 <pattern id="grille" width="18" height="18" patternUnits="userSpaceOnUse">
                   <path d="M0 0L18 18M18 0L0 18" fill="none" stroke="#718378" stroke-width=".65" opacity=".58"/>
@@ -661,18 +640,49 @@
               </g>
               <circle cx="250" cy="252" r="15" fill="#f3f0e7" stroke="#74877b" stroke-width="3"/>
               <circle cx="250" cy="252" r="5" fill="#a5b4a8"/>
-              <path d="M250 403v29" stroke="#74877b" stroke-width="5"/>
-              <rect x="163" y="431" width="174" height="98" rx="12" fill="#a5b4a8" stroke="#74877b" stroke-width="3"/>
-              <rect x="174" y="442" width="152" height="68" rx="5" fill="#29352f"/>
-              <path d="M190 461h91M190 471h68" stroke="#c8d3c7" stroke-width="2" stroke-linecap="round" opacity=".85"/>
-              <circle cx="302" cy="462" r="3" fill="#d28763"/>
-              <circle cx="296" cy="478" r="1.8" fill="#829488"/>
-              <circle cx="304" cy="478" r="1.8" fill="#829488"/>
-              <circle cx="312" cy="478" r="1.8" fill="#829488"/>
-              <text x="250" y="522" fill="#53665a" font-family="monospace" font-size="7" letter-spacing="2" text-anchor="middle">DISPLAY · MIC · CONTROLS</text>
-              <path d="M100 546h300" stroke="#c5c7bc" stroke-width="1"/>
             </svg>
-            <span class="fan-caption">Ceiling-suspended concept · four blades · one exchange</span>
+            <aside class="ally-interface" id="interaction" aria-label="Ally’s live display and microphone controls">
+              <div class="demo-intro">
+                <span class="micro-label">Ally / live state</span>
+                <h3 id="state-title">I’m listening.</h3>
+                <p id="state-description">Speak about warmth or heat to invite a breeze.</p>
+                <div class="state-readout"><span class="state-dot" aria-hidden="true"></span><span id="state-label">LISTENING · STILL</span></div>
+              </div>
+              <div class="display-panel" id="display-panel" aria-live="polite">
+                <span class="micro-label">Ally’s live display</span>
+                <div class="display-window" id="poem-display"></div>
+                <div class="display-foot">
+                  <span id="display-caption">Awaiting a first word</span>
+                  <span class="display-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+                </div>
+              </div>
+              <div class="demo-controls">
+                <h3>Speak to Ally</h3>
+                <p>Choose your language, then talk naturally.</p>
+                <div class="speech-controls">
+                  <label for="speech-language">Spoken language</label>
+                  <select class="speech-select" id="speech-language" aria-describedby="speech-privacy">
+                    <option value="en-US">English</option>
+                    <option value="es-MX">Español</option>
+                  </select>
+                  <div class="speech-actions">
+                    <button class="button" id="start-listening" type="button">
+                      <svg class="speech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="9" y="2" width="6" height="12" rx="3"/>
+                        <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
+                      </svg>
+                      Start speaking
+                    </button>
+                    <button class="button button-secondary" id="stop-listening" type="button" hidden>Stop listening</button>
+                  </div>
+                </div>
+                <span class="micro-label">Heard speech</span>
+                <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
+                <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
+                <p class="speech-privacy" id="speech-privacy">Microphone runs only after Start. Breath is analyzed locally; speech may use your browser’s service. Nothing is saved, and sustained background noise may trigger detection.</p>
+                <button class="quiet-button" id="breath-fallback-button" type="button" hidden>Complete exchange manually</button>
+              </div>
+            </aside>
           </div>
         </section>
 
@@ -689,63 +699,6 @@
             <span class="principle-number">03</span>
             <div><h2>Return what you received</h2><p>In stillness, a bilingual poem invites the human breath back.</p></div>
           </article>
-        </section>
-
-        <section class="interaction" id="interaction" aria-labelledby="interaction-title">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">A small browser study</p>
-              <h2 id="interaction-title">Try the exchange.</h2>
-            </div>
-            <p>Speak naturally in English or Spanish. Heat references build the breeze; silence lets the poem arrive.</p>
-          </div>
-
-          <div class="demo-card">
-            <div class="demo-intro">
-              <span class="micro-label">Ally / live state</span>
-              <h3 id="state-title">I’m listening.</h3>
-              <p id="state-description">Tell me about warmth, a fever, the afternoon sun—or whatever heat means to you.</p>
-              <div class="state-readout"><span class="state-dot" aria-hidden="true"></span><span id="state-label">LISTENING · STILL</span></div>
-            </div>
-
-            <div class="display-panel" id="display-panel" aria-live="polite">
-              <span class="micro-label">The little screen</span>
-              <div class="display-window" id="poem-display"></div>
-              <div class="display-foot">
-                <span id="display-caption">Awaiting a first word</span>
-                <span class="display-lights" aria-hidden="true"><i></i><i></i><i></i></span>
-              </div>
-            </div>
-
-            <div class="demo-controls">
-              <h3>Speak to Ally</h3>
-              <p>Choose the language you’ll speak, then talk naturally.</p>
-              <div class="speech-controls">
-                <label for="speech-language">Spoken language</label>
-                <select class="speech-select" id="speech-language" aria-describedby="speech-privacy">
-                  <option value="en-US">English</option>
-                  <option value="es-MX">Español</option>
-                </select>
-                <div class="speech-actions">
-                  <button class="button" id="start-listening" type="button">
-                    <svg class="speech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <rect x="9" y="2" width="6" height="12" rx="3"/>
-                      <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
-                    </svg>
-                    Start speaking
-                  </button>
-                  <button class="button button-secondary" id="stop-listening" type="button" hidden>Stop listening</button>
-                </div>
-              </div>
-              <span class="micro-label">Heard speech</span>
-              <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
-              <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
-              <p class="speech-privacy" id="speech-privacy">Microphone access starts only when you press Start. Speech may be processed by your browser’s service; breath level is analyzed in this page, and audio or transcripts aren’t saved.</p>
-              <p class="speech-privacy">When Ally is still, blow gently toward the microphone. The browser demo estimates airflow from sound level; other sustained sounds may also trigger it.</p>
-              <button class="quiet-button" id="breath-fallback-button" type="button" hidden>Complete exchange manually</button>
-            </div>
-          </div>
-          <p class="timing-note">After speech, the breeze fades to stillness over five seconds. A poem arrives after twenty seconds of silence. Browser speech support varies; no physical fan or breath sensor is connected.</p>
         </section>
 
         <section class="cycle" id="how-it-works" aria-labelledby="cycle-title">
@@ -767,7 +720,7 @@
 
         <section class="closing-note" aria-label="Design intention">
           <blockquote>“I gave you the wind.<br><em>Ahora, préstame tu aliento.</em>”</blockquote>
-          <p>Ally is an experimental, ceiling-suspended fan concept: four terracotta blades within a sage-green protective structure, with a small display and microphone below. Its interface is being explored as a bridge between functional object and relational presence.</p>
+          <p>Ally is an experimental, ceiling-suspended fan concept: four terracotta blades within a sage-green protective structure, with a small display and microphone beside it. Its interface is being explored as a bridge between functional object and relational presence.</p>
         </section>
       </main>
 
@@ -1170,7 +1123,7 @@
         function setListeningState() {
           state = "listening";
           stateTitle.textContent = "I’m listening.";
-          stateDescription.textContent = "Speak naturally about warmth, a fever, the afternoon sun—or whatever heat means to you.";
+          stateDescription.textContent = "Speak about warmth or heat to invite a breeze.";
           stateLabel.textContent = currentSpeed > 0 ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
           feedback.textContent = recognition
             ? "Choose a language, then tap Start speaking."
