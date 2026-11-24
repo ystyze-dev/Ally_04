@@ -125,13 +125,34 @@ The typography draws from the original generative poetry experiment:
 ## Display behaviour
 
 State	 -  Visual expression
-Listening	 -  Minimal visual activity
-Heat recognition	-  Thermal words appear
-Stillness	 -  Visual activity decreases
-Poetic invitation	 -  Bilingual poetry appears
-Waiting for breath	-  Poetry remains visible
-Breath received	 -  Letters disperse
-Renewal	 -  Display returns to listening
+
+## Phase 1
+State: State Listening
+Visual expresion: Minimal visual activity
+
+## Phase 2
+State: Heat recognition
+Visual expression: Thermal words appear
+
+## Phase 3
+State: Stillness
+Visual expression: Visual activity decreases
+
+## Phase 4
+State: Poetic invitation
+Visual expression: Bilingual poetry appears
+
+## Phase 5
+State: Waiting for breath	
+Visual expression: Poetry remains visible
+
+## Phase 6
+State: Breath received
+Visual expression: Letters disperse
+
+## Phase 7
+State: Renewal
+Visual expression: Display returns to listening
 
 ## Breath and typography
 
