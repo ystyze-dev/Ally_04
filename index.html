@@ -41,70 +41,42 @@
       a { color: inherit; }
 
       .page-shell {
-        width: min(1320px, calc(100% - 72px));
+        width: min(1120px, calc(100% - 48px));
         margin-inline: auto;
       }
 
-      .site-header {
-        min-height: 76px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .wordmark {
-        display: inline-flex;
-        gap: 10px;
-        align-items: center;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: .14em;
-      }
-
-      .wordmark-mark {
-        width: 25px;
-        height: 25px;
-        display: grid;
-        place-items: center;
-        border: 1px solid var(--sage-dark);
-        border-radius: 50%;
-        color: var(--sage-dark);
-        font-size: 14px;
-        line-height: 1;
-      }
-
-      .header-note, .eyebrow, .micro-label {
+      .eyebrow, .micro-label {
         color: var(--muted);
         font-size: 10px;
         letter-spacing: .14em;
         text-transform: uppercase;
       }
 
-      .header-link {
-        color: var(--ink);
+      .hero { padding: 18px 0 54px; }
+      .project-heading { padding-top: 0; text-align: center; }
+      .project-heading .eyebrow { margin-bottom: 13px; color: #9c573a; font-size: 8px; }
+      .project-heading h1 {
+        max-width: 760px;
+        margin: 0 auto 14px;
+        font-size: clamp(42px, 6vw, 68px);
+        line-height: .9;
+      }
+      .project-heading h1 span { display: block; }
+      .hero-description {
+        max-width: 360px;
+        margin: 0 auto;
+        color: #77786e;
+        font-family: var(--serif);
         font-size: 11px;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 4px;
+        line-height: 1.5;
       }
-
-      .project-heading { padding-top: 42px; }
-      .project-heading .eyebrow { margin-bottom: 12px; }
-      .project-heading h1 { max-width: 1080px; margin-bottom: 0; font-size: clamp(48px, 6.6vw, 82px); }
-
-      .hero {
-        min-height: 560px;
-        display: grid;
-        grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr);
-        align-items: center;
-        gap: 24px;
-        padding-block: 30px 60px;
+      .project-heading::after {
+        width: min(340px, 82%);
+        display: block;
+        margin: 14px auto 0;
+        border-top: 1px solid var(--line);
+        content: "";
       }
-
-      .hero-copy { max-width: 600px; }
-
-      .eyebrow { margin: 0 0 22px; color: #9c573a; }
 
       h1, h2, h3, p { margin-top: 0; }
 
@@ -119,22 +91,6 @@
       }
 
       h1 em { font-weight: 400; }
-
-      .hero-description {
-        max-width: 420px;
-        margin-bottom: 30px;
-        color: #63645c;
-        font-family: var(--serif);
-        font-size: 18px;
-        line-height: 1.6;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 11px;
-        align-items: center;
-      }
 
       .button {
         min-height: 46px;
@@ -168,36 +124,202 @@
       .button-secondary:hover { background: var(--deep); color: var(--paper); }
       .button:disabled { cursor: not-allowed; opacity: .46; transform: none; }
 
-      .hero-footnote {
-        margin: 18px 0 0;
-        color: var(--muted);
-        font-size: 10px;
-      }
-
-      .fan-scene {
-        position: relative;
-        min-height: 470px;
+      .interaction-stage {
+        max-width: 870px;
         display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(280px, .9fr);
+        grid-template-columns: minmax(150px, 1fr) minmax(300px, 400px) minmax(150px, 1fr);
         align-items: center;
-        gap: 20px;
-        overflow: visible;
+        gap: 24px;
+        margin: 12px auto 8px;
       }
 
-      .scene-index {
+      .stage-note {
+        position: relative;
+        width: min(100%, 170px);
+        justify-self: center;
+        color: #33342e;
+      }
+
+      .stage-note-left::after, .stage-note-right::before {
         position: absolute;
-        top: 26px;
-        right: 12px;
-        color: var(--muted);
-        font-size: 9px;
-        letter-spacing: .14em;
+        top: 14px;
+        width: 70px;
+        border-top: 1px solid var(--line);
+        content: "";
+      }
+
+      .stage-note-left::after { right: -94px; }
+      .stage-note-right::before { left: -94px; }
+
+      .callout-icon {
+        width: 27px;
+        height: 27px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 10px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--paper);
+        color: #a76b4b;
+      }
+
+      .callout-icon svg { width: 13px; height: 13px; }
+      .stage-note h2 { margin: 0 0 4px; font-size: 10px; font-weight: 600; }
+      .stage-note p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+
+      .fan-column { min-width: 0; text-align: center; }
+
+      .fan-assembly {
+        position: relative;
+        width: min(100%, 400px);
+        margin-inline: auto;
       }
 
       .fan-art {
-        width: min(100%, 430px);
+        width: 100%;
+        display: block;
         overflow: visible;
-        filter: drop-shadow(0 20px 24px rgb(52 61 53 / 9%));
-        transform: translateX(42px);
+        filter: drop-shadow(0 16px 20px rgb(52 61 53 / 8%));
+      }
+
+      .display-panel {
+        position: absolute;
+        top: 77.55%;
+        left: 34.8%;
+        width: 30.4%;
+        height: 11.95%;
+        display: flex;
+        flex-direction: column;
+        padding: 4px 5px 3px;
+        overflow: hidden;
+        border-radius: 4px;
+        background: #29352f;
+        color: #d7e0d6;
+      }
+
+      .display-window {
+        min-height: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        font-family: var(--mono);
+        font-size: clamp(5px, .72vw, 8px);
+        line-height: 1.15;
+        text-align: left;
+      }
+
+      .display-line { min-height: 0; }
+      .poem-en { font-weight: 400; }
+      .poem-es { font-weight: 700; }
+      .letter { display: inline-block; transition: transform .6s ease, opacity .6s ease; }
+      .letter.is-e { color: #e87963; }
+
+      .display-panel.is-poetic .letter {
+        animation: letter-drift 3.8s ease-in-out infinite alternate;
+        animation-delay: var(--drift-delay, 0ms);
+      }
+
+      .display-panel.is-revealing .letter {
+        animation: letter-arrive .7s cubic-bezier(.2, .75, .25, 1) both;
+        animation-delay: var(--reveal-delay, 0ms);
+      }
+
+      .display-panel.is-dispersing .letter {
+        animation: none;
+        opacity: 0;
+        transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) rotate(25deg);
+      }
+
+      @keyframes letter-arrive {
+        from { opacity: 0; transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) scale(.82); }
+        to { opacity: 1; transform: translate(0, 0) scale(1); }
+      }
+
+      @keyframes letter-drift {
+        from { transform: translate(0, 0) rotate(0); }
+        to { transform: translate(var(--drift-x, 2px), var(--drift-y, -2px)) rotate(var(--drift-rotation, 2deg)); }
+      }
+
+      .display-foot { height: 4px; flex: 0 0 4px; display: flex; justify-content: flex-end; }
+      .display-lights { display: inline-flex; gap: 4px; align-items: center; }
+      .display-lights i { width: 2px; height: 2px; display: block; border-radius: 50%; background: #77877a; }
+      .display-lights i:first-child { background: var(--terracotta); }
+
+      .concept-caption {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 8px;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+      }
+
+      .interaction-controls {
+        max-width: 540px;
+        margin: 6px auto 0;
+        text-align: center;
+      }
+
+      .interaction-instruction { margin: 0 0 10px; color: #63645c; font-size: 10px; }
+      .interaction-instruction strong { color: var(--ink); }
+
+      .speech-controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .speech-controls label { color: var(--muted); font-size: 9px; }
+
+      .speech-select {
+        min-height: 38px;
+        padding: 0 10px;
+        border: 1px solid #c8c8bc;
+        border-radius: 2px;
+        background: var(--paper);
+        color: var(--ink);
+        font: inherit;
+        font-size: 10px;
+      }
+
+      .speech-actions { display: flex; gap: 8px; }
+      .interaction-controls .button { min-height: 38px; border-color: var(--terracotta); background: var(--terracotta); color: #201f1b; }
+      .interaction-controls .button:hover { background: #d58d68; }
+      .speech-actions .button { padding-inline: 12px; font-size: 9px; }
+      .speech-icon { width: 14px; height: 14px; flex: 0 0 auto; }
+
+      .interaction-status { margin: 11px 0 0; }
+      .interaction-status h2 { margin: 0; font-family: var(--serif); font-size: 16px; font-weight: 400; }
+      .interaction-status p { margin: 2px 0 0; color: var(--muted); font-size: 9px; }
+      .state-readout { display: flex; justify-content: center; align-items: center; gap: 7px; color: var(--muted); font-size: 8px; }
+      .state-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); }
+      .transcript-preview { min-height: 18px; margin: 4px 0 0; color: #63645c; font-family: var(--serif); font-size: 11px; }
+      .demo-feedback { min-height: 15px; margin: 3px 0 0; color: #9c573a; font-size: 8px; }
+      .speech-privacy { max-width: 480px; margin: 6px auto 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
+      .quiet-button { margin-top: 5px; padding: 0; border: 0; background: transparent; color: var(--ink); cursor: pointer; font-size: 9px; text-decoration: underline; text-underline-offset: 3px; }
+      [hidden] { display: none !important; }
+
+      .process-caption {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 8px;
+        letter-spacing: .12em;
+        text-align: center;
+      }
+      .process-caption span { padding-inline: 7px; color: var(--terracotta); }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
       .fan-rotor {
@@ -526,26 +648,28 @@
       .site-footer p { margin: 0; }
 
       @media (max-width: 960px) {
-        .page-shell { width: min(100% - 48px, 680px); }
-        .hero { min-height: auto; grid-template-columns: 1fr; gap: 10px; padding-block: 24px 32px; }
-        .hero-copy { max-width: 650px; }
-        .fan-scene { min-height: auto; grid-template-columns: minmax(0, 1.05fr) minmax(280px, .9fr); gap: 16px; }
-        .fan-art { width: min(100%, 520px); }
+        .page-shell { width: min(calc(100% - 48px), 760px); }
+        .interaction-stage { grid-template-columns: minmax(120px, 1fr) minmax(280px, 360px) minmax(120px, 1fr); gap: 16px; }
       }
 
-      @media (max-width: 600px) {
+      @media (max-width: 680px) {
         body { font-size: 12px; }
         .page-shell { width: calc(100% - 36px); }
-        .site-header { min-height: 64px; }
-        .header-note { display: none; }
-        .project-heading { padding-top: 30px; }
-        .project-heading h1 { font-size: clamp(42px, 11vw, 64px); }
-        .hero { padding-top: 18px; }
-        .hero-description { font-size: 16px; }
-        .fan-scene { grid-template-columns: 1fr; gap: 8px; min-height: auto; margin-inline: -11px; padding-bottom: 38px; }
-        .fan-art { width: min(100%, 390px); justify-self: center; transform: none; }
-        .ally-interface { width: min(100%, 440px); justify-self: center; }
-        .scene-index { top: 9px; right: 15px; }
+        .hero { padding-top: 22px; }
+        .project-heading h1 { font-size: clamp(42px, 11vw, 58px); }
+        .hero-description { max-width: 330px; font-size: 12px; }
+        .interaction-stage { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; margin-top: 22px; }
+        .fan-column { grid-column: 1 / -1; grid-row: 1; }
+        .stage-note-left { grid-column: 1; grid-row: 2; }
+        .stage-note-right { grid-column: 2; grid-row: 2; }
+        .stage-note { width: 100%; max-width: 170px; }
+        .stage-note-left::after, .stage-note-right::before { display: none; }
+        .fan-assembly { width: min(100%, 340px); }
+        .interaction-controls { margin-top: 18px; }
+        .interaction-instruction { max-width: 330px; margin-inline: auto; }
+        .speech-controls { gap: 7px; }
+        .speech-controls label { width: 100%; }
+        .speech-select { min-height: 36px; }
         .principle-strip { grid-template-columns: 1fr; }
         .principle { min-height: auto; padding: 19px 0; }
         .principle + .principle { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
@@ -587,34 +711,29 @@
   </head>
   <body>
     <div class="page-shell">
-      <header class="site-header">
-        <a class="wordmark" href="#" aria-label="Ally home">
-          <span class="wordmark-mark" aria-hidden="true">a</span>
-          <span>ALLY</span>
-        </a>
-        <span class="header-note">A reciprocal object · Concept 01</span>
-        <a class="header-link" href="#interaction">Enter the exchange <span aria-hidden="true">↘</span></a>
-      </header>
-
       <main>
-        <div class="project-heading">
-          <p class="eyebrow">A voice-responsive fan concept</p>
-          <h1 id="hero-title">A breeze shaped by your <em>words.</em></h1>
-        </div>
-
         <section class="hero" aria-labelledby="hero-title">
-          <div class="hero-copy">
-            <p class="hero-description">After five seconds of silence, the fan stops. At twenty seconds, a changing poem appears beside it until you blow into the microphone.</p>
-            <div class="hero-actions">
-              <a class="button" href="#interaction">Try the interaction <span aria-hidden="true">↗</span></a>
-              <a class="button button-secondary" href="#how-it-works">Follow the exchange</a>
-            </div>
-            <p class="hero-footnote">A browser-based study. Speak to the page; no physical fan is connected.</p>
+          <div class="project-heading">
+            <p class="eyebrow">A voice-responsive fan concept</p>
+            <h1 id="hero-title"><span>A breeze shaped by</span><span>your words.</span></h1>
+            <p class="hero-description">Ally imagines the fan as an extension of the person speaking: heat in your words gathers into a breeze, and a poem arrives when the conversation falls quiet.</p>
           </div>
 
-          <div class="fan-scene" id="fan-scene" data-speed="0">
-            <span class="scene-index">ALLY / 01 — RECIPROCAL AIR</span>
-            <svg class="fan-art" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage green ceiling fan with four terracotta blades">
+          <div class="interaction-stage fan-scene" id="fan-scene" data-speed="0">
+            <aside class="stage-note stage-note-left">
+              <span class="callout-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="2" width="6" height="12" rx="3"/>
+                  <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
+                </svg>
+              </span>
+              <h2>Listen for heat.</h2>
+              <p>Heat-related words build the breeze. No distance or presence sensing is part of this concept.</p>
+            </aside>
+
+            <div class="fan-column">
+              <div class="fan-assembly">
+                <svg class="fan-art" viewBox="0 0 500 570" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage green ceiling fan with four terracotta blades and a display">
               <defs>
                 <pattern id="grille" width="18" height="18" patternUnits="userSpaceOnUse">
                   <path d="M0 0L18 18M18 0L0 18" fill="none" stroke="#718378" stroke-width=".65" opacity=".58"/>
@@ -640,50 +759,70 @@
               </g>
               <circle cx="250" cy="252" r="15" fill="#f3f0e7" stroke="#74877b" stroke-width="3"/>
               <circle cx="250" cy="252" r="5" fill="#a5b4a8"/>
-            </svg>
-            <aside class="ally-interface" id="interaction" aria-label="Ally’s live display and microphone controls">
-              <div class="demo-intro">
-                <span class="micro-label">Ally / live state</span>
-                <h3 id="state-title">I’m listening.</h3>
-                <p id="state-description">Speak about warmth or heat to invite a breeze.</p>
-                <div class="state-readout"><span class="state-dot" aria-hidden="true"></span><span id="state-label">LISTENING · STILL</span></div>
-              </div>
-              <div class="display-panel" id="display-panel" aria-live="polite">
-                <span class="micro-label">Ally’s live display</span>
-                <div class="display-window" id="poem-display"></div>
-                <div class="display-foot">
-                  <span id="display-caption">Awaiting a first word</span>
-                  <span class="display-lights" aria-hidden="true"><i></i><i></i><i></i></span>
-                </div>
-              </div>
-              <div class="demo-controls">
-                <h3>Speak to Ally</h3>
-                <p>Choose your language, then talk naturally.</p>
-                <div class="speech-controls">
-                  <label for="speech-language">Spoken language</label>
-                  <select class="speech-select" id="speech-language" aria-describedby="speech-privacy">
-                    <option value="en-US">English</option>
-                    <option value="es-MX">Español</option>
-                  </select>
-                  <div class="speech-actions">
-                    <button class="button" id="start-listening" type="button">
-                      <svg class="speech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <rect x="9" y="2" width="6" height="12" rx="3"/>
-                        <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
-                      </svg>
-                      Start speaking
-                    </button>
-                    <button class="button button-secondary" id="stop-listening" type="button" hidden>Stop listening</button>
+              <path d="M250 403v29" stroke="#74877b" stroke-width="5"/>
+              <rect x="163" y="431" width="174" height="98" rx="12" fill="#a5b4a8" stroke="#74877b" stroke-width="3"/>
+              <rect x="174" y="442" width="152" height="68" rx="5" fill="#29352f"/>
+              <circle cx="302" cy="462" r="3" fill="#d28763"/>
+              <circle cx="296" cy="478" r="1.8" fill="#829488"/>
+              <circle cx="304" cy="478" r="1.8" fill="#829488"/>
+              <circle cx="312" cy="478" r="1.8" fill="#829488"/>
+              <text x="250" y="522" fill="#53665a" font-family="monospace" font-size="7" letter-spacing="2" text-anchor="middle">DISPLAY · MIC · CONTROLS</text>
+              <path d="M100 546h300" stroke="#c5c7bc" stroke-width="1"/>
+                </svg>
+                <div class="display-panel" id="display-panel" aria-live="polite" aria-label="Live poem display">
+                  <div class="display-window" id="poem-display"></div>
+                  <div class="display-foot">
+                    <span class="visually-hidden" id="display-caption">Awaiting a first word</span>
+                    <span class="display-lights" aria-hidden="true"><i></i><i></i><i></i></span>
                   </div>
                 </div>
-                <span class="micro-label">Heard speech</span>
-                <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
-                <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
-                <p class="speech-privacy" id="speech-privacy">Microphone runs only after Start. Breath is analyzed locally; speech may use your browser’s service. Nothing is saved, and sustained background noise may trigger detection.</p>
-                <button class="quiet-button" id="breath-fallback-button" type="button" hidden>Complete exchange manually</button>
               </div>
+              <p class="concept-caption">Ally · ceiling-suspended concept</p>
+            </div>
+
+            <aside class="stage-note stage-note-right">
+              <span class="callout-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="8"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </span>
+              <h2>Three speeds, then stillness.</h2>
+              <p>More heat references lift the fan from low to medium to high. When they stop, the breeze fades.</p>
             </aside>
           </div>
+
+          <section class="interaction-controls" id="interaction" aria-labelledby="interaction-title">
+            <h2 class="visually-hidden" id="interaction-title">Try the interaction</h2>
+            <p class="interaction-instruction"><strong>Try the interaction.</strong> This browser-only simulation does not control a physical fan.</p>
+            <div class="speech-controls">
+              <label for="speech-language">Spoken language</label>
+              <select class="speech-select" id="speech-language" aria-describedby="speech-privacy">
+                <option value="en-US">English</option>
+                <option value="es-MX">Español</option>
+              </select>
+              <div class="speech-actions">
+                <button class="button" id="start-listening" type="button">
+                  <svg class="speech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="2" width="6" height="12" rx="3"/>
+                    <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
+                  </svg>
+                  Start speaking
+                </button>
+                <button class="button button-secondary" id="stop-listening" type="button" hidden>Stop listening</button>
+              </div>
+            </div>
+            <div class="interaction-status">
+              <h2 id="state-title">I’m listening.</h2>
+              <p id="state-description">Speak about warmth or heat to invite a breeze.</p>
+              <div class="state-readout"><span class="state-dot" aria-hidden="true"></span><span id="state-label">LISTENING · STILL</span></div>
+            </div>
+            <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
+            <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
+            <p class="speech-privacy" id="speech-privacy">Microphone runs only after Start. Breath is analyzed locally; speech may use your browser’s service. Nothing is saved, and sustained background noise may trigger detection.</p>
+            <button class="quiet-button" id="breath-fallback-button" type="button" hidden>Complete exchange manually</button>
+          </section>
+          <p class="process-caption">YOUR VOICE <span>→</span> HEAT-LANGUAGE SIGNAL <span>→</span> THREE-SPEED BREEZE</p>
         </section>
 
         <section class="principle-strip" aria-label="Ally's three principles">
@@ -748,28 +887,28 @@
         ];
 
         const englishPoemLines = [
-          "I gave you the wind. Now lend me your breath.",
-          "Without your breath, I grow still.",
-          "Your warmth is here, but the room has gone quiet.",
-          "I keep the shape of your passing air.",
-          "Come closer; let your breath move through me.",
-          "The silence cools my turning blades.",
+          "I gave you the wind.",
+          "Now lend me your breath.",
+          "Without you, I grow still.",
+          "Warmth lingers in the room.",
+          "I keep your passing air.",
+          "Silence cools my turning blades.",
           "Even the desert remembers rain.",
-          "I am a body made of waiting.",
-          "Your words made weather inside me.",
+          "I am a body waiting.",
+          "Your words made weather here.",
           "Borrowed air returns as a question."
         ];
         const spanishPoemLines = [
-          "Ahora préstame tu aliento.",
-          "Sin tu aliento, me quedo inmóvil.",
-          "Tu calor permanece, pero el cuarto está en silencio.",
-          "Guardo la forma del aire que dejaste.",
-          "Acércate; deja que tu aliento me atraviese.",
+          "Te di el viento.",
+          "Ahora, préstame tu aliento.",
+          "Sin ti, me quedo inmóvil.",
+          "El calor aún permanece.",
+          "Guardo el aire que dejaste.",
           "El silencio enfría mis aspas.",
           "Hasta el desierto recuerda la lluvia.",
-          "Soy un cuerpo hecho de espera.",
-          "Tus palabras hicieron clima dentro de mí.",
-          "El aire prestado regresa como pregunta."
+          "Soy un cuerpo que espera.",
+          "Tus palabras hicieron clima.",
+          "El aire regresa como pregunta."
         ];
         const poemStructures = [
           () => [poemLine("en"), poemLine("es")],
