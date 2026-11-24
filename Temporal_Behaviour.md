@@ -3,7 +3,7 @@ Temporal behaviour
 
 Description
 
-The behaviour of AERA develops through time rather than through instantaneous commands.
+The behaviour of Ally develops through time rather than through instantaneous commands.
 
 Its movement follows a sequence of accumulation, intensification, saturation, dissipation, stillness and renewal.
 
