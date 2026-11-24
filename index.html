@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3f0e7">
+    <meta name="description" content="Ally is a reciprocal fan concept. Heat gathers in your words, and a poem asks for your breath in return.">
+    <title>Ally — a breeze shaped by your words</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ivory: #f3f0e7;
+        --paper: #fbf9f3;
+        --sage: #a5b4a8;
+        --sage-dark: #64796c;
+        --terracotta: #c87b54;
+        --red: #bd4d3e;
+        --ink: #292a25;
+        --muted: #77786e;
+        --deep: #29352f;
+        --line: #d7d6ca;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        --serif: Georgia, "Times New Roman", serif;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        background: var(--ivory);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      button, input { font: inherit; }
+      button { color: inherit; }
+      a { color: inherit; }
+
+      .page-shell {
+        width: min(1320px, calc(100% - 72px));
+        margin-inline: auto;
+      }
+
+      .site-header {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .wordmark {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: .14em;
+      }
+
+      .wordmark-mark {
+        width: 25px;
+        height: 25px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--sage-dark);
+        border-radius: 50%;
+        color: var(--sage-dark);
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      .header-note, .eyebrow, .micro-label {
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+
+      .header-link {
+        color: var(--ink);
+        font-size: 11px;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+
+      .hero {
+        min-height: 650px;
+        display: grid;
+        grid-template-columns: minmax(360px, .92fr) minmax(460px, 1.08fr);
+        align-items: center;
+        gap: 34px;
+        padding-block: 64px 60px;
+      }
+
+      .hero-copy { max-width: 600px; }
+
+      .eyebrow { margin: 0 0 22px; color: #9c573a; }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      h1 {
+        max-width: 660px;
+        margin-bottom: 24px;
+        font-family: var(--serif);
+        font-size: clamp(58px, 7.2vw, 100px);
+        font-weight: 400;
+        letter-spacing: -.075em;
+        line-height: .96;
+      }
+
+      h1 em { font-weight: 400; }
+
+      .hero-description {
+        max-width: 420px;
+        margin-bottom: 30px;
+        color: #63645c;
+        font-family: var(--serif);
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 11px;
+        align-items: center;
+      }
+
+      .button {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 17px;
+        border: 1px solid var(--deep);
+        border-radius: 2px;
+        background: var(--deep);
+        color: var(--paper);
+        cursor: pointer;
+        font-size: 11px;
+        letter-spacing: .03em;
+        text-decoration: none;
+        transition: background .2s ease, color .2s ease, transform .2s ease;
+      }
+
+      .button:hover { transform: translateY(-2px); }
+      .button:focus-visible, .text-input:focus-visible, a:focus-visible {
+        outline: 2px solid var(--terracotta);
+        outline-offset: 4px;
+      }
+
+      .button-secondary {
+        background: transparent;
+        color: var(--deep);
+      }
+
+      .button-secondary:hover { background: var(--deep); color: var(--paper); }
+      .button:disabled { cursor: not-allowed; opacity: .46; transform: none; }
+
+      .hero-footnote {
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .fan-scene {
+        position: relative;
+        min-height: 510px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .scene-index {
+        position: absolute;
+        top: 26px;
+        right: 12px;
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: .14em;
+      }
+
+      .fan-art {
+        width: min(100%, 560px);
+        overflow: visible;
+        filter: drop-shadow(0 20px 24px rgb(52 61 53 / 9%));
+      }
+
+      .fan-rotor {
+        transform-origin: 250px 252px;
+        animation: rotate-fan var(--spin-time, 0s) linear infinite;
+      }
+
+      .fan-scene[data-speed="1"] .fan-rotor { --spin-time: 2.2s; }
+      .fan-scene[data-speed="2"] .fan-rotor { --spin-time: 1.35s; }
+      .fan-scene[data-speed="3"] .fan-rotor { --spin-time: .8s; }
+
+      .air-lines { opacity: 0; transition: opacity .6s ease; }
+      .fan-scene[data-speed="1"] .air-lines { opacity: .25; }
+      .fan-scene[data-speed="2"] .air-lines { opacity: .5; }
+      .fan-scene[data-speed="3"] .air-lines { opacity: .8; }
+
+      @keyframes rotate-fan { to { transform: rotate(360deg); } }
+
+      .fan-caption {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        width: max-content;
+        max-width: calc(100% - 32px);
+        transform: translateX(-50%);
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: .16em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .principle-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .principle {
+        min-height: 124px;
+        display: flex;
+        gap: 17px;
+        align-items: flex-start;
+        padding: 26px 26px 24px 0;
+      }
+
+      .principle + .principle {
+        padding-left: 26px;
+        border-left: 1px solid var(--line);
+      }
+
+      .principle-number {
+        color: var(--terracotta);
+        font-size: 10px;
+        letter-spacing: .08em;
+      }
+
+      .principle h2 {
+        margin: 0 0 5px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .principle p { max-width: 270px; margin: 0; color: var(--muted); font-size: 10px; }
+
+      .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 24px;
+        margin-bottom: 25px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(36px, 5vw, 58px);
+        font-weight: 400;
+        letter-spacing: -.055em;
+        line-height: 1;
+      }
+
+      .section-heading p {
+        max-width: 370px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .interaction { padding-block: 112px 92px; }
+
+      .demo-card {
+        min-height: 370px;
+        display: grid;
+        grid-template-columns: .82fr 1.08fr .84fr;
+        background: var(--deep);
+        color: var(--paper);
+      }
+
+      .demo-intro, .display-panel, .demo-controls { padding: 34px; }
+
+      .demo-intro {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border-right: 1px solid rgb(243 240 231 / 14%);
+      }
+
+      .demo-intro .micro-label, .display-panel .micro-label {
+        color: #b6c4b8;
+      }
+
+      .demo-intro h3 {
+        margin: 30px 0 13px;
+        font-family: var(--serif);
+        font-size: 34px;
+        font-weight: 400;
+        letter-spacing: -.04em;
+        line-height: 1.04;
+      }
+
+      .demo-intro > p {
+        max-width: 230px;
+        margin-bottom: auto;
+        color: #bfc6bc;
+        font-size: 10px;
+      }
+
+      .state-readout {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 35px;
+        padding-top: 16px;
+        border-top: 1px solid rgb(243 240 231 / 18%);
+        color: #d5dacd;
+        font-size: 10px;
+      }
+
+      .state-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d3845f;
+        box-shadow: 0 0 0 4px rgb(211 132 95 / 13%);
+      }
+
+      .display-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-right: 1px solid rgb(243 240 231 / 14%);
+        background: #26312c;
+      }
+
+      .display-window {
+        min-height: 190px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 17px;
+        padding: 20px 4px;
+        border-top: 1px solid rgb(243 240 231 / 24%);
+        border-bottom: 1px solid rgb(243 240 231 / 24%);
+        font-family: var(--mono);
+        font-size: clamp(16px, 2vw, 22px);
+        line-height: 1.8;
+      }
+
+      .display-line { min-height: 1.8em; }
+      .poem-en { font-weight: 400; }
+      .poem-es { font-weight: 700; }
+      .letter { display: inline-block; transition: transform .6s ease, opacity .6s ease; }
+      .letter.is-e { color: #e87963; }
+
+      .display-panel.is-dispersing .letter {
+        opacity: 0;
+        transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) rotate(25deg);
+      }
+
+      .display-foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: #aab8ac;
+        font-size: 8px;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+      }
+
+      .display-lights { display: inline-flex; gap: 6px; align-items: center; }
+      .display-lights i { width: 4px; height: 4px; display: block; border-radius: 50%; background: #77877a; }
+      .display-lights i:first-child { background: var(--terracotta); }
+
+      .demo-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .demo-controls h3 {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .demo-controls > p { margin: -7px 0 0; color: #bfc6bc; font-size: 9px; }
+
+      .speech-controls { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+      .speech-controls label { color: #b6c4b8; font-size: 9px; }
+
+      .speech-select {
+        width: 100%;
+        min-height: 42px;
+        padding: 0 11px;
+        border: 1px solid #6f7a70;
+        border-radius: 2px;
+        background: #202a25;
+        color: var(--paper);
+        font: inherit;
+        font-size: 10px;
+      }
+
+      .speech-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .demo-controls .button { min-height: 42px; border-color: var(--terracotta); background: var(--terracotta); color: #201f1b; }
+      .demo-controls .button:hover { background: #d58d68; }
+      .speech-actions .button { width: 100%; padding-inline: 8px; font-size: 9px; }
+      .speech-icon { width: 14px; height: 14px; flex: 0 0 auto; }
+
+      .transcript-preview {
+        min-height: 43px;
+        margin: 0;
+        padding: 8px 0;
+        border-bottom: 1px solid rgb(243 240 231 / 20%);
+        color: #e4e6dc;
+        font-family: var(--serif);
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .speech-privacy { margin: -5px 0 0; color: #aab8ac; font-size: 8px; line-height: 1.55; }
+      [hidden] { display: none !important; }
+
+      .quiet-button {
+        align-self: flex-start;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #d4d9d0;
+        cursor: pointer;
+        font-size: 9px;
+        text-decoration: underline;
+        text-decoration-color: #859287;
+        text-underline-offset: 4px;
+      }
+
+      .quiet-button:disabled { cursor: not-allowed; opacity: .45; }
+      .demo-feedback { min-height: 32px; margin: 0; color: #d3a18a; font-size: 9px; }
+      .timing-note { margin: 15px 0 0; color: var(--muted); font-size: 9px; }
+
+      .cycle { padding-block: 54px 106px; }
+
+      .cycle-track {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .cycle-step {
+        position: relative;
+        min-height: 123px;
+        padding: 19px 16px 18px 0;
+      }
+
+      .cycle-step + .cycle-step { padding-left: 18px; border-left: 1px solid var(--line); }
+
+      .cycle-step:not(:last-child)::after {
+        position: absolute;
+        top: 27px;
+        right: 12px;
+        width: 6px;
+        height: 6px;
+        border-top: 1px solid var(--sage-dark);
+        border-right: 1px solid var(--sage-dark);
+        content: "";
+        transform: rotate(45deg);
+      }
+
+      .cycle-step .micro-label { display: block; margin-bottom: 10px; color: var(--terracotta); }
+      .cycle-step h3 { margin: 0 0 5px; font-size: 11px; font-weight: 600; }
+      .cycle-step p { max-width: 170px; margin: 0; color: var(--muted); font-size: 9px; }
+
+      .closing-note {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+        padding: 42px 0 49px;
+        border-top: 1px solid var(--line);
+      }
+
+      .closing-note blockquote {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(30px, 4vw, 46px);
+        letter-spacing: -.04em;
+        line-height: 1.15;
+      }
+
+      .closing-note blockquote em { color: #9b5539; font-weight: 400; }
+      .closing-note p { max-width: 440px; margin: 0; color: var(--muted); font-size: 10px; }
+
+      .site-footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding-block: 17px 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      .site-footer p { margin: 0; }
+
+      @media (max-width: 900px) {
+        .page-shell { width: min(100% - 48px, 680px); }
+        .hero { min-height: auto; grid-template-columns: 1fr; gap: 10px; padding-block: 72px 32px; }
+        .hero-copy { max-width: 650px; }
+        .fan-scene { min-height: 480px; }
+        .fan-art { width: min(100%, 520px); }
+        .demo-card { grid-template-columns: 1fr 1fr; }
+        .demo-intro { border-bottom: 1px solid rgb(243 240 231 / 14%); }
+        .display-panel { grid-row: span 2; border-right: 0; }
+        .demo-controls { border-top: 1px solid rgb(243 240 231 / 14%); }
+      }
+
+      @media (max-width: 600px) {
+        body { font-size: 12px; }
+        .page-shell { width: calc(100% - 36px); }
+        .site-header { min-height: 64px; }
+        .header-note { display: none; }
+        .hero { padding-top: 58px; }
+        h1 { font-size: clamp(56px, 17vw, 82px); }
+        .hero-description { font-size: 16px; }
+        .fan-scene { min-height: 360px; margin-inline: -11px; }
+        .scene-index { top: 9px; right: 15px; }
+        .fan-caption { bottom: 4px; }
+        .principle-strip { grid-template-columns: 1fr; }
+        .principle { min-height: auto; padding: 19px 0; }
+        .principle + .principle { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
+        .section-heading { align-items: flex-start; flex-direction: column; margin-bottom: 20px; }
+        .interaction { padding-block: 80px 55px; }
+        .demo-card { grid-template-columns: 1fr; }
+        .demo-intro, .display-panel, .demo-controls { padding: 25px 22px; }
+        .demo-intro { min-height: 235px; border-right: 0; }
+        .demo-intro h3 { margin-top: 22px; }
+        .display-panel { grid-row: auto; border-top: 1px solid rgb(243 240 231 / 14%); border-bottom: 1px solid rgb(243 240 231 / 14%); }
+        .display-window { min-height: 160px; }
+        .demo-controls { border-top: 0; }
+        .cycle { padding-block: 40px 72px; }
+        .cycle-track { grid-template-columns: 1fr; }
+        .cycle-step, .cycle-step + .cycle-step { min-height: 95px; padding: 15px 28px 14px 0; border-left: 0; }
+        .cycle-step + .cycle-step { border-top: 1px solid var(--line); }
+        .cycle-step:not(:last-child)::after { top: auto; right: 4px; bottom: 22px; transform: rotate(135deg); }
+        .cycle-step p { max-width: 280px; }
+        .closing-note { grid-template-columns: 1fr; gap: 22px; padding-block: 32px; }
+        .site-footer { flex-direction: column; gap: 5px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          scroll-behavior: auto !important;
+          animation-duration: .01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: .01ms !important;
+        }
+
+        .fan-scene[data-speed="1"] .fan-rotor {
+          animation-duration: 4.4s !important;
+          animation-iteration-count: infinite !important;
+        }
+
+        .fan-scene[data-speed="2"] .fan-rotor {
+          animation-duration: 2.7s !important;
+          animation-iteration-count: infinite !important;
+        }
+
+        .fan-scene[data-speed="3"] .fan-rotor {
+          animation-duration: 1.6s !important;
+          animation-iteration-count: infinite !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="wordmark" href="#" aria-label="Ally home">
+          <span class="wordmark-mark" aria-hidden="true">a</span>
+          <span>ALLY</span>
+        </a>
+        <span class="header-note">A reciprocal object · Concept 01</span>
+        <a class="header-link" href="#interaction">Enter the exchange <span aria-hidden="true">↘</span></a>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">A voice-responsive fan concept</p>
+            <h1 id="hero-title">A breeze shaped by your <em>words.</em></h1>
+            <p class="hero-description">Heat gathers in what you say. When the conversation falls quiet, Ally finds its own words—and asks for a little air in return.</p>
+            <div class="hero-actions">
+              <a class="button" href="#interaction">Try the interaction <span aria-hidden="true">↗</span></a>
+              <a class="button button-secondary" href="#how-it-works">Follow the exchange</a>
+            </div>
+            <p class="hero-footnote">A browser-based study. Speak to the page; no physical fan is connected.</p>
+          </div>
+
+          <div class="fan-scene" id="fan-scene" data-speed="0" role="img" aria-label="Illustration of Ally, a sage green ceiling fan with terracotta blades and a suspended display">
+            <span class="scene-index">ALLY / 01 — RECIPROCAL AIR</span>
+            <svg class="fan-art" viewBox="0 0 500 570" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <pattern id="grille" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <path d="M0 0L18 18M18 0L0 18" fill="none" stroke="#718378" stroke-width=".65" opacity=".58"/>
+                </pattern>
+              </defs>
+              <path d="M250 0v67M225 13h50v19h-50z" fill="#a5b4a8" stroke="#74877b" stroke-width="2"/>
+              <path d="M208 65h84v10h-84z" fill="#dbe0d5" stroke="#74877b" stroke-width="2"/>
+              <circle cx="250" cy="252" r="151" fill="#d9e0d6" stroke="#899a8d" stroke-width="8"/>
+              <circle cx="250" cy="252" r="138" fill="#e8ece3" stroke="#f8f6ef" stroke-width="5"/>
+              <circle cx="250" cy="252" r="128" fill="url(#grille)" stroke="#aab7aa" stroke-width="2"/>
+              <circle cx="250" cy="252" r="101" fill="none" stroke="#91a196" stroke-width="1.2" opacity=".78"/>
+              <circle cx="250" cy="252" r="75" fill="none" stroke="#91a196" stroke-width="1.2" opacity=".78"/>
+              <circle cx="250" cy="252" r="49" fill="none" stroke="#91a196" stroke-width="1.2" opacity=".78"/>
+              <g class="air-lines" fill="none" stroke="#8da095" stroke-width="2" stroke-linecap="round">
+                <path d="M60 187c-15-8-27-8-40 0M51 205c-16-5-26-3-36 6M440 188c16-8 28-8 41 0M449 207c16-6 28-3 38 6"/>
+                <path d="M67 318c-15 7-25 16-31 29M432 318c16 7 26 16 32 29"/>
+              </g>
+              <g class="fan-rotor" fill="#c87b54" stroke="#b76a48" stroke-width="1">
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z"/>
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z" transform="rotate(90 250 252)"/>
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z" transform="rotate(180 250 252)"/>
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z" transform="rotate(270 250 252)"/>
+              </g>
+              <circle cx="250" cy="252" r="15" fill="#f3f0e7" stroke="#74877b" stroke-width="3"/>
+              <circle cx="250" cy="252" r="5" fill="#a5b4a8"/>
+              <path d="M250 403v29" stroke="#74877b" stroke-width="5"/>
+              <rect x="163" y="431" width="174" height="98" rx="12" fill="#a5b4a8" stroke="#74877b" stroke-width="3"/>
+              <rect x="174" y="442" width="152" height="68" rx="5" fill="#29352f"/>
+              <path d="M190 461h91M190 471h68" stroke="#c8d3c7" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+              <circle cx="302" cy="462" r="3" fill="#d28763"/>
+              <circle cx="296" cy="478" r="1.8" fill="#829488"/>
+              <circle cx="304" cy="478" r="1.8" fill="#829488"/>
+              <circle cx="312" cy="478" r="1.8" fill="#829488"/>
+              <text x="250" y="522" fill="#53665a" font-family="monospace" font-size="7" letter-spacing="2" text-anchor="middle">DISPLAY · MIC · CONTROLS</text>
+              <path d="M100 546h300" stroke="#c5c7bc" stroke-width="1"/>
+            </svg>
+            <span class="fan-caption">Ceiling-suspended concept · four blades · one exchange</span>
+          </div>
+        </section>
+
+        <section class="principle-strip" aria-label="Ally's three principles">
+          <article class="principle">
+            <span class="principle-number">01</span>
+            <div><h2>Listen for heat</h2><p>English and Spanish thermal references gather into a linguistic signal.</p></div>
+          </article>
+          <article class="principle">
+            <span class="principle-number">02</span>
+            <div><h2>Let language move air</h2><p>As heat accumulates, the fan moves from a low breeze toward full flow.</p></div>
+          </article>
+          <article class="principle">
+            <span class="principle-number">03</span>
+            <div><h2>Return what you received</h2><p>In stillness, a bilingual poem invites the human breath back.</p></div>
+          </article>
+        </section>
+
+        <section class="interaction" id="interaction" aria-labelledby="interaction-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">A small browser study</p>
+              <h2 id="interaction-title">Try the exchange.</h2>
+            </div>
+            <p>Speak naturally in English or Spanish. Heat references build the breeze; silence lets the poem arrive.</p>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-intro">
+              <span class="micro-label">Ally / live state</span>
+              <h3 id="state-title">I’m listening.</h3>
+              <p id="state-description">Tell me about warmth, a fever, the afternoon sun—or whatever heat means to you.</p>
+              <div class="state-readout"><span class="state-dot" aria-hidden="true"></span><span id="state-label">LISTENING · STILL</span></div>
+            </div>
+
+            <div class="display-panel" id="display-panel" aria-live="polite">
+              <span class="micro-label">The little screen</span>
+              <div class="display-window" id="poem-display">
+                <div class="display-line poem-en" data-line="en"></div>
+                <div class="display-line poem-es" data-line="es"></div>
+              </div>
+              <div class="display-foot">
+                <span id="display-caption">Awaiting a first word</span>
+                <span class="display-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+              </div>
+            </div>
+
+            <div class="demo-controls">
+              <h3>Speak to Ally</h3>
+              <p>Choose the language you’ll speak, then talk naturally.</p>
+              <div class="speech-controls">
+                <label for="speech-language">Spoken language</label>
+                <select class="speech-select" id="speech-language" aria-describedby="speech-privacy">
+                  <option value="en-US">English</option>
+                  <option value="es-MX">Español</option>
+                </select>
+                <div class="speech-actions">
+                  <button class="button" id="start-listening" type="button">
+                    <svg class="speech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="9" y="2" width="6" height="12" rx="3"/>
+                      <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
+                    </svg>
+                    Start speaking
+                  </button>
+                  <button class="button button-secondary" id="stop-listening" type="button" hidden>Stop listening</button>
+                </div>
+              </div>
+              <span class="micro-label">Heard speech</span>
+              <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
+              <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
+              <p class="speech-privacy" id="speech-privacy">Microphone access starts only when you press Start. Your browser’s speech service may process audio externally; Ally does not save audio or transcripts.</p>
+              <button class="quiet-button" id="quiet-button" type="button" disabled>Let the room go quiet</button>
+              <button class="quiet-button" id="breath-button" type="button" hidden>Return a little air</button>
+            </div>
+          </div>
+          <p class="timing-note">This simulation shortens the pauses and recognizes a limited bilingual heat vocabulary. Browser speech support varies; no physical fan or breath sensor is connected.</p>
+        </section>
+
+        <section class="cycle" id="how-it-works" aria-labelledby="cycle-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">The reciprocal cycle</p>
+              <h2 id="cycle-title">Air changes hands.</h2>
+            </div>
+            <p>Not a command, but a conversation: language becomes movement; silence becomes an invitation.</p>
+          </div>
+          <div class="cycle-track">
+            <article class="cycle-step"><span class="micro-label">01 / Receive</span><h3>Human speech</h3><p>Heat may be physical, emotional, bodily, or remembered.</p></article>
+            <article class="cycle-step"><span class="micro-label">02 / Translate</span><h3>Words gather</h3><p>Thermal references accumulate into a changing signal.</p></article>
+            <article class="cycle-step"><span class="micro-label">03 / Respond</span><h3>Airflow rises</h3><p>Ally answers in three speeds, then slowly returns to stillness.</p></article>
+            <article class="cycle-step"><span class="micro-label">04 / Invite</span><h3>A poem appears</h3><p>In the quiet, Ally speaks of absence, desire, and air.</p></article>
+            <article class="cycle-step"><span class="micro-label">05 / Return</span><h3>Breath completes it</h3><p>The subject offers back the same air the fan once gave.</p></article>
+          </div>
+        </section>
+
+        <section class="closing-note" aria-label="Design intention">
+          <blockquote>“I gave you the wind.<br><em>Ahora, préstame tu aliento.</em>”</blockquote>
+          <p>Ally is an experimental, ceiling-suspended fan concept: four terracotta blades within a sage-green protective structure, with a small display and microphone below. Its interface is being explored as a bridge between functional object and relational presence.</p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>ALLY · A RECIPROCAL OBJECT</p>
+        <p>Language becomes airflow. Airflow becomes sensation.</p>
+      </footer>
+    </div>
+
+    <script>
+      (() => {
+        const heatWords = [
+          "hot", "warm", "heat", "heated", "burn", "burning", "scorch", "fever", "sweat",
+          "sun", "sunlight", "desert", "flame", "fire", "melt", "melting", "steam", "humid",
+          "thirst", "passion", "desire", "ardor", "heatwave", "hot flashes", "warmth",
+          "calor", "caliente", "cálido", "ardor", "ardiente", "sofocante", "sudor", "fiebre",
+          "sol", "luz solar", "desierto", "llama", "fuego", "derretir", "vapor", "húmedo",
+          "sed", "pasión", "deseo", "abrasador", "bochorno", "me derrito"
+        ];
+
+        const poems = [
+          { en: "I gave you the wind,", es: "ahora préstame tu aliento." },
+          { en: "I have no lungs,", es: "pero necesito respirar." },
+          { en: "Your warmth inhabits me.", es: "En tu ausencia, me enfrío." },
+          { en: "The room grows still.", es: "Tu aliento puede moverme." }
+        ];
+        const acknowledgements = [
+          { en: "Your breath inhabits me.", es: "Ahora respiramos juntos." },
+          { en: "A little air returned.", es: "Gracias por quedarte." }
+        ];
+
+        const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = SpeechRecognitionAPI ? new SpeechRecognitionAPI() : null;
+        const scene = document.querySelector("#fan-scene");
+        const languageSelect = document.querySelector("#speech-language");
+        const startListeningButton = document.querySelector("#start-listening");
+        const stopListeningButton = document.querySelector("#stop-listening");
+        const transcriptPreview = document.querySelector("#transcript-preview");
+        const quietButton = document.querySelector("#quiet-button");
+        const breathButton = document.querySelector("#breath-button");
+        const feedback = document.querySelector("#demo-feedback");
+        const stateTitle = document.querySelector("#state-title");
+        const stateDescription = document.querySelector("#state-description");
+        const stateLabel = document.querySelector("#state-label");
+        const displayPanel = document.querySelector("#display-panel");
+        const displayCaption = document.querySelector("#display-caption");
+        const englishLine = document.querySelector('[data-line="en"]');
+        const spanishLine = document.querySelector('[data-line="es"]');
+
+        let totalHeat = 0;
+        let currentSpeed = 0;
+        let state = "listening";
+        let timerIds = [];
+        let isRecognizing = false;
+        let finalTranscriptReceived = false;
+        let recognitionErrorMessage = "";
+        let interimTranscript = "";
+
+        function clearTimers() {
+          timerIds.forEach(window.clearTimeout);
+          timerIds = [];
+        }
+
+        function setSpeed(speed) {
+          currentSpeed = speed;
+          scene.dataset.speed = String(speed);
+        }
+
+        function clearDisplay() {
+          englishLine.replaceChildren();
+          spanishLine.replaceChildren();
+          displayPanel.classList.remove("is-dispersing");
+        }
+
+        function renderLine(element, text, languageClass) {
+          element.replaceChildren();
+          const words = text.split(/(\s+)/);
+          words.forEach((word) => {
+            if (/^\s+$/.test(word)) {
+              element.append(document.createTextNode(word));
+              return;
+            }
+            const wordSpan = document.createElement("span");
+            wordSpan.className = languageClass;
+            for (const character of word) {
+              const letter = document.createElement("span");
+              letter.className = `letter${character.toLowerCase() === "e" ? " is-e" : ""}`;
+              letter.textContent = character;
+              letter.style.setProperty("--drift-x", `${Math.round(Math.random() * 48 - 24)}px`);
+              letter.style.setProperty("--drift-y", `${Math.round(Math.random() * 48 - 24)}px`);
+              wordSpan.append(letter);
+            }
+            element.append(wordSpan);
+          });
+        }
+
+        function showPoem(poem, isAcknowledgement = false) {
+          renderLine(englishLine, poem.en, "poem-en");
+          renderLine(spanishLine, poem.es, "poem-es");
+          displayCaption.textContent = isAcknowledgement ? "Breath received · renewal" : "A small invitation · take your time";
+        }
+
+        function setListeningState() {
+          state = "listening";
+          stateTitle.textContent = "I’m listening.";
+          stateDescription.textContent = "Speak naturally about warmth, a fever, the afternoon sun—or whatever heat means to you.";
+          stateLabel.textContent = currentSpeed > 0 ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
+          feedback.textContent = recognition
+            ? "Choose a language, then tap Start speaking."
+            : "Speech recognition is not available in this browser.";
+          quietButton.disabled = currentSpeed === 0;
+          quietButton.hidden = false;
+          breathButton.hidden = true;
+          startListeningButton.disabled = !recognition;
+          stopListeningButton.hidden = true;
+          languageSelect.disabled = false;
+        }
+
+        function normalize(text) {
+          return text.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        function findHeatReferences(text) {
+          const normalized = normalize(text);
+          return heatWords.filter((word) => {
+            const term = normalize(word);
+            return new RegExp(`(^|[^a-z0-9])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}($|[^a-z0-9])`, "i").test(normalized);
+          });
+        }
+
+        function handlePhrase(phrase) {
+          if (state !== "listening") {
+            feedback.textContent = "Ally is still waiting for the breath that completes this exchange.";
+            return;
+          }
+          const references = findHeatReferences(phrase);
+          clearTimers();
+          clearDisplay();
+
+          if (references.length === 0) {
+            totalHeat = Math.max(0, totalHeat - 1);
+            setSpeed(totalHeat === 0 ? 0 : totalHeat < 3 ? 1 : totalHeat < 6 ? 2 : 3);
+            stateTitle.textContent = "A quieter breeze.";
+            stateDescription.textContent = "I didn’t recognize a heat reference. Speak naturally; this prototype currently recognizes a limited heat vocabulary.";
+            stateLabel.textContent = currentSpeed ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
+            feedback.textContent = "No heat reference recognized. You can speak naturally in either language.";
+            quietButton.disabled = currentSpeed === 0;
+            displayCaption.textContent = "No heat reference found";
+            return;
+          }
+
+          totalHeat = Math.min(8, totalHeat + references.length);
+          const speed = totalHeat >= 6 ? 3 : totalHeat >= 3 ? 2 : 1;
+          setSpeed(speed);
+          stateTitle.textContent = ["", "A little warmth.", "The air is gathering.", "The room is moving."][speed];
+          stateDescription.textContent = "Each heat reference gives the breeze a little more life.";
+          stateLabel.textContent = `HEAT RECOGNIZED · SPEED ${speed}`;
+          feedback.textContent = `${references.length} heat ${references.length === 1 ? "reference" : "references"} found: ${references.slice(0, 4).join(", ")}${references.length > 4 ? "…" : ""}`;
+          quietButton.disabled = false;
+          displayCaption.textContent = "Language becomes airflow";
+        }
+
+        function invite() {
+          state = "waiting";
+          setSpeed(0);
+          stateTitle.textContent = "I’m waiting.";
+          stateDescription.textContent = "The words have settled. When you’re ready, offer a gentle breath back.";
+          stateLabel.textContent = "WAITING FOR BREATH";
+          feedback.textContent = "This demo cannot detect breath; use the button to complete the gesture.";
+          showPoem(poems[Math.floor(Math.random() * poems.length)]);
+          startListeningButton.disabled = true;
+          stopListeningButton.hidden = true;
+          languageSelect.disabled = true;
+          quietButton.hidden = true;
+          breathButton.hidden = false;
+          const repeat = window.setTimeout(() => {
+            if (state === "waiting") {
+              displayPanel.classList.add("is-dispersing");
+              timerIds.push(window.setTimeout(() => {
+                if (state === "waiting") {
+                  displayPanel.classList.remove("is-dispersing");
+                  showPoem(poems[Math.floor(Math.random() * poems.length)]);
+                }
+              }, 700));
+            }
+          }, 12000);
+          timerIds.push(repeat);
+        }
+
+        function letSilenceArrive() {
+          if (state !== "listening" || currentSpeed === 0) return;
+          state = "settling";
+          clearTimers();
+          quietButton.disabled = true;
+          startListeningButton.disabled = true;
+          stopListeningButton.hidden = true;
+          languageSelect.disabled = true;
+          if (isRecognizing && recognition) recognition.stop();
+          stateTitle.textContent = "The words are settling.";
+          stateDescription.textContent = "As the room quiets, the breeze lets go.";
+          stateLabel.textContent = "DISSIPATING";
+          feedback.textContent = "The fan is slowing toward stillness.";
+          let speed = currentSpeed;
+          const slow = () => {
+            speed -= 1;
+            setSpeed(Math.max(0, speed));
+            if (speed > 0) {
+              timerIds.push(window.setTimeout(slow, 700));
+            } else {
+              stateLabel.textContent = "STILLNESS";
+              timerIds.push(window.setTimeout(invite, 900));
+            }
+          };
+          timerIds.push(window.setTimeout(slow, 500));
+        }
+
+        function returnBreath() {
+          if (state !== "waiting") return;
+          clearTimers();
+          state = "renewal";
+          displayPanel.classList.add("is-dispersing");
+          feedback.textContent = "A breath returned. The exchange begins again.";
+          stateTitle.textContent = "Thank you.";
+          stateDescription.textContent = "For a moment, the air belongs to both of us.";
+          stateLabel.textContent = "BREATH RECEIVED · RENEWAL";
+          startListeningButton.disabled = true;
+          stopListeningButton.hidden = true;
+          languageSelect.disabled = true;
+          breathButton.hidden = true;
+          timerIds.push(window.setTimeout(() => {
+            showPoem(acknowledgements[Math.floor(Math.random() * acknowledgements.length)], true);
+            displayPanel.classList.remove("is-dispersing");
+            timerIds.push(window.setTimeout(() => {
+              totalHeat = 0;
+              clearDisplay();
+              displayCaption.textContent = "Ready for another exchange";
+              setSpeed(0);
+              setListeningState();
+            }, 1900));
+          }, 700));
+        }
+
+        function startListening() {
+          if (!recognition) {
+            feedback.textContent = "Speech recognition is not available in this browser.";
+            return;
+          }
+          if (state !== "listening") {
+            feedback.textContent = "Complete the breath exchange before speaking again.";
+            return;
+          }
+          if (isRecognizing) return;
+
+          recognition.lang = languageSelect.value;
+          finalTranscriptReceived = false;
+          recognitionErrorMessage = "";
+          interimTranscript = "";
+          transcriptPreview.textContent = "Listening…";
+          stateLabel.textContent = "LISTENING · MICROPHONE ON";
+          feedback.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
+          startListeningButton.disabled = true;
+          stopListeningButton.disabled = false;
+          stopListeningButton.hidden = false;
+          languageSelect.disabled = true;
+          isRecognizing = true;
+
+          try {
+            recognition.start();
+          } catch (error) {
+            if (error.name === "InvalidStateError") {
+              feedback.textContent = "Ally is already listening to a phrase.";
+              return;
+            }
+            isRecognizing = false;
+            startListeningButton.disabled = false;
+            stopListeningButton.hidden = true;
+            languageSelect.disabled = false;
+            if (error.name === "NotAllowedError" || error.name === "SecurityError") {
+              feedback.textContent = "Microphone access was denied. Allow it in your browser settings, then try again.";
+              return;
+            }
+            throw error;
+          }
+        }
+
+        function stopListening() {
+          if (!recognition || !isRecognizing) return;
+          stopListeningButton.disabled = true;
+          feedback.textContent = "Finishing the phrase…";
+          recognition.stop();
+        }
+
+        if (recognition) {
+          recognition.continuous = false;
+          recognition.interimResults = true;
+          recognition.maxAlternatives = 1;
+
+          recognition.onstart = () => {
+            isRecognizing = true;
+            stateTitle.textContent = "I’m listening.";
+            stateDescription.textContent = "Speak naturally. Ally is listening for heat in your words.";
+            stateLabel.textContent = "LISTENING · MICROPHONE ON";
+          };
+
+          recognition.onresult = (event) => {
+            if (finalTranscriptReceived) return;
+            let finalText = "";
+            let interimText = "";
+            for (let index = event.resultIndex; index < event.results.length; index += 1) {
+              const result = event.results[index];
+              if (result.isFinal) finalText += result[0].transcript;
+              else interimText += result[0].transcript;
+            }
+
+            if (finalText.trim()) {
+              finalTranscriptReceived = true;
+              transcriptPreview.textContent = finalText.trim();
+              handlePhrase(finalText.trim());
+              recognition.stop();
+            } else if (interimText.trim()) {
+              interimTranscript = interimText.trim();
+              transcriptPreview.textContent = interimTranscript;
+              feedback.textContent = "Hearing your phrase…";
+            }
+          };
+
+          recognition.onerror = (event) => {
+            const messages = {
+              "no-speech": "No speech was detected. Try again when you’re ready.",
+              "audio-capture": "No microphone was found. Connect a microphone and try again.",
+              "not-allowed": "Microphone access was denied. Allow it in your browser settings, then try again.",
+              "service-not-allowed": "The browser’s speech service is unavailable or not permitted.",
+              network: "The browser couldn’t reach its speech service. Check your connection and try again.",
+              "language-not-supported": "That spoken language isn’t supported here. Choose another language.",
+              aborted: "Listening stopped."
+            };
+            recognitionErrorMessage = messages[event.error] || `Speech recognition failed: ${event.error}.`;
+            feedback.textContent = recognitionErrorMessage;
+          };
+
+          recognition.onend = () => {
+            isRecognizing = false;
+            startListeningButton.disabled = state !== "listening";
+            stopListeningButton.disabled = false;
+            stopListeningButton.hidden = true;
+            languageSelect.disabled = state !== "listening";
+
+            if (state === "listening" && !finalTranscriptReceived) {
+              stateLabel.textContent = currentSpeed > 0 ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
+              if (!recognitionErrorMessage) {
+                transcriptPreview.textContent = interimTranscript || "Your words will appear here.";
+                feedback.textContent = interimTranscript
+                  ? "I didn’t catch a complete phrase. Try speaking again."
+                  : "No speech was recognized. Try again when you’re ready.";
+              }
+            }
+          };
+        } else {
+          startListeningButton.disabled = true;
+          feedback.textContent = "Speech recognition is not available in this browser. Try a browser that supports speech recognition.";
+        }
+
+        startListeningButton.addEventListener("click", startListening);
+        stopListeningButton.addEventListener("click", stopListening);
+
+        quietButton.addEventListener("click", letSilenceArrive);
+        breathButton.addEventListener("click", returnBreath);
+      })();
+    </script>
+  </body>
+</html>
