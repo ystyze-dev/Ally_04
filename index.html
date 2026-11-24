@@ -52,13 +52,13 @@
         text-transform: uppercase;
       }
 
-      .hero { padding: 18px 0 54px; }
+      .hero { padding: 12px 0 34px; }
       .project-heading { padding-top: 0; text-align: center; }
       .project-heading .eyebrow { margin-bottom: 13px; color: #9c573a; font-size: 8px; }
       .project-heading h1 {
         max-width: 760px;
         margin: 0 auto 14px;
-        font-size: clamp(42px, 6vw, 68px);
+        font-size: clamp(42px, 5.6vw, 61px);
         line-height: .9;
       }
       .project-heading h1 span { display: block; }
@@ -178,16 +178,16 @@
       .fan-art {
         width: 100%;
         display: block;
-        overflow: visible;
+        overflow: hidden;
         filter: drop-shadow(0 16px 20px rgb(52 61 53 / 8%));
       }
 
       .display-panel {
         position: absolute;
-        top: 77.55%;
+        top: 80.4%;
         left: 34.8%;
         width: 30.4%;
-        height: 11.95%;
+        height: 13.6%;
         display: flex;
         flex-direction: column;
         padding: 4px 5px 3px;
@@ -205,7 +205,7 @@
         justify-content: center;
         overflow: hidden;
         font-family: var(--mono);
-        font-size: clamp(5px, .72vw, 8px);
+        font-size: clamp(5px, .62vw, 7px);
         line-height: 1.15;
         text-align: left;
       }
@@ -217,8 +217,7 @@
       .letter.is-e { color: #e87963; }
 
       .display-panel.is-poetic .letter {
-        animation: letter-drift 3.8s ease-in-out infinite alternate;
-        animation-delay: var(--drift-delay, 0ms);
+        animation: none;
       }
 
       .display-panel.is-revealing .letter {
@@ -237,11 +236,6 @@
         to { opacity: 1; transform: translate(0, 0) scale(1); }
       }
 
-      @keyframes letter-drift {
-        from { transform: translate(0, 0) rotate(0); }
-        to { transform: translate(var(--drift-x, 2px), var(--drift-y, -2px)) rotate(var(--drift-rotation, 2deg)); }
-      }
-
       .display-foot { height: 4px; flex: 0 0 4px; display: flex; justify-content: flex-end; }
       .display-lights { display: inline-flex; gap: 4px; align-items: center; }
       .display-lights i { width: 2px; height: 2px; display: block; border-radius: 50%; background: #77877a; }
@@ -256,7 +250,7 @@
       }
 
       .interaction-controls {
-        max-width: 540px;
+        max-width: 760px;
         margin: 6px auto 0;
         text-align: center;
       }
@@ -296,7 +290,23 @@
       .interaction-status p { margin: 2px 0 0; color: var(--muted); font-size: 9px; }
       .state-readout { display: flex; justify-content: center; align-items: center; gap: 7px; color: var(--muted); font-size: 8px; }
       .state-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); }
-      .transcript-preview { min-height: 18px; margin: 4px 0 0; color: #63645c; font-family: var(--serif); font-size: 11px; }
+      .transcript-preview {
+        min-height: 76px;
+        max-height: 150px;
+        margin: 12px 0 0;
+        padding: 12px 16px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 2px;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: clamp(12px, 1.2vw, 14px);
+        line-height: 1.5;
+        text-align: left;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
       .demo-feedback { min-height: 15px; margin: 3px 0 0; color: #9c573a; font-size: 8px; }
       .speech-privacy { max-width: 480px; margin: 6px auto 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
       .quiet-button { margin-top: 5px; padding: 0; border: 0; background: transparent; color: var(--ink); cursor: pointer; font-size: 9px; text-decoration: underline; text-underline-offset: 3px; }
@@ -396,191 +406,6 @@
         color: var(--muted);
         font-size: 10px;
       }
-
-      .ally-interface {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 16px;
-        background: var(--deep);
-        color: var(--paper);
-        box-shadow: 0 18px 34px rgb(52 61 53 / 12%);
-      }
-
-      .ally-interface .micro-label { color: #b6c4b8; }
-
-      .demo-intro h3 {
-        margin: 5px 0 3px;
-        font-family: var(--serif);
-        font-size: 26px;
-        font-weight: 400;
-        letter-spacing: -.04em;
-        line-height: 1.04;
-      }
-
-      .demo-intro > p {
-        margin: 0;
-        color: #bfc6bc;
-        font-size: 10px;
-      }
-
-      .state-readout {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px solid rgb(243 240 231 / 18%);
-        color: #d5dacd;
-        font-size: 10px;
-      }
-
-      .state-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #d3845f;
-        box-shadow: 0 0 0 4px rgb(211 132 95 / 13%);
-      }
-
-      .display-panel {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 190px;
-        padding: 12px;
-        border: 1px solid #718378;
-        background: #26312c;
-      }
-
-      .display-window {
-        min-height: 78px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-top: 10px;
-        padding: 8px 4px;
-        border-top: 1px solid rgb(243 240 231 / 24%);
-        border-bottom: 1px solid rgb(243 240 231 / 24%);
-        font-family: var(--mono);
-        font-size: clamp(14px, 1.3vw, 18px);
-        line-height: 1.45;
-      }
-
-      .display-line { min-height: 1.8em; }
-      .poem-en { font-weight: 400; }
-      .poem-es { font-weight: 700; }
-      .letter { display: inline-block; transition: transform .6s ease, opacity .6s ease; }
-      .letter.is-e { color: #e87963; }
-
-      .display-panel.is-poetic .letter {
-        animation: letter-drift 3.8s ease-in-out infinite alternate;
-        animation-delay: var(--drift-delay, 0ms);
-      }
-
-      .display-panel.is-revealing .letter {
-        animation: letter-arrive .7s cubic-bezier(.2, .75, .25, 1) both;
-        animation-delay: var(--reveal-delay, 0ms);
-      }
-
-      .display-panel.is-dispersing .letter {
-        animation: none;
-        opacity: 0;
-        transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) rotate(25deg);
-      }
-
-      @keyframes letter-arrive {
-        from { opacity: 0; transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) scale(.82); }
-        to { opacity: 1; transform: translate(0, 0) scale(1); }
-      }
-
-      @keyframes letter-drift {
-        from { transform: translate(0, 0) rotate(0); }
-        to { transform: translate(var(--drift-x, 2px), var(--drift-y, -2px)) rotate(var(--drift-rotation, 2deg)); }
-      }
-
-      .display-foot {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        color: #aab8ac;
-        font-size: 8px;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-      }
-
-      .display-lights { display: inline-flex; gap: 6px; align-items: center; }
-      .display-lights i { width: 4px; height: 4px; display: block; border-radius: 50%; background: #77877a; }
-      .display-lights i:first-child { background: var(--terracotta); }
-
-      .demo-controls {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        padding-top: 10px;
-        border-top: 1px solid rgb(243 240 231 / 14%);
-      }
-
-      .demo-controls h3 {
-        margin: 0;
-        font-size: 11px;
-        font-weight: 500;
-      }
-
-      .demo-controls > p { margin: -5px 0 0; color: #bfc6bc; font-size: 9px; }
-
-      .speech-controls { display: flex; flex-direction: column; gap: 6px; margin-top: 0; }
-      .speech-controls label { color: #b6c4b8; font-size: 9px; }
-
-      .speech-select {
-        width: 100%;
-        min-height: 42px;
-        padding: 0 11px;
-        border: 1px solid #6f7a70;
-        border-radius: 2px;
-        background: #202a25;
-        color: var(--paper);
-        font: inherit;
-        font-size: 10px;
-      }
-
-      .speech-actions { display: flex; gap: 8px; }
-      .demo-controls .button { min-height: 42px; border-color: var(--terracotta); background: var(--terracotta); color: #201f1b; }
-      .demo-controls .button:hover { background: #d58d68; }
-      .speech-actions .button { flex: 1; padding-inline: 8px; font-size: 9px; }
-      .speech-icon { width: 14px; height: 14px; flex: 0 0 auto; }
-
-      .transcript-preview {
-        min-height: 32px;
-        margin: 0;
-        padding: 8px 0;
-        border-bottom: 1px solid rgb(243 240 231 / 20%);
-        color: #e4e6dc;
-        font-family: var(--serif);
-        font-size: 14px;
-        line-height: 1.4;
-      }
-
-      .speech-privacy { margin: -5px 0 0; color: #aab8ac; font-size: 8px; line-height: 1.55; }
-      [hidden] { display: none !important; }
-
-      .quiet-button {
-        align-self: flex-start;
-        padding: 0;
-        border: 0;
-        background: transparent;
-        color: #d4d9d0;
-        cursor: pointer;
-        font-size: 9px;
-        text-decoration: underline;
-        text-decoration-color: #859287;
-        text-underline-offset: 4px;
-      }
-
-      .quiet-button:disabled { cursor: not-allowed; opacity: .45; }
-      .demo-feedback { min-height: 20px; margin: 0; color: #d3a18a; font-size: 9px; }
 
       .cycle { padding-block: 54px 106px; }
 
@@ -733,7 +558,7 @@
 
             <div class="fan-column">
               <div class="fan-assembly">
-                <svg class="fan-art" viewBox="0 0 500 570" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage green ceiling fan with four terracotta blades and a display">
+                <svg class="fan-art" viewBox="0 40 500 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage green ceiling fan with four terracotta blades and a display">
               <defs>
                 <pattern id="grille" width="18" height="18" patternUnits="userSpaceOnUse">
                   <path d="M0 0L18 18M18 0L0 18" fill="none" stroke="#718378" stroke-width=".65" opacity=".58"/>
@@ -769,7 +594,7 @@
               <text x="250" y="522" fill="#53665a" font-family="monospace" font-size="7" letter-spacing="2" text-anchor="middle">DISPLAY · MIC · CONTROLS</text>
               <path d="M100 546h300" stroke="#c5c7bc" stroke-width="1"/>
                 </svg>
-                <div class="display-panel" id="display-panel" aria-live="polite" aria-label="Live poem display">
+                <div class="display-panel" id="display-panel" role="status" aria-live="polite" aria-label="Live poem display">
                   <div class="display-window" id="poem-display"></div>
                   <div class="display-foot">
                     <span class="visually-hidden" id="display-caption">Awaiting a first word</span>
@@ -794,7 +619,7 @@
 
           <section class="interaction-controls" id="interaction" aria-labelledby="interaction-title">
             <h2 class="visually-hidden" id="interaction-title">Try the interaction</h2>
-            <p class="interaction-instruction"><strong>Try the interaction.</strong> This browser-only simulation does not control a physical fan.</p>
+            <p class="interaction-instruction"><strong>Try the interaction.</strong> Speak naturally in English or Spanish—no typing needed.</p>
             <div class="speech-controls">
               <label for="speech-language">Spoken language</label>
               <select class="speech-select" id="speech-language" aria-describedby="speech-privacy">
@@ -814,10 +639,10 @@
             </div>
             <div class="interaction-status">
               <h2 id="state-title">I’m listening.</h2>
-              <p id="state-description">Speak about warmth or heat to invite a breeze.</p>
+              <p id="state-description">Speak naturally in English or Spanish; no typing is needed.</p>
               <div class="state-readout"><span class="state-dot" aria-hidden="true"></span><span id="state-label">LISTENING · STILL</span></div>
             </div>
-            <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
+            <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your spoken words will appear here.</p>
             <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
             <p class="speech-privacy" id="speech-privacy">Microphone runs only after Start. Breath is analyzed locally; speech may use your browser’s service. Nothing is saved, and sustained background noise may trigger detection.</p>
             <button class="quiet-button" id="breath-fallback-button" type="button" hidden>Complete exchange manually</button>
@@ -859,7 +684,7 @@
 
         <section class="closing-note" aria-label="Design intention">
           <blockquote>“I gave you the wind.<br><em>Ahora, préstame tu aliento.</em>”</blockquote>
-          <p>Ally is an experimental, ceiling-suspended fan concept: four terracotta blades within a sage-green protective structure, with a small display and microphone beside it. Its interface is being explored as a bridge between functional object and relational presence.</p>
+          <p>Ally is an experimental, ceiling-suspended fan concept: four terracotta blades within a sage-green protective structure, with an integrated display and microphone. Its interface is being explored as a bridge between functional object and relational presence.</p>
         </section>
       </main>
 
@@ -873,10 +698,10 @@
       (() => {
         const HEAT_WINDOW_MS = 15000;
         const SILENCE_TO_STILLNESS_MS = 5000;
-        const INVITATION_AFTER_SILENCE_MS = 20000;
+        const INVITATION_AFTER_SILENCE_MS = SILENCE_TO_STILLNESS_MS;
         const INVITATION_REPEAT_MS = 45000;
-        const POEM_CHANGE_MS = 9000;
-        const BREATH_MIN_DURATION_MS = 450;
+        const POEM_CHANGE_MS = 15000;
+        const BREATH_MIN_DURATION_MS = 300;
         const heatWords = [
           "hot", "warm", "heat", "heated", "burn", "burning", "scorch", "fever", "sweat",
           "sun", "sunlight", "desert", "flame", "fire", "melt", "melting", "steam", "humid",
@@ -887,28 +712,28 @@
         ];
 
         const englishPoemLines = [
-          "I gave you the wind.",
-          "Now lend me your breath.",
-          "Without you, I grow still.",
-          "Warmth lingers in the room.",
-          "I keep your passing air.",
-          "Silence cools my turning blades.",
-          "Even the desert remembers rain.",
-          "I am a body waiting.",
-          "Your words made weather here.",
-          "Borrowed air returns as a question."
+          "I gave you the wind; the ember remains.",
+          "Lend me your breath; warmth lingers.",
+          "Without you, thermal memory cools.",
+          "The flame leaves an afterglow.",
+          "Desire shimmers through the heat haze.",
+          "Humidity gathers around our silence.",
+          "Perspiration maps the body's weather.",
+          "Even aridity longs for rain.",
+          "A mirage dissolves into vapor.",
+          "My cooling blades remember thirst."
         ];
         const spanishPoemLines = [
-          "Te di el viento.",
-          "Ahora, préstame tu aliento.",
-          "Sin ti, me quedo inmóvil.",
-          "El calor aún permanece.",
-          "Guardo el aire que dejaste.",
-          "El silencio enfría mis aspas.",
-          "Hasta el desierto recuerda la lluvia.",
-          "Soy un cuerpo que espera.",
-          "Tus palabras hicieron clima.",
-          "El aire regresa como pregunta."
+          "Te di el viento; la brasa permanece.",
+          "Préstame el aliento; persiste la calidez.",
+          "Sin ti, la memoria térmica se enfría.",
+          "La llama deja un resplandor residual.",
+          "El deseo tiembla en la calima térmica.",
+          "La humedad abraza nuestro silencio.",
+          "El sudor traza el clima en mi piel.",
+          "Hasta la aridez recuerda la lluvia.",
+          "El espejismo se disuelve en vapor.",
+          "Mis aspas frías recuerdan la sed."
         ];
         const poemStructures = [
           () => [poemLine("en"), poemLine("es")],
@@ -919,8 +744,8 @@
           () => [poemLine("es"), poemLine("en"), poemLine("en"), poemLine("es")]
         ];
         const acknowledgements = [
-          { en: "Your breath inhabits me.", es: "Ahora respiramos juntos." },
-          { en: "A little air returned.", es: "Gracias por quedarte." }
+          { en: "Your breath rekindles the ember.", es: "Tu aliento reaviva la brasa." },
+          { en: "Warmth returns with your breath.", es: "El calor vuelve con tu aliento." }
         ];
 
         const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -941,6 +766,7 @@
         const poemDisplay = document.querySelector("#poem-display");
 
         let heatEvents = [];
+        let hasSpoken = false;
         let currentSpeed = 0;
         let state = "listening";
         let timerIds = [];
@@ -1009,10 +835,15 @@
 
         function scheduleSilenceResponse() {
           clearSilenceTimers();
-          if (state !== "listening") return;
+          if (state !== "listening" || !hasSpoken) return;
 
           silenceResponseScheduled = true;
           const startingSpeed = currentSpeed;
+          if (startingSpeed > 0) {
+            stateTitle.textContent = "The breeze is easing.";
+            stateDescription.textContent = "The fan is slowing; Ally is still listening.";
+            stateLabel.textContent = `DISSIPATING · SPEED ${startingSpeed}`;
+          }
           for (let step = 1; step <= startingSpeed; step += 1) {
             const expectedSpeed = startingSpeed - step + 1;
             const nextSpeed = expectedSpeed - 1;
@@ -1023,7 +854,7 @@
               stateTitle.textContent = nextSpeed ? "The breeze is easing." : "The room is still.";
               stateDescription.textContent = nextSpeed
                 ? "With no new heat, the airflow keeps softening."
-                : "The fan is still. A poem will arrive if the quiet remains.";
+                : "The fan is still. The poem will stay until you offer a breath.";
               stateLabel.textContent = nextSpeed ? `DISSIPATING · SPEED ${nextSpeed}` : "STILLNESS";
             }, delay));
           }
@@ -1076,10 +907,10 @@
               const letter = document.createElement("span");
               letter.className = `letter${character.toLowerCase() === "e" ? " is-e" : ""}`;
               letter.textContent = character;
-              letter.style.setProperty("--drift-x", `${Math.round(Math.random() * 32 - 16)}px`);
-              letter.style.setProperty("--drift-y", `${Math.round(Math.random() * 30 - 15)}px`);
-              letter.style.setProperty("--drift-rotation", `${Math.round(Math.random() * 16 - 8)}deg`);
-              letter.style.setProperty("--reveal-delay", `${Math.min(characterIndex * 18, 900)}ms`);
+              letter.style.setProperty("--drift-x", `${Math.round(Math.random() * 12 - 6)}px`);
+              letter.style.setProperty("--drift-y", `${Math.round(Math.random() * 8 - 4)}px`);
+              letter.style.setProperty("--drift-rotation", `${Math.round(Math.random() * 4 - 2)}deg`);
+              letter.style.setProperty("--reveal-delay", `${Math.min(characterIndex * 12, 500)}ms`);
               wordSpan.append(letter);
               characterIndex += 1;
             }
@@ -1191,6 +1022,7 @@
 
           breathAvailabilityMessage = "";
           breathFallbackButton.hidden = true;
+          stateLabel.textContent = "WAITING FOR BREATH · MICROPHONE ON";
           feedback.textContent = "Blow gently toward the microphone for about half a second. I’m listening for airflow.";
           const measureBreath = () => {
             if (state !== "waiting" || !breathAnalyser || !breathSamples) return;
@@ -1201,7 +1033,7 @@
               squaredTotal += amplitude * amplitude;
             }
             const level = Math.sqrt(squaredTotal / breathSamples.length);
-            const threshold = Math.max(0.055, breathNoiseFloor * 3.2);
+            const threshold = Math.max(0.025, breathNoiseFloor * 1.5);
             if (level >= threshold) {
               if (!breathCandidateStart) breathCandidateStart = performance.now();
               if (performance.now() - breathCandidateStart >= BREATH_MIN_DURATION_MS) {
@@ -1222,13 +1054,8 @@
           const refreshPoem = () => {
             poemRefreshTimerId = window.setTimeout(() => {
               if (state !== "waiting") return;
-              displayPanel.classList.add("is-dispersing");
-              poemRefreshTimerId = window.setTimeout(() => {
-                poemRefreshTimerId = null;
-                if (state !== "waiting") return;
-                showPoem(generatePoem());
-                refreshPoem();
-              }, 700);
+              showPoem(generatePoem());
+              refreshPoem();
             }, POEM_CHANGE_MS);
           };
           const remindAndVary = () => {
@@ -1237,8 +1064,10 @@
               if (state !== "waiting") return;
               stateTitle.textContent = "Still here, when you’re ready.";
               stateDescription.textContent = "A gentle breath toward the microphone will let the words drift away.";
-              stateLabel.textContent = "WAITING FOR BREATH";
-              showPoem(generatePoem());
+              stateLabel.textContent = breathAnalyser && breathSamples
+                ? "WAITING FOR BREATH · MICROPHONE ON"
+                : "WAITING FOR BREATH";
+              if (poemDisplay.childElementCount === 0) showPoem(generatePoem());
               remindAndVary();
             }, INVITATION_REPEAT_MS);
           };
@@ -1262,7 +1091,7 @@
         function setListeningState() {
           state = "listening";
           stateTitle.textContent = "I’m listening.";
-          stateDescription.textContent = "Speak about warmth or heat to invite a breeze.";
+          stateDescription.textContent = "Speak naturally in English or Spanish; no typing is needed.";
           stateLabel.textContent = currentSpeed > 0 ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
           feedback.textContent = recognition
             ? "Choose a language, then tap Start speaking."
@@ -1286,6 +1115,7 @@
         }
 
         function handlePhrase(phrase) {
+          hasSpoken = true;
           if (state !== "listening") {
             feedback.textContent = "Ally is still waiting for the breath that completes this exchange.";
             return;
@@ -1361,6 +1191,7 @@
             displayPanel.classList.remove("is-dispersing");
             timerIds.push(window.setTimeout(() => {
               heatEvents = [];
+              hasSpoken = false;
               clearDisplay();
               displayCaption.textContent = "Ready for another exchange";
               setSpeed(0);
@@ -1458,6 +1289,7 @@
           };
 
           recognition.onspeechstart = () => {
+            hasSpoken = true;
             clearSilenceTimers();
             recognitionErrorMessage = "";
           };
@@ -1473,10 +1305,12 @@
             }
 
             if (finalText.trim()) {
+              hasSpoken = true;
               finalTranscriptReceived = true;
               transcriptPreview.textContent = finalText.trim();
               handlePhrase(finalText.trim());
             } else if (interimText.trim()) {
+              hasSpoken = true;
               clearSilenceTimers();
               finalTranscriptReceived = false;
               interimTranscript = interimText.trim();
@@ -1514,7 +1348,7 @@
             if (state === "listening" && !finalTranscriptReceived) {
               stateLabel.textContent = currentSpeed > 0 ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
               if (!recognitionErrorMessage) {
-                transcriptPreview.textContent = interimTranscript || "Your words will appear here.";
+                transcriptPreview.textContent = interimTranscript || "Your spoken words will appear here.";
                 feedback.textContent = interimTranscript
                   ? "I didn’t catch a complete phrase. Try speaking again."
                   : "No speech was recognized. Try again when you’re ready.";
