@@ -1,0 +1,1221 @@
+/* ==========================================================
+   HEAT — GENERATIVE BILINGUAL POETRY
+   p5.js
+   ========================================================== */
+
+// ---- AUDIO PARAMETERS -------------------------------------
+
+const START_THRESHOLD = -45;
+const HOLD_MS = 1000;
+
+let started = false;
+let analyser;
+let samples;
+let audioContext;
+let level = -100;
+let history = [];
+let thresholdSlider;
+
+let isSound = false;
+let lastLoudTime = 0;
+let soundCount = 0;
+
+// ---- ENGLISH WORD BANKS -----------------------------------
+
+let english_adjective = [
+  "hot", "warm", "thermal", "lukewarm",
+  "balmy", "sultry", "sweltering", "scorching",
+  "searing", "blistering", "sizzling", "boiling",
+  "steaming", "molten", "burning", "glowing",
+  "incandescent", "radiant", "luminous", "solar",
+  "torrid", "tropical", "arid", "parched",
+  "dry", "humid", "moist", "damp",
+  "wet", "sweaty", "sticky", "clammy",
+  "drenched", "saturated", "viscous", "waxy",
+  "gelatinous", "malleable", "pliable", "soft",
+  "deformed", "warped", "cracked", "blistered",
+  "scorched", "charred", "feverish", "flushed",
+  "breathless", "thirsty", "exhausted", "stifling",
+  "suffocating", "passionate", "ardent", "fervent",
+  "erotic", "sensual", "intimate", "tender",
+  "affectionate", "restless", "furious", "volatile",
+  "explosive", "endothermic", "exothermic",
+  "thermochromic", "geothermal", "volcanic",
+  "combustible", "flammable", "evaporative",
+  "translucent", "glistening", "leathery",
+  "brittle", "porous", "swollen", "wrinkled",
+  "fluid", "liquid", "residual", "latent"
+];
+
+let english_noun = [
+  "heat", "warmth", "temperature", "ardor",
+  "fervor", "passion", "desire", "lust",
+  "yearning", "intimacy", "affection", "tenderness",
+  "anger", "rage", "fury", "intensity",
+  "fire", "flame", "ember", "cinder",
+  "ash", "soot", "smoke", "blaze",
+  "inferno", "combustion", "ignition",
+  "radiation", "conduction", "convection",
+  "evaporation", "condensation", "vapor",
+  "steam", "humidity", "moisture", "saturation",
+  "desert", "drought", "aridity", "mirage",
+  "sunlight", "heatwave", "oasis", "sand",
+  "skin", "sweat", "perspiration", "fever",
+  "thirst", "breath", "saliva", "exhalation",
+  "metabolism", "thermoregulation", "inflammation",
+  "dehydration", "exhaustion", "vasodilation",
+  "wax", "paraffin", "beeswax", "resin",
+  "bitumen", "asphalt", "tar", "butter",
+  "chocolate", "fat", "glass", "metal",
+  "magma", "lava", "viscosity", "fluidity",
+  "liquefaction", "fusion", "melting",
+  "deformation", "expansion", "contraction",
+  "friction", "pressure", "entropy",
+  "thermal mass", "heat capacity",
+  "thermal conductivity", "thermal resistance",
+  "thermal expansion", "heat flux",
+  "thermal gradient", "thermal equilibrium",
+  "latent heat", "thermal memory",
+  "melting point", "glass transition",
+  "thermal shock", "thermal fatigue",
+  "thermal sensation", "thermal imprint",
+  "heat accumulation", "heat absorption",
+  "heat release", "heat dissipation",
+  "water droplets", "sweat stain",
+  "salt deposit", "surface condensation",
+  "transformation", "transmutation",
+  "purification", "renewal", "afterglow"
+];
+
+let english_verb = [
+  "heat", "warm", "overheat", "melt",
+  "liquefy", "dissolve", "soften", "deform",
+  "expand", "contract", "bend", "warp",
+  "collapse", "sweat", "perspire", "exude",
+  "ooze", "drip", "seep", "soak",
+  "moisten", "wet", "saturate", "evaporate",
+  "condense", "dry", "wither", "dehydrate",
+  "burn", "ignite", "scorch", "char",
+  "smolder", "glow", "shimmer", "radiate",
+  "absorb", "release", "crack", "blister",
+  "wrinkle", "stain", "crystallize", "solidify",
+  "suffocate", "simmer", "boil", "ferment",
+  "transform", "transmute", "embrace", "desire",
+  "inflame", "rekindle", "consume", "extinguish",
+  "breathe", "exhale", "inhale", "pant",
+  "caress", "kiss", "yearn", "linger",
+  "accumulate", "dissipate", "circulate",
+  "ventilate", "cool", "quench", "anneal",
+  "temper", "forge", "weld", "vaporize",
+  "sublimate", "fuse", "incandesce", "penetrate"
+];
+
+let english_adverb = [
+  "warmly", "hotly", "thermally",
+  "ardently", "fervently", "passionately",
+  "intensely", "sensually", "erotically",
+  "intimately", "tenderly", "feverishly",
+  "furiously", "violently", "slowly",
+  "gradually", "progressively", "rapidly",
+  "continuously", "relentlessly", "silently",
+  "gently", "softly", "deeply",
+  "internally", "externally", "bodily",
+  "physically", "chemically", "visibly",
+  "invisibly", "incessantly", "momentarily",
+  "desperately", "restlessly", "heavily",
+  "rhythmically", "unevenly", "completely",
+  "partially", "irreversibly", "reversibly"
+];
+
+let english_prepositionsconnectors = [
+  "in", "within", "inside", "beneath",
+  "under", "above", "between", "through",
+  "throughout", "beyond", "against",
+  "toward", "from", "into", "upon",
+  "without", "with", "until", "while",
+  "as", "before", "after", "around",
+  "among", "despite", "and", "or", "yet"
+];
+
+let english_interjectionsexclamation = [
+  "ah", "oh", "ugh", "ooh", "ouch",
+  "phew", "alas", "shh", "hush",
+  "more", "enough", "breathe", "again"
+];
+
+let latin_idioms = [
+  "ex igne", "in igne", "per ignem",
+  "in ardore", "in calore", "ignis",
+  "calor", "ardor", "flamma",
+  "vapor", "sudor", "sol",
+  "lux", "anima", "spiritus",
+  "ignis aeternus", "sol invictus",
+  "ignis sacer", "ignis fatuus",
+  "solve et coagula",
+  "ex cinere", "in vivo"
+];
+
+let abstractconcept_idioms_english = [
+  "entropy", "transformation", "transmutation",
+  "impermanence", "dissolution", "saturation",
+  "equilibrium", "instability", "intensity",
+  "desire", "absence", "longing",
+  "vulnerability", "reciprocity", "dependence",
+  "imperceptibility", "continuity", "renewal",
+  "purification", "metamorphosis", "becoming",
+  "thermal memory", "latent energy",
+  "residual warmth", "embodied sensation",
+  "thermal equilibrium", "irreversibility",
+  "ephemerality", "material memory"
+];
+
+let english_presence_tangible = [
+  "sweat", "perspiration", "condensation",
+  "evaporation", "radiation", "emanation",
+  "thermal imprint", "heat residue",
+  "water droplets", "salt crystals",
+  "sweat stain", "molten wax", "softened resin",
+  "burnt skin", "flushed skin", "warm skin",
+  "moist surface", "sticky surface",
+  "thermal gradient", "heat haze",
+  "visible vapor", "breath", "exhalation",
+  "glowing ember", "smoldering ash",
+  "liquid glass", "molten metal",
+  "radiant surface", "material deformation"
+];
+
+let english_presence_being = [
+  "embodied heat", "thermal presence",
+  "living warmth", "thermal body",
+  "breathing body", "feverish body",
+  "radiant being", "burning essence",
+  "thermal existence", "vital energy",
+  "sensual presence", "latent warmth",
+  "incandescent being", "material presence",
+  "evanescent body", "residual presence",
+  "thermal memory", "vitality",
+  "anima", "breath", "essence"
+];
+
+let english_mythical_places_realms = [
+  "inferno", "underworld", "desert",
+  "oasis", "solar temple", "fiery abyss",
+  "volcanic sanctuary", "burning labyrinth",
+  "realm of embers", "realm of ashes",
+  "alchemical chamber", "eternal furnace",
+  "molten landscape", "sunken sun",
+  "Tartarus", "Muspelheim",
+  "Heliopolis", "solar paradise",
+  "crucible", "sacred hearth"
+];
+
+let english_mythical_beings_creatures_entities = [
+  "Phoenix", "Prometheus", "Salamander",
+  "Dragon", "Helios", "Apollo",
+  "Hephaestus", "Vulcan", "Ra",
+  "Sekhmet", "Agni", "Surya",
+  "Hestia", "Vesta", "Pele",
+  "Surtr", "Ifrit", "Firebird",
+  "solar deity", "fire spirit",
+  "ember spirit", "flame guardian"
+];
+
+let english_mystical_objects_artefacts = [
+  "sacred flame", "solar disc",
+  "alchemical furnace", "crucible",
+  "burning talisman", "solar amulet",
+  "incense burner", "eternal torch",
+  "sacred hearth", "molten relic",
+  "wax effigy", "ritual candle",
+  "obsidian mirror", "volcanic stone",
+  "golden vessel", "fire altar",
+  "philosopher's stone", "alchemical vessel",
+  "solar mirror", "vessel of embers"
+];
+
+// ---- SPANISH WORD BANKS -----------------------------------
+
+let spanish_adjective = [
+  "caliente", "cálido", "térmico", "tibio",
+  "templado", "sofocante", "abrasador",
+  "ardiente", "hirviente", "humeante",
+  "fundido", "incandescente", "radiante",
+  "luminoso", "solar", "tórrido", "tropical",
+  "árido", "reseco", "seco", "húmedo",
+  "mojado", "sudoroso", "pegajoso",
+  "empapado", "saturado", "viscoso",
+  "ceroso", "gelatinoso", "maleable",
+  "flexible", "blando", "deformado",
+  "agrietado", "ampollado", "chamuscado",
+  "carbonizado", "febril", "enrojecido",
+  "sediento", "agotado", "asfixiante",
+  "apasionado", "ferviente", "erótico",
+  "sensual", "íntimo", "tierno",
+  "afectuoso", "inquieto", "furioso",
+  "volátil", "explosivo", "endotérmico",
+  "exotérmico", "termocrómico",
+  "geotérmico", "volcánico", "combustible",
+  "inflamable", "translúcido", "reluciente",
+  "coriáceo", "quebradizo", "poroso",
+  "hinchado", "arrugado", "fluido",
+  "líquido", "residual", "latente"
+];
+
+let spanish_noun = [
+  "calor", "calidez", "temperatura",
+  "ardor", "fervor", "pasión", "deseo",
+  "lujuria", "anhelo", "intimidad",
+  "afecto", "ternura", "ira", "rabia",
+  "furia", "intensidad", "fuego",
+  "llama", "brasa", "rescoldo",
+  "ceniza", "hollín", "humo",
+  "incendio", "infierno", "combustión",
+  "ignición", "radiación", "conducción",
+  "convección", "evaporación",
+  "condensación", "vapor", "humedad",
+  "saturación", "desierto", "sequía",
+  "aridez", "espejismo", "luz solar",
+  "ola de calor", "oasis", "arena",
+  "piel", "sudor", "transpiración",
+  "fiebre", "sed", "aliento", "saliva",
+  "exhalación", "metabolismo",
+  "termorregulación", "inflamación",
+  "deshidratación", "agotamiento",
+  "vasodilatación", "cera", "parafina",
+  "cera de abeja", "resina", "betún",
+  "asfalto", "alquitrán", "mantequilla",
+  "chocolate", "grasa", "vidrio",
+  "metal", "magma", "lava", "viscosidad",
+  "fluidez", "licuefacción", "fusión",
+  "deformación", "dilatación", "contracción",
+  "fricción", "presión", "entropía",
+  "masa térmica", "capacidad térmica",
+  "conductividad térmica", "resistencia térmica",
+  "expansión térmica", "flujo térmico",
+  "gradiente térmico", "equilibrio térmico",
+  "calor latente", "memoria térmica",
+  "punto de fusión", "transición vítrea",
+  "choque térmico", "fatiga térmica",
+  "sensación térmica", "huella térmica",
+  "acumulación de calor", "absorción de calor",
+  "liberación de calor", "disipación térmica",
+  "gotas de agua", "mancha de sudor",
+  "depósito salino", "condensación superficial",
+  "transformación", "transmutación",
+  "purificación", "renovación"
+];
+
+let spanish_verb = [
+  "calentar", "entibiar", "sobrecalentar",
+  "derretir", "licuar", "disolver",
+  "ablandar", "deformar", "dilatar",
+  "contraer", "doblar", "combar",
+  "colapsar", "sudar", "transpirar",
+  "exudar", "rezumar", "gotear",
+  "filtrarse", "empapar", "humedecer",
+  "mojar", "saturar", "evaporar",
+  "condensar", "secar", "marchitarse",
+  "deshidratar", "quemar", "encender",
+  "chamuscar", "carbonizar", "arder",
+  "resplandecer", "reverberar", "irradiar",
+  "absorber", "liberar", "agrietarse",
+  "ampollarse", "arrugarse", "manchar",
+  "cristalizar", "solidificar", "asfixiar",
+  "hervir", "fermentar", "transformar",
+  "transmutar", "abrazar", "desear",
+  "inflamar", "reavivar", "consumir",
+  "extinguir", "respirar", "exhalar",
+  "inhalar", "jadear", "acariciar",
+  "besar", "anhelar", "permanecer",
+  "acumular", "disipar", "circular",
+  "ventilar", "enfriar", "templar",
+  "forjar", "soldar", "vaporizar",
+  "sublimar", "fundir", "penetrar"
+];
+
+let spanish_adverb = [
+  "cálidamente", "térmicamente",
+  "ardientemente", "fervientemente",
+  "apasionadamente", "intensamente",
+  "sensualmente", "eróticamente",
+  "íntimamente", "tiernamente",
+  "febrilmente", "furiosamente",
+  "violentamente", "lentamente",
+  "gradualmente", "progresivamente",
+  "rápidamente", "continuamente",
+  "incesantemente", "silenciosamente",
+  "suavemente", "profundamente",
+  "internamente", "externamente",
+  "corporalmente", "físicamente",
+  "químicamente", "visiblemente",
+  "invisiblemente", "momentáneamente",
+  "desesperadamente", "rítmicamente",
+  "irregularmente", "completamente",
+  "parcialmente", "irreversiblemente"
+];
+
+let spanish_preposition_sconnectors = [
+  "en", "dentro de", "debajo de",
+  "bajo", "sobre", "entre",
+  "a través de", "más allá de",
+  "contra", "hacia", "desde",
+  "hasta", "sin", "con", "durante",
+  "mientras", "antes de", "después de",
+  "alrededor de", "junto a",
+  "a pesar de", "y", "o", "pero"
+];
+
+let spanish_interjections_exclamation = [
+  "ah", "ay", "oh", "uf", "uff",
+  "uy", "eh", "shh", "silencio",
+  "más", "basta", "respira", "otra vez"
+];
+
+let spanish_latin_idioms = [
+  "ex igne", "in igne", "per ignem",
+  "in ardore", "in calore", "ignis",
+  "calor", "ardor", "flamma",
+  "vapor", "sudor", "sol",
+  "lux", "anima", "spiritus",
+  "ignis aeternus", "sol invictus",
+  "ignis sacer", "ignis fatuus",
+  "solve et coagula",
+  "ex cinere", "in vivo"
+];
+
+let abstractconcept_idioms_spanish = [
+  "entropía", "transformación",
+  "transmutación", "impermanencia",
+  "disolución", "saturación",
+  "equilibrio", "inestabilidad",
+  "intensidad", "deseo", "ausencia",
+  "anhelo", "vulnerabilidad",
+  "reciprocidad", "dependencia",
+  "imperceptibilidad", "continuidad",
+  "renovación", "purificación",
+  "metamorfosis", "devenir",
+  "memoria térmica", "energía latente",
+  "calor residual", "sensación encarnada",
+  "equilibrio térmico", "irreversibilidad",
+  "efimeridad", "memoria material"
+];
+
+let spanish_presence_tangible = [
+  "sudor", "transpiración",
+  "condensación", "evaporación",
+  "radiación", "emanación",
+  "huella térmica", "residuo térmico",
+  "gotas de agua", "cristales de sal",
+  "mancha de sudor", "cera fundida",
+  "resina blanda", "piel quemada",
+  "piel enrojecida", "piel cálida",
+  "superficie húmeda", "superficie pegajosa",
+  "gradiente térmico", "bruma térmica",
+  "vapor visible", "aliento",
+  "exhalación", "brasa incandescente",
+  "ceniza humeante", "vidrio líquido",
+  "metal fundido", "superficie radiante",
+  "deformación material"
+];
+
+let spanish_presence_being = [
+  "calor encarnado", "presencia térmica",
+  "calidez viviente", "cuerpo térmico",
+  "cuerpo respirante", "cuerpo febril",
+  "ser radiante", "esencia ardiente",
+  "existencia térmica", "energía vital",
+  "presencia sensual", "calor latente",
+  "ser incandescente", "presencia material",
+  "cuerpo evanescente", "presencia residual",
+  "memoria térmica", "vitalidad",
+  "ánima", "aliento", "esencia"
+];
+
+let spanish_mythical_places_realms = [
+  "infierno", "inframundo", "desierto",
+  "oasis", "templo solar", "abismo ardiente",
+  "santuario volcánico", "laberinto de fuego",
+  "reino de las brasas", "reino de las cenizas",
+  "cámara alquímica", "horno eterno",
+  "paisaje fundido", "sol sumergido",
+  "Tártaro", "Muspelheim",
+  "Heliópolis", "paraíso solar",
+  "crisol", "hogar sagrado"
+];
+
+let spanish_mythical_beings_creatures_entities = [
+  "Fénix", "Prometeo", "Salamandra",
+  "Dragón", "Helios", "Apolo",
+  "Hefesto", "Vulcano", "Ra",
+  "Sekhmet", "Agni", "Surya",
+  "Hestia", "Vesta", "Pele",
+  "Surtr", "Ifrit", "ave de fuego",
+  "deidad solar", "espíritu del fuego",
+  "espíritu de las brasas",
+  "guardián de la llama"
+];
+
+let spanish_mystical_objects_artefacts = [
+  "llama sagrada", "disco solar",
+  "horno alquímico", "crisol",
+  "talismán ardiente", "amuleto solar",
+  "incensario", "antorcha eterna",
+  "hogar sagrado", "reliquia fundida",
+  "efigie de cera", "vela ritual",
+  "espejo de obsidiana", "piedra volcánica",
+  "vasija dorada", "altar de fuego",
+  "piedra filosofal", "vasija alquímica",
+  "espejo solar", "vasija de brasas"
+];
+
+// ---- PARTICLE POETRY VARIABLES ----------------------------
+
+let particles = [];
+let stanzasBounds = [];
+let triggeredStanzas = {};
+let currentPoem = [];
+let poemFontSize = 18;
+
+// ---- SETUP ------------------------------------------------
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+
+  textFont("Courier New");
+  textSize(18);
+  textAlign(LEFT, BASELINE);
+
+  thresholdSlider = createSlider(
+    -80, -10, START_THRESHOLD, 1
+  );
+
+  thresholdSlider.style("width", "60vw");
+
+  positionSlider();
+  createNewPoemParticles();
+}
+
+// ---- DRAW -------------------------------------------------
+
+function draw() {
+  const ink = isSound ? 10 : 245;
+
+  background(isSound ? 245 : 20);
+
+  if (!started) {
+    fill(ink);
+    textAlign(CENTER, CENTER);
+    textSize(min(width, height) / 16);
+
+    text(
+      "HEAT\n\ntap to start\nthe microphone",
+      width / 2,
+      height / 2
+    );
+
+    return;
+  }
+
+  // Audio processing
+
+  level = measureLevel();
+
+  const threshold = thresholdSlider.value();
+
+  if (level > threshold) {
+    lastLoudTime = millis();
+
+    if (!isSound) {
+      isSound = true;
+      soundCount++;
+      soundStarted();
+    }
+
+  } else if (
+    isSound &&
+    millis() - lastLoudTime > HOLD_MS
+  ) {
+    isSound = false;
+    soundEnded();
+  }
+
+  // Stanza triggers
+
+  for (let s = 0; s < stanzasBounds.length; s++) {
+    let b = stanzasBounds[s];
+
+    let hovering =
+      mouseX >= b.minX &&
+      mouseX <= b.maxX &&
+      mouseY >= b.minY &&
+      mouseY <= b.maxY;
+
+    if (hovering || isSound) {
+      triggeredStanzas[s] = true;
+    }
+  }
+
+  // Update and display particles
+
+  textAlign(LEFT, BASELINE);
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let p = particles[i];
+
+    let dissipating =
+      triggeredStanzas[p.stanzaIndex] === true;
+
+    p.update(dissipating);
+    p.display();
+
+    if (p.alpha <= 0) {
+      particles.splice(i, 1);
+    }
+  }
+
+  // Generate a new poem
+
+  if (particles.length === 0) {
+    createNewPoemParticles();
+  }
+
+  // Audio visualization
+
+  drawGraph(threshold, ink);
+
+  textStyle(NORMAL);
+  textSize(12);
+  textAlign(LEFT, TOP);
+  fill(ink);
+
+  text(
+    `HEAT — GENERATIVE POETRY
+level: ${level.toFixed(0)} dB
+threshold: ${threshold} dB
+sounds heard: ${soundCount}`,
+    16,
+    16
+  );
+}
+
+// ---- AUDIO CALLBACKS --------------------------------------
+
+function soundStarted() {
+  console.log("Sound started");
+}
+
+function soundEnded() {
+  console.log("Sound ended");
+}
+
+function mousePressed() {
+  if (!started) {
+    startMicrophone();
+  }
+}
+
+// ---- MICROPHONE -------------------------------------------
+
+async function startMicrophone() {
+  try {
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      });
+
+    audioContext = new (
+      window.AudioContext ||
+      window.webkitAudioContext
+    )();
+
+    await audioContext.resume();
+
+    const microphone =
+      audioContext.createMediaStreamSource(stream);
+
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+
+    microphone.connect(analyser);
+
+    samples = new Float32Array(analyser.fftSize);
+
+    started = true;
+
+  } catch (err) {
+    alert(
+      "Could not use microphone: " + err.message
+    );
+  }
+}
+
+function measureLevel() {
+  if (!analyser || !samples) {
+    return -100;
+  }
+
+  analyser.getFloatTimeDomainData(samples);
+
+  let sumOfSquares = 0;
+
+  for (let i = 0; i < samples.length; i++) {
+    sumOfSquares += samples[i] * samples[i];
+  }
+
+  const rms = sqrt(
+    sumOfSquares / samples.length
+  );
+
+  return 20 * Math.log10(
+    max(rms, 0.00001)
+  );
+}
+
+// ---- PARTICLE CLASS ---------------------------------------
+
+class TextParticle {
+
+  constructor(
+    char,
+    x,
+    y,
+    stanzaIndex,
+    isSpanish = false
+  ) {
+    this.char = char;
+
+    this.targetX = x;
+    this.targetY = y;
+
+    this.stanzaIndex = stanzaIndex;
+    this.isSpanish = isSpanish;
+
+    this.x = x;
+    this.y = y;
+
+    this.vx = 0;
+    this.vy = 0;
+
+    this.ax = 0;
+    this.ay = 0;
+
+    this.alpha = 255;
+    this.size = poemFontSize;
+
+    this.noiseOffset = random(1000);
+
+    this.isRed =
+      char.toLowerCase() === "e";
+  }
+
+  update(isDissipating) {
+
+    if (!isDissipating) {
+      this.x = this.targetX;
+      this.y = this.targetY;
+      return;
+    }
+
+    let windX = (
+      noise(
+        this.noiseOffset +
+        frameCount * 0.02
+      ) - 0.45
+    ) * 0.8;
+
+    let windY = (
+      noise(
+        this.noiseOffset +
+        500 +
+        frameCount * 0.02
+      ) - 0.65
+    ) * 0.5;
+
+    this.ax += windX;
+    this.ay += windY;
+
+    this.vx += this.ax;
+    this.vy += this.ay;
+
+    this.vx *= 0.92;
+    this.vy *= 0.92;
+
+    this.x += this.vx;
+    this.y += this.vy;
+
+    // Red letters persist longer
+
+    if (this.isRed) {
+      this.alpha -= random(0.8, 1.5);
+      this.size = max(
+        0,
+        this.size - 0.025
+      );
+
+    } else {
+      this.alpha -= random(1.5, 3.5);
+      this.size = max(
+        0,
+        this.size - 0.08
+      );
+    }
+
+    this.ax = 0;
+    this.ay = 0;
+
+    if (this.size <= 0) {
+      this.alpha = 0;
+    }
+  }
+
+  display() {
+
+    if (this.alpha <= 0) return;
+
+    push();
+
+    noStroke();
+
+    if (this.isRed) {
+      fill(255, 50, 50, this.alpha);
+    } else {
+      fill(
+        isSound ? 10 : 240,
+        this.alpha
+      );
+    }
+
+    textFont("Courier New");
+    textSize(this.size);
+
+    if (this.isSpanish) {
+      textStyle(BOLD);
+    } else {
+      textStyle(NORMAL);
+    }
+
+    text(this.char, this.x, this.y);
+
+    pop();
+  }
+}
+
+// ---- POEM GENERATOR HELPERS -------------------------------
+
+function getCleanToken(
+  arr,
+  isSpanish = false
+) {
+  let rawWord = random(arr);
+
+  // Preserve multiword expressions
+
+  let cleanWord = rawWord
+    .trim()
+    .replace(/\s+/g, " ");
+
+  return {
+    word: cleanWord,
+    isSpanish: isSpanish
+  };
+}
+
+function E(arr) {
+  return getCleanToken(arr, false);
+}
+
+function S(arr) {
+  return getCleanToken(arr, true);
+}
+
+function literal(word, isSpanish = false) {
+  return {
+    word: word,
+    isSpanish: isSpanish
+  };
+}
+
+// ---- TEN RANDOMIZED LINGUISTIC PATTERNS -------------------
+
+function makeLineTokens() {
+
+  let pattern = floor(random(10));
+
+  switch (pattern) {
+
+    // Pattern 0: Embodied heat
+
+    case 0:
+      return [
+        literal("tu", true),
+        S(spanish_presence_being),
+        literal("es", true),
+        S(spanish_adverb),
+        E(english_adjective)
+      ];
+
+    // Pattern 1: Mythological heat
+
+    case 1:
+      return [
+        literal("the"),
+        E(english_mythical_beings_creatures_entities),
+        literal("of"),
+        S(spanish_mythical_places_realms),
+        E(english_verb),
+        S(spanish_adverb)
+      ];
+
+    // Pattern 2: Material transformation
+
+    case 2:
+      return [
+        literal("a"),
+        E(english_adjective),
+        E(english_presence_tangible),
+        literal("turns"),
+        S(abstractconcept_idioms_spanish)
+      ];
+
+    // Pattern 3: Exclamation and action
+
+    case 3:
+      return [
+        S(spanish_interjections_exclamation),
+        S(spanish_verb),
+        S(spanish_adverb),
+        E(latin_idioms)
+      ];
+
+    // Pattern 4: Absence and mystical matter
+
+    case 4:
+      return [
+        literal("sin", true),
+        S(spanish_noun),
+        S(spanish_preposition_sconnectors),
+        S(spanish_mystical_objects_artefacts)
+      ];
+
+    // Pattern 5: Mythical beings and sensations
+
+    case 5:
+      return [
+        S(spanish_mythical_beings_creatures_entities),
+        S(spanish_verb),
+        literal("with"),
+        E(english_adjective),
+        S(spanish_presence_tangible)
+      ];
+
+    // Pattern 6: Thermal presence
+
+    case 6:
+      return [
+        literal("el", true),
+        S(spanish_adjective),
+        S(spanish_presence_being),
+        literal("of"),
+        E(english_noun)
+      ];
+
+    // Pattern 7: Radiance and abstraction
+
+    case 7:
+      return [
+        E(english_mystical_objects_artefacts),
+        literal("brilla", true),
+        S(spanish_adverb),
+        E(abstractconcept_idioms_english)
+      ];
+
+    // Pattern 8: Interior heat
+
+    case 8:
+      return [
+        E(english_interjectionsexclamation),
+        S(spanish_verb),
+        E(english_prepositionsconnectors),
+        E(english_presence_being),
+        E(english_adverb)
+      ];
+
+    // Pattern 9: Thermal landscapes
+
+    default:
+      return [
+        literal("beyond"),
+        E(english_mythical_places_realms),
+        S(spanish_presence_tangible),
+        E(english_verb),
+        S(spanish_latin_idioms)
+      ];
+  }
+}
+
+// ---- FOUR-STANZA POEM GENERATOR ---------------------------
+
+function makePoemTokens(numStanzas = 4) {
+
+  let stanzas = [];
+
+  for (let s = 0; s < numStanzas; s++) {
+
+    let linesInStanza = floor(
+      random(1, 3)
+    );
+
+    let stanzaLines = [];
+
+    for (let l = 0; l < linesInStanza; l++) {
+      stanzaLines.push(makeLineTokens());
+    }
+
+    stanzas.push(stanzaLines);
+  }
+
+  return stanzas;
+}
+
+// ---- TYPOGRAPHIC LAYOUT -----------------------------------
+
+function createNewPoemParticles(
+  regenerate = true
+) {
+
+  particles = [];
+  stanzasBounds = [];
+  triggeredStanzas = {};
+
+  if (regenerate || currentPoem.length === 0) {
+    currentPoem = makePoemTokens(4);
+  }
+
+  let stanzas = currentPoem;
+
+  let longestLine = 1;
+  let totalLines = 0;
+
+  // Calculate the longest line
+
+  for (let stanza of stanzas) {
+
+    totalLines += stanza.length;
+
+    for (let line of stanza) {
+
+      let length = line
+        .map(token => token.word)
+        .join(" ")
+        .length;
+
+      longestLine = max(
+        longestLine,
+        length
+      );
+    }
+  }
+
+  // Responsive typography
+
+  let availableWidth = width * 0.88;
+  let availableHeight = height * 0.48;
+
+  let horizontalSize =
+    availableWidth / (longestLine * 0.61);
+
+  let verticalSize =
+    availableHeight /
+    (totalLines * 1.9 + 3 * 1.3);
+
+  poemFontSize = max(
+    6,
+    min(
+      18,
+      horizontalSize,
+      verticalSize
+    )
+  );
+
+  textFont("Courier New");
+  textStyle(NORMAL);
+  textSize(poemFontSize);
+
+  let charWidth = textWidth("M");
+  let lineHeight = poemFontSize * 1.9;
+  let stanzaGap = poemFontSize * 1.3;
+
+  let stanzaWidths = [];
+  let totalHeight = 0;
+
+  // Calculate stanza dimensions
+
+  for (let s = 0; s < stanzas.length; s++) {
+
+    let maxWidth = 0;
+
+    for (let line of stanzas[s]) {
+
+      let lineWidth =
+        line.map(t => t.word)
+          .join(" ")
+          .length * charWidth;
+
+      maxWidth = max(
+        maxWidth,
+        lineWidth
+      );
+    }
+
+    stanzaWidths.push(maxWidth);
+
+    totalHeight +=
+      stanzas[s].length * lineHeight;
+  }
+
+  totalHeight +=
+    (stanzas.length - 1) * stanzaGap;
+
+  let currentY =
+    height * 0.43 -
+    totalHeight / 2 +
+    poemFontSize;
+
+  // Create individual letter particles
+
+  for (let s = 0; s < stanzas.length; s++) {
+
+    let stanzaW = stanzaWidths[s];
+    let startX = (width - stanzaW) / 2;
+
+    let stanzaMinX = startX - 10;
+    let stanzaMaxX = startX + stanzaW + 10;
+
+    let stanzaMinY =
+      currentY - poemFontSize;
+
+    let stanzaMaxY =
+      currentY +
+      stanzas[s].length * lineHeight;
+
+    for (let line of stanzas[s]) {
+
+      let currentX = startX;
+
+      for (let token of line) {
+
+        for (let char of token.word) {
+
+          if (char !== " ") {
+
+            particles.push(
+              new TextParticle(
+                char,
+                currentX,
+                currentY,
+                s,
+                token.isSpanish
+              )
+            );
+          }
+
+          currentX += charWidth;
+        }
+
+        currentX += charWidth;
+      }
+
+      currentY += lineHeight;
+    }
+
+    stanzasBounds.push({
+      minX: stanzaMinX,
+      maxX: stanzaMaxX,
+      minY: stanzaMinY,
+      maxY: stanzaMaxY
+    });
+
+    currentY += stanzaGap;
+  }
+}
+
+// ---- AUDIO GRAPH ------------------------------------------
+
+function drawGraph(threshold, ink) {
+
+  history.push(level);
+
+  if (history.length > 300) {
+    history.shift();
+  }
+
+  const top = height * 0.74;
+  const bottom = height - 90;
+
+  const y = db =>
+    map(db, -90, 0, bottom, top, true);
+
+  // Red threshold line
+
+  stroke(255, 90, 54);
+  strokeWeight(2);
+
+  line(
+    0,
+    y(threshold),
+    width,
+    y(threshold)
+  );
+
+  // Microphone waveform
+
+  stroke(ink);
+  strokeWeight(1);
+  noFill();
+
+  beginShape();
+
+  history.forEach((db, i) => {
+    vertex(
+      map(i, 0, 299, 0, width),
+      y(db)
+    );
+  });
+
+  endShape();
+
+  noStroke();
+}
+
+// ---- SLIDER POSITION --------------------------------------
+
+function positionSlider() {
+
+  thresholdSlider.position(
+    width * 0.2,
+    height - 50
+  );
+}
+
+// ---- WINDOW RESIZE ----------------------------------------
+
+function windowResized() {
+
+  resizeCanvas(
+    windowWidth,
+    windowHeight
+  );
+
+  positionSlider();
+
+  createNewPoemParticles(false);
+}
+
+// ==========================================================
+// END — HEAT GENERATIVE POETRY
+// ==========================================================
+
