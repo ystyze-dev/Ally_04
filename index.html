@@ -723,11 +723,10 @@
               <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
               <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
               <p class="speech-privacy" id="speech-privacy">Microphone access starts only when you press Start. Your browser’s speech service may process audio externally; Ally does not save audio or transcripts.</p>
-              <button class="quiet-button" id="quiet-button" type="button" disabled>Let the room go quiet</button>
               <button class="quiet-button" id="breath-button" type="button" hidden>Return a little air</button>
             </div>
           </div>
-          <p class="timing-note">This simulation shortens the pauses and recognizes a limited bilingual heat vocabulary. Browser speech support varies; no physical fan or breath sensor is connected.</p>
+          <p class="timing-note">After speech, the breeze fades to stillness over five seconds. A poem arrives after twenty seconds of silence. Browser speech support varies; no physical fan or breath sensor is connected.</p>
         </section>
 
         <section class="cycle" id="how-it-works" aria-labelledby="cycle-title">
@@ -761,6 +760,10 @@
 
     <script>
       (() => {
+        const HEAT_WINDOW_MS = 15000;
+        const SILENCE_TO_STILLNESS_MS = 5000;
+        const INVITATION_AFTER_SILENCE_MS = 20000;
+        const INVITATION_REPEAT_MS = 45000;
         const heatWords = [
           "hot", "warm", "heat", "heated", "burn", "burning", "scorch", "fever", "sweat",
           "sun", "sunlight", "desert", "flame", "fire", "melt", "melting", "steam", "humid",
@@ -788,7 +791,6 @@
         const startListeningButton = document.querySelector("#start-listening");
         const stopListeningButton = document.querySelector("#stop-listening");
         const transcriptPreview = document.querySelector("#transcript-preview");
-        const quietButton = document.querySelector("#quiet-button");
         const breathButton = document.querySelector("#breath-button");
         const feedback = document.querySelector("#demo-feedback");
         const stateTitle = document.querySelector("#state-title");
@@ -799,11 +801,15 @@
         const englishLine = document.querySelector('[data-line="en"]');
         const spanishLine = document.querySelector('[data-line="es"]');
 
-        let totalHeat = 0;
+        let heatEvents = [];
         let currentSpeed = 0;
         let state = "listening";
         let timerIds = [];
+        let silenceTimerIds = [];
+        let silenceResponseScheduled = false;
         let isRecognizing = false;
+        let voiceSessionActive = false;
+        let recognitionRestartTimerId = null;
         let finalTranscriptReceived = false;
         let recognitionErrorMessage = "";
         let interimTranscript = "";
@@ -813,9 +819,59 @@
           timerIds = [];
         }
 
+        function clearSilenceTimers() {
+          silenceTimerIds.forEach(window.clearTimeout);
+          silenceTimerIds = [];
+          silenceResponseScheduled = false;
+        }
+
         function setSpeed(speed) {
           currentSpeed = speed;
           scene.dataset.speed = String(speed);
+        }
+
+        function speedForHeatCount(count) {
+          if (count >= 6) return 3;
+          if (count >= 3) return 2;
+          return count > 0 ? 1 : 0;
+        }
+
+        function pruneHeatEvents(now = Date.now()) {
+          heatEvents = heatEvents.filter((time) => now - time < HEAT_WINDOW_MS);
+        }
+
+        function scheduleSilenceResponse() {
+          clearSilenceTimers();
+          if (state !== "listening") return;
+
+          silenceResponseScheduled = true;
+          const startingSpeed = currentSpeed;
+          for (let step = 1; step <= startingSpeed; step += 1) {
+            const expectedSpeed = startingSpeed - step + 1;
+            const nextSpeed = expectedSpeed - 1;
+            const delay = SILENCE_TO_STILLNESS_MS * step / startingSpeed;
+            silenceTimerIds.push(window.setTimeout(() => {
+              if (state !== "listening" || currentSpeed !== expectedSpeed) return;
+              setSpeed(nextSpeed);
+              stateTitle.textContent = nextSpeed ? "The breeze is easing." : "The room is still.";
+              stateDescription.textContent = nextSpeed
+                ? "With no new heat, the airflow keeps softening."
+                : "The fan is still. A poem will arrive if the quiet remains.";
+              stateLabel.textContent = nextSpeed ? `DISSIPATING · SPEED ${nextSpeed}` : "STILLNESS";
+            }, delay));
+          }
+
+          silenceTimerIds.push(window.setTimeout(() => {
+            silenceResponseScheduled = false;
+            if (state === "listening" && currentSpeed === 0) invite();
+          }, INVITATION_AFTER_SILENCE_MS));
+        }
+
+        function clearRecognitionRestart() {
+          if (recognitionRestartTimerId !== null) {
+            window.clearTimeout(recognitionRestartTimerId);
+            recognitionRestartTimerId = null;
+          }
         }
 
         function clearDisplay() {
@@ -860,8 +916,6 @@
           feedback.textContent = recognition
             ? "Choose a language, then tap Start speaking."
             : "Speech recognition is not available in this browser.";
-          quietButton.disabled = currentSpeed === 0;
-          quietButton.hidden = false;
           breathButton.hidden = true;
           startListeningButton.disabled = !recognition;
           stopListeningButton.hidden = true;
@@ -874,10 +928,10 @@
 
         function findHeatReferences(text) {
           const normalized = normalize(text);
-          return heatWords.filter((word) => {
+          return [...new Set(heatWords.filter((word) => {
             const term = normalize(word);
             return new RegExp(`(^|[^a-z0-9])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}($|[^a-z0-9])`, "i").test(normalized);
-          });
+          }))];
         }
 
         function handlePhrase(phrase) {
@@ -887,33 +941,40 @@
           }
           const references = findHeatReferences(phrase);
           clearTimers();
+          clearSilenceTimers();
           clearDisplay();
+          pruneHeatEvents();
 
           if (references.length === 0) {
-            totalHeat = Math.max(0, totalHeat - 1);
-            setSpeed(totalHeat === 0 ? 0 : totalHeat < 3 ? 1 : totalHeat < 6 ? 2 : 3);
-            stateTitle.textContent = "A quieter breeze.";
+            stateTitle.textContent = currentSpeed > 0 ? "A quieter breeze." : "I’m listening.";
             stateDescription.textContent = "I didn’t recognize a heat reference. Speak naturally; this prototype currently recognizes a limited heat vocabulary.";
             stateLabel.textContent = currentSpeed ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
-            feedback.textContent = "No heat reference recognized. You can speak naturally in either language.";
-            quietButton.disabled = currentSpeed === 0;
+            feedback.textContent = currentSpeed
+              ? "No heat reference recognized. The breeze will fade if the silence continues."
+              : "No heat reference recognized. You can speak naturally in either language.";
             displayCaption.textContent = "No heat reference found";
+            scheduleSilenceResponse();
             return;
           }
 
-          totalHeat = Math.min(8, totalHeat + references.length);
-          const speed = totalHeat >= 6 ? 3 : totalHeat >= 3 ? 2 : 1;
+          references.forEach(() => heatEvents.push(Date.now()));
+          pruneHeatEvents();
+          const speed = speedForHeatCount(heatEvents.length);
           setSpeed(speed);
           stateTitle.textContent = ["", "A little warmth.", "The air is gathering.", "The room is moving."][speed];
           stateDescription.textContent = "Each heat reference gives the breeze a little more life.";
           stateLabel.textContent = `HEAT RECOGNIZED · SPEED ${speed}`;
           feedback.textContent = `${references.length} heat ${references.length === 1 ? "reference" : "references"} found: ${references.slice(0, 4).join(", ")}${references.length > 4 ? "…" : ""}`;
-          quietButton.disabled = false;
           displayCaption.textContent = "Language becomes airflow";
+          scheduleSilenceResponse();
         }
 
         function invite() {
+          clearSilenceTimers();
           state = "waiting";
+          voiceSessionActive = false;
+          clearRecognitionRestart();
+          if (isRecognizing && recognition) recognition.stop();
           setSpeed(0);
           stateTitle.textContent = "I’m waiting.";
           stateDescription.textContent = "The words have settled. When you’re ready, offer a gentle breath back.";
@@ -923,52 +984,30 @@
           startListeningButton.disabled = true;
           stopListeningButton.hidden = true;
           languageSelect.disabled = true;
-          quietButton.hidden = true;
           breathButton.hidden = false;
-          const repeat = window.setTimeout(() => {
-            if (state === "waiting") {
-              displayPanel.classList.add("is-dispersing");
-              timerIds.push(window.setTimeout(() => {
-                if (state === "waiting") {
-                  displayPanel.classList.remove("is-dispersing");
-                  showPoem(poems[Math.floor(Math.random() * poems.length)]);
-                }
-              }, 700));
-            }
-          }, 12000);
-          timerIds.push(repeat);
-        }
-
-        function letSilenceArrive() {
-          if (state !== "listening" || currentSpeed === 0) return;
-          state = "settling";
-          clearTimers();
-          quietButton.disabled = true;
-          startListeningButton.disabled = true;
-          stopListeningButton.hidden = true;
-          languageSelect.disabled = true;
-          if (isRecognizing && recognition) recognition.stop();
-          stateTitle.textContent = "The words are settling.";
-          stateDescription.textContent = "As the room quiets, the breeze lets go.";
-          stateLabel.textContent = "DISSIPATING";
-          feedback.textContent = "The fan is slowing toward stillness.";
-          let speed = currentSpeed;
-          const slow = () => {
-            speed -= 1;
-            setSpeed(Math.max(0, speed));
-            if (speed > 0) {
-              timerIds.push(window.setTimeout(slow, 700));
-            } else {
-              stateLabel.textContent = "STILLNESS";
-              timerIds.push(window.setTimeout(invite, 900));
-            }
+          const repeatPoem = () => {
+            timerIds.push(window.setTimeout(() => {
+              if (state === "waiting") {
+                displayPanel.classList.add("is-dispersing");
+                timerIds.push(window.setTimeout(() => {
+                  if (state === "waiting") {
+                    displayPanel.classList.remove("is-dispersing");
+                    showPoem(poems[Math.floor(Math.random() * poems.length)]);
+                    repeatPoem();
+                  }
+                }, 700));
+              }
+            }, INVITATION_REPEAT_MS));
           };
-          timerIds.push(window.setTimeout(slow, 500));
+          repeatPoem();
         }
 
         function returnBreath() {
           if (state !== "waiting") return;
           clearTimers();
+          clearSilenceTimers();
+          voiceSessionActive = false;
+          clearRecognitionRestart();
           state = "renewal";
           displayPanel.classList.add("is-dispersing");
           feedback.textContent = "A breath returned. The exchange begins again.";
@@ -983,7 +1022,7 @@
             showPoem(acknowledgements[Math.floor(Math.random() * acknowledgements.length)], true);
             displayPanel.classList.remove("is-dispersing");
             timerIds.push(window.setTimeout(() => {
-              totalHeat = 0;
+              heatEvents = [];
               clearDisplay();
               displayCaption.textContent = "Ready for another exchange";
               setSpeed(0);
@@ -1007,6 +1046,7 @@
           finalTranscriptReceived = false;
           recognitionErrorMessage = "";
           interimTranscript = "";
+          voiceSessionActive = true;
           transcriptPreview.textContent = "Listening…";
           stateLabel.textContent = "LISTENING · MICROPHONE ON";
           feedback.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
@@ -1018,15 +1058,19 @@
 
           try {
             recognition.start();
+            scheduleSilenceResponse();
           } catch (error) {
-            if (error.name === "InvalidStateError") {
-              feedback.textContent = "Ally is already listening to a phrase.";
-              return;
-            }
+            voiceSessionActive = false;
+            clearSilenceTimers();
             isRecognizing = false;
             startListeningButton.disabled = false;
+            stopListeningButton.disabled = false;
             stopListeningButton.hidden = true;
             languageSelect.disabled = false;
+            if (error.name === "InvalidStateError") {
+              feedback.textContent = "Speech recognition is already active. Wait for it to finish, then try again.";
+              return;
+            }
             if (error.name === "NotAllowedError" || error.name === "SecurityError") {
               feedback.textContent = "Microphone access was denied. Allow it in your browser settings, then try again.";
               return;
@@ -1036,26 +1080,41 @@
         }
 
         function stopListening() {
-          if (!recognition || !isRecognizing) return;
-          stopListeningButton.disabled = true;
-          feedback.textContent = "Finishing the phrase…";
-          recognition.stop();
+          if (!recognition || !voiceSessionActive) return;
+          voiceSessionActive = false;
+          clearRecognitionRestart();
+          stopListeningButton.disabled = false;
+          stopListeningButton.hidden = true;
+          startListeningButton.disabled = state !== "listening";
+          languageSelect.disabled = state !== "listening";
+          feedback.textContent = "Finishing the phrase. The breeze will fade if the silence continues.";
+          scheduleSilenceResponse();
+          if (isRecognizing) recognition.stop();
         }
 
         if (recognition) {
-          recognition.continuous = false;
+          recognition.continuous = true;
           recognition.interimResults = true;
           recognition.maxAlternatives = 1;
 
           recognition.onstart = () => {
             isRecognizing = true;
+            finalTranscriptReceived = false;
+            recognitionErrorMessage = "";
+            interimTranscript = "";
             stateTitle.textContent = "I’m listening.";
             stateDescription.textContent = "Speak naturally. Ally is listening for heat in your words.";
             stateLabel.textContent = "LISTENING · MICROPHONE ON";
+            feedback.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
           };
 
+          recognition.onspeechstart = () => {
+            clearSilenceTimers();
+            recognitionErrorMessage = "";
+          };
+          recognition.onspeechend = scheduleSilenceResponse;
+
           recognition.onresult = (event) => {
-            if (finalTranscriptReceived) return;
             let finalText = "";
             let interimText = "";
             for (let index = event.resultIndex; index < event.results.length; index += 1) {
@@ -1068,8 +1127,9 @@
               finalTranscriptReceived = true;
               transcriptPreview.textContent = finalText.trim();
               handlePhrase(finalText.trim());
-              recognition.stop();
             } else if (interimText.trim()) {
+              clearSilenceTimers();
+              finalTranscriptReceived = false;
               interimTranscript = interimText.trim();
               transcriptPreview.textContent = interimTranscript;
               feedback.textContent = "Hearing your phrase…";
@@ -1088,14 +1148,19 @@
             };
             recognitionErrorMessage = messages[event.error] || `Speech recognition failed: ${event.error}.`;
             feedback.textContent = recognitionErrorMessage;
+            if (event.error !== "no-speech") {
+              voiceSessionActive = false;
+              clearRecognitionRestart();
+            }
           };
 
           recognition.onend = () => {
             isRecognizing = false;
-            startListeningButton.disabled = state !== "listening";
-            stopListeningButton.disabled = false;
-            stopListeningButton.hidden = true;
-            languageSelect.disabled = state !== "listening";
+            const shouldRestart = voiceSessionActive && state === "listening";
+            startListeningButton.disabled = state !== "listening" || shouldRestart;
+            stopListeningButton.disabled = !shouldRestart;
+            stopListeningButton.hidden = !shouldRestart;
+            languageSelect.disabled = state !== "listening" || shouldRestart;
 
             if (state === "listening" && !finalTranscriptReceived) {
               stateLabel.textContent = currentSpeed > 0 ? `LISTENING · SPEED ${currentSpeed}` : "LISTENING · STILL";
@@ -1105,6 +1170,33 @@
                   ? "I didn’t catch a complete phrase. Try speaking again."
                   : "No speech was recognized. Try again when you’re ready.";
               }
+              if (!silenceResponseScheduled) scheduleSilenceResponse();
+            }
+
+            if (shouldRestart) {
+              clearRecognitionRestart();
+              recognitionRestartTimerId = window.setTimeout(() => {
+                recognitionRestartTimerId = null;
+                if (!voiceSessionActive || state !== "listening" || isRecognizing) return;
+                try {
+                  recognition.start();
+                } catch (error) {
+                  voiceSessionActive = false;
+                  startListeningButton.disabled = false;
+                  stopListeningButton.disabled = false;
+                  stopListeningButton.hidden = true;
+                  languageSelect.disabled = false;
+                  if (error.name === "InvalidStateError") {
+                    feedback.textContent = "Speech recognition could not restart. Tap Start speaking to continue.";
+                    return;
+                  }
+                  if (error.name === "NotAllowedError" || error.name === "SecurityError") {
+                    feedback.textContent = "Microphone access was denied. Allow it in your browser settings, then try again.";
+                    return;
+                  }
+                  throw error;
+                }
+              }, 300);
             }
           };
         } else {
@@ -1115,7 +1207,6 @@
         startListeningButton.addEventListener("click", startListening);
         stopListeningButton.addEventListener("click", stopListening);
 
-        quietButton.addEventListener("click", letSilenceArrive);
         breathButton.addEventListener("click", returnBreath);
       })();
     </script>
