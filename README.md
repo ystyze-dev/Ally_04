@@ -47,4 +47,46 @@ Human speech - Linguistic heat - air flow fan - human silence - Poetry display -
 
 ## Project status
 
+tbd
+
+## Physical appearance
+
+Ally is a ceiling-suspended circular fan with a retro-industrial aesthetic.
+
+The object consists of four terracotta-colored blades enclosed within a pale sage-green protective structure.
+
+A smaller electronic interface is suspended beneath the fan, establishing a point of proximity between the object and the human subject.
+
+## Physical design
+
+Color palette
+
+Color	HEX	Application
+Ivory	#F3F0E7	Background and neutral surfaces
+Sage green	#A5B4A8	Structural elements and protective grille
+Terracotta	#C87B54	Rotating blades
+Deep green	#29352F	Electronic display
+Material exploration
+
+## The material and visual research explores:
+
+Heat and thermal transformation.
+
+Melting and liquefaction.
+
+Perspiration and bodily moisture.
+
+Evaporation and condensation.
+
+Dryness and aridity.
+
+Desire and intimacy.
+
+Traces and residues of heat.
+
+## Design intention
+
+The visual language of Ally contrasts the familiarity of a domestic appliance with the unfamiliarity of an object capable of expressing its own needs.
+
+Its appearance suggests a functional object, while its behaviour establishes a relational and poetic presence.
 
