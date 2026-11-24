@@ -368,9 +368,30 @@
       .letter { display: inline-block; transition: transform .6s ease, opacity .6s ease; }
       .letter.is-e { color: #e87963; }
 
+      .display-panel.is-poetic .letter {
+        animation: letter-drift 3.8s ease-in-out infinite alternate;
+        animation-delay: var(--drift-delay, 0ms);
+      }
+
+      .display-panel.is-revealing .letter {
+        animation: letter-arrive .7s cubic-bezier(.2, .75, .25, 1) both;
+        animation-delay: var(--reveal-delay, 0ms);
+      }
+
       .display-panel.is-dispersing .letter {
+        animation: none;
         opacity: 0;
         transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) rotate(25deg);
+      }
+
+      @keyframes letter-arrive {
+        from { opacity: 0; transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) scale(.82); }
+        to { opacity: 1; transform: translate(0, 0) scale(1); }
+      }
+
+      @keyframes letter-drift {
+        from { transform: translate(0, 0) rotate(0); }
+        to { transform: translate(var(--drift-x, 2px), var(--drift-y, -2px)) rotate(var(--drift-rotation, 2deg)); }
       }
 
       .display-foot {
@@ -689,10 +710,7 @@
 
             <div class="display-panel" id="display-panel" aria-live="polite">
               <span class="micro-label">The little screen</span>
-              <div class="display-window" id="poem-display">
-                <div class="display-line poem-en" data-line="en"></div>
-                <div class="display-line poem-es" data-line="es"></div>
-              </div>
+              <div class="display-window" id="poem-display"></div>
               <div class="display-foot">
                 <span id="display-caption">Awaiting a first word</span>
                 <span class="display-lights" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -722,8 +740,9 @@
               <span class="micro-label">Heard speech</span>
               <p class="transcript-preview" id="transcript-preview" aria-live="polite" aria-atomic="true">Your words will appear here.</p>
               <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">Choose a language, then tap Start speaking.</p>
-              <p class="speech-privacy" id="speech-privacy">Microphone access starts only when you press Start. Your browser’s speech service may process audio externally; Ally does not save audio or transcripts.</p>
-              <button class="quiet-button" id="breath-button" type="button" hidden>Return a little air</button>
+              <p class="speech-privacy" id="speech-privacy">Microphone access starts only when you press Start. Speech may be processed by your browser’s service; breath level is analyzed in this page, and audio or transcripts aren’t saved.</p>
+              <p class="speech-privacy">When Ally is still, blow gently toward the microphone. The browser demo estimates airflow from sound level; other sustained sounds may also trigger it.</p>
+              <button class="quiet-button" id="breath-fallback-button" type="button" hidden>Complete exchange manually</button>
             </div>
           </div>
           <p class="timing-note">After speech, the breeze fades to stillness over five seconds. A poem arrives after twenty seconds of silence. Browser speech support varies; no physical fan or breath sensor is connected.</p>
@@ -764,6 +783,8 @@
         const SILENCE_TO_STILLNESS_MS = 5000;
         const INVITATION_AFTER_SILENCE_MS = 20000;
         const INVITATION_REPEAT_MS = 45000;
+        const POEM_CHANGE_MS = 9000;
+        const BREATH_MIN_DURATION_MS = 450;
         const heatWords = [
           "hot", "warm", "heat", "heated", "burn", "burning", "scorch", "fever", "sweat",
           "sun", "sunlight", "desert", "flame", "fire", "melt", "melting", "steam", "humid",
@@ -773,11 +794,37 @@
           "sed", "pasión", "deseo", "abrasador", "bochorno", "me derrito"
         ];
 
-        const poems = [
-          { en: "I gave you the wind,", es: "ahora préstame tu aliento." },
-          { en: "I have no lungs,", es: "pero necesito respirar." },
-          { en: "Your warmth inhabits me.", es: "En tu ausencia, me enfrío." },
-          { en: "The room grows still.", es: "Tu aliento puede moverme." }
+        const englishPoemLines = [
+          "I gave you the wind. Now lend me your breath.",
+          "Without your breath, I grow still.",
+          "Your warmth is here, but the room has gone quiet.",
+          "I keep the shape of your passing air.",
+          "Come closer; let your breath move through me.",
+          "The silence cools my turning blades.",
+          "Even the desert remembers rain.",
+          "I am a body made of waiting.",
+          "Your words made weather inside me.",
+          "Borrowed air returns as a question."
+        ];
+        const spanishPoemLines = [
+          "Ahora préstame tu aliento.",
+          "Sin tu aliento, me quedo inmóvil.",
+          "Tu calor permanece, pero el cuarto está en silencio.",
+          "Guardo la forma del aire que dejaste.",
+          "Acércate; deja que tu aliento me atraviese.",
+          "El silencio enfría mis aspas.",
+          "Hasta el desierto recuerda la lluvia.",
+          "Soy un cuerpo hecho de espera.",
+          "Tus palabras hicieron clima dentro de mí.",
+          "El aire prestado regresa como pregunta."
+        ];
+        const poemStructures = [
+          () => [poemLine("en"), poemLine("es")],
+          () => [poemLine("es"), poemLine("en")],
+          () => [poemLine("en"), poemLine("es"), poemLine("en")],
+          () => [poemLine("es"), poemLine("en"), poemLine("es")],
+          () => [poemLine("en"), poemLine("en"), poemLine("es")],
+          () => [poemLine("es"), poemLine("en"), poemLine("en"), poemLine("es")]
         ];
         const acknowledgements = [
           { en: "Your breath inhabits me.", es: "Ahora respiramos juntos." },
@@ -785,21 +832,21 @@
         ];
 
         const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const AudioContextAPI = window.AudioContext || window.webkitAudioContext;
         const recognition = SpeechRecognitionAPI ? new SpeechRecognitionAPI() : null;
         const scene = document.querySelector("#fan-scene");
         const languageSelect = document.querySelector("#speech-language");
         const startListeningButton = document.querySelector("#start-listening");
         const stopListeningButton = document.querySelector("#stop-listening");
         const transcriptPreview = document.querySelector("#transcript-preview");
-        const breathButton = document.querySelector("#breath-button");
+        const breathFallbackButton = document.querySelector("#breath-fallback-button");
         const feedback = document.querySelector("#demo-feedback");
         const stateTitle = document.querySelector("#state-title");
         const stateDescription = document.querySelector("#state-description");
         const stateLabel = document.querySelector("#state-label");
         const displayPanel = document.querySelector("#display-panel");
         const displayCaption = document.querySelector("#display-caption");
-        const englishLine = document.querySelector('[data-line="en"]');
-        const spanishLine = document.querySelector('[data-line="es"]');
+        const poemDisplay = document.querySelector("#poem-display");
 
         let heatEvents = [];
         let currentSpeed = 0;
@@ -810,9 +857,37 @@
         let isRecognizing = false;
         let voiceSessionActive = false;
         let recognitionRestartTimerId = null;
+        let poemRefreshTimerId = null;
+        let poemReminderTimerId = null;
+        let revealTimerId = null;
+        let breathStream = null;
+        let breathAudioContext = null;
+        let breathSource = null;
+        let breathAnalyser = null;
+        let breathSamples = null;
+        let breathDetectionFrame = null;
+        let isPreparing = false;
+        let breathCandidateStart = 0;
+        let breathNoiseFloor = 0.012;
+        let breathAvailabilityMessage = "";
         let finalTranscriptReceived = false;
         let recognitionErrorMessage = "";
         let interimTranscript = "";
+
+        function pick(items) {
+          return items[Math.floor(Math.random() * items.length)];
+        }
+
+        function poemLine(language) {
+          return {
+            language,
+            text: pick(language === "en" ? englishPoemLines : spanishPoemLines)
+          };
+        }
+
+        function generatePoem() {
+          return { lines: pick(poemStructures)() };
+        }
 
         function clearTimers() {
           timerIds.forEach(window.clearTimeout);
@@ -874,38 +949,222 @@
           }
         }
 
-        function clearDisplay() {
-          englishLine.replaceChildren();
-          spanishLine.replaceChildren();
-          displayPanel.classList.remove("is-dispersing");
+        function clearPoemTimers() {
+          if (poemRefreshTimerId !== null) {
+            window.clearTimeout(poemRefreshTimerId);
+            poemRefreshTimerId = null;
+          }
+          if (poemReminderTimerId !== null) {
+            window.clearTimeout(poemReminderTimerId);
+            poemReminderTimerId = null;
+          }
         }
 
-        function renderLine(element, text, languageClass) {
-          element.replaceChildren();
-          const words = text.split(/(\s+)/);
+        function clearDisplay() {
+          if (revealTimerId !== null) {
+            window.clearTimeout(revealTimerId);
+            revealTimerId = null;
+          }
+          poemDisplay.replaceChildren();
+          displayPanel.classList.remove("is-dispersing", "is-revealing", "is-poetic");
+        }
+
+        function renderLine(line, characterOffset) {
+          const element = document.createElement("div");
+          element.className = `display-line poem-${line.language}`;
+          let characterIndex = characterOffset;
+          const words = line.text.split(/(\s+)/);
           words.forEach((word) => {
             if (/^\s+$/.test(word)) {
               element.append(document.createTextNode(word));
               return;
             }
             const wordSpan = document.createElement("span");
-            wordSpan.className = languageClass;
             for (const character of word) {
               const letter = document.createElement("span");
               letter.className = `letter${character.toLowerCase() === "e" ? " is-e" : ""}`;
               letter.textContent = character;
-              letter.style.setProperty("--drift-x", `${Math.round(Math.random() * 48 - 24)}px`);
-              letter.style.setProperty("--drift-y", `${Math.round(Math.random() * 48 - 24)}px`);
+              letter.style.setProperty("--drift-x", `${Math.round(Math.random() * 32 - 16)}px`);
+              letter.style.setProperty("--drift-y", `${Math.round(Math.random() * 30 - 15)}px`);
+              letter.style.setProperty("--drift-rotation", `${Math.round(Math.random() * 16 - 8)}deg`);
+              letter.style.setProperty("--reveal-delay", `${Math.min(characterIndex * 18, 900)}ms`);
               wordSpan.append(letter);
+              characterIndex += 1;
             }
             element.append(wordSpan);
           });
+          return element;
         }
 
         function showPoem(poem, isAcknowledgement = false) {
-          renderLine(englishLine, poem.en, "poem-en");
-          renderLine(spanishLine, poem.es, "poem-es");
-          displayCaption.textContent = isAcknowledgement ? "Breath received · renewal" : "A small invitation · take your time";
+          const lines = poem.lines || [
+            { language: "en", text: poem.en },
+            { language: "es", text: poem.es }
+          ];
+          if (revealTimerId !== null) window.clearTimeout(revealTimerId);
+          displayPanel.classList.remove("is-dispersing", "is-revealing");
+          displayPanel.classList.toggle("is-poetic", !isAcknowledgement);
+          displayPanel.classList.add("is-revealing");
+          let characterOffset = 0;
+          poemDisplay.replaceChildren(...lines.map((line) => {
+            const element = renderLine(line, characterOffset);
+            characterOffset += line.text.length;
+            return element;
+          }));
+          displayCaption.textContent = isAcknowledgement
+            ? "Breath received · renewal"
+            : "A small invitation · take your time";
+          revealTimerId = window.setTimeout(() => {
+            displayPanel.classList.remove("is-revealing");
+            revealTimerId = null;
+          }, 1700);
+        }
+
+        async function acquireBreathAudio() {
+          if (breathAnalyser) return;
+          if (!AudioContextAPI || !navigator.mediaDevices?.getUserMedia) {
+            const error = new Error("This browser does not support microphone level analysis.");
+            error.name = "NotSupportedError";
+            throw error;
+          }
+
+          const context = new AudioContextAPI();
+          let stream = null;
+          try {
+            const [contextResult, streamResult] = await Promise.allSettled([
+              context.resume(),
+              navigator.mediaDevices.getUserMedia({
+                audio: {
+                  echoCancellation: false,
+                  noiseSuppression: false,
+                  autoGainControl: false
+                }
+              })
+            ]);
+            if (streamResult.status === "rejected") throw streamResult.reason;
+            stream = streamResult.value;
+            if (contextResult.status === "rejected") throw contextResult.reason;
+
+            const source = context.createMediaStreamSource(stream);
+            const analyser = context.createAnalyser();
+            analyser.fftSize = 1024;
+            source.connect(analyser);
+            breathAudioContext = context;
+            breathStream = stream;
+            breathSource = source;
+            breathAnalyser = analyser;
+            breathSamples = new Uint8Array(analyser.fftSize);
+          } catch (error) {
+            if (stream) stream.getTracks().forEach((track) => track.stop());
+            if (context.state !== "closed") {
+              context.close().catch((closeError) => {
+                feedback.textContent = `Microphone cleanup failed: ${closeError.message || closeError}`;
+              });
+            }
+            throw error;
+          }
+        }
+
+        function stopBreathDetection() {
+          if (breathDetectionFrame !== null) {
+            window.cancelAnimationFrame(breathDetectionFrame);
+            breathDetectionFrame = null;
+          }
+          breathCandidateStart = 0;
+        }
+
+        function releaseBreathAudio() {
+          stopBreathDetection();
+          if (breathSource) breathSource.disconnect();
+          if (breathStream) breathStream.getTracks().forEach((track) => track.stop());
+          breathSource = null;
+          breathAnalyser = null;
+          breathSamples = null;
+          breathStream = null;
+          if (breathAudioContext && breathAudioContext.state !== "closed") {
+            breathAudioContext.close().catch((error) => {
+              feedback.textContent = `Microphone cleanup failed: ${error.message || error}`;
+            });
+          }
+          breathAudioContext = null;
+        }
+
+        function startBreathDetection() {
+          stopBreathDetection();
+          if (!breathAnalyser || !breathSamples) {
+            feedback.textContent = `${breathAvailabilityMessage || "Breath detection is unavailable."} Use the manual control to complete the exchange.`;
+            breathFallbackButton.hidden = false;
+            return;
+          }
+
+          breathAvailabilityMessage = "";
+          breathFallbackButton.hidden = true;
+          feedback.textContent = "Blow gently toward the microphone for about half a second. I’m listening for airflow.";
+          const measureBreath = () => {
+            if (state !== "waiting" || !breathAnalyser || !breathSamples) return;
+            breathAnalyser.getByteTimeDomainData(breathSamples);
+            let squaredTotal = 0;
+            for (const sample of breathSamples) {
+              const amplitude = (sample - 128) / 128;
+              squaredTotal += amplitude * amplitude;
+            }
+            const level = Math.sqrt(squaredTotal / breathSamples.length);
+            const threshold = Math.max(0.055, breathNoiseFloor * 3.2);
+            if (level >= threshold) {
+              if (!breathCandidateStart) breathCandidateStart = performance.now();
+              if (performance.now() - breathCandidateStart >= BREATH_MIN_DURATION_MS) {
+                returnBreath();
+                return;
+              }
+            } else {
+              breathCandidateStart = 0;
+              breathNoiseFloor += (level - breathNoiseFloor) * 0.03;
+            }
+            breathDetectionFrame = window.requestAnimationFrame(measureBreath);
+          };
+          breathDetectionFrame = window.requestAnimationFrame(measureBreath);
+        }
+
+        function schedulePoemChanges() {
+          clearPoemTimers();
+          const refreshPoem = () => {
+            poemRefreshTimerId = window.setTimeout(() => {
+              if (state !== "waiting") return;
+              displayPanel.classList.add("is-dispersing");
+              poemRefreshTimerId = window.setTimeout(() => {
+                poemRefreshTimerId = null;
+                if (state !== "waiting") return;
+                showPoem(generatePoem());
+                refreshPoem();
+              }, 700);
+            }, POEM_CHANGE_MS);
+          };
+          const remindAndVary = () => {
+            poemReminderTimerId = window.setTimeout(() => {
+              poemReminderTimerId = null;
+              if (state !== "waiting") return;
+              stateTitle.textContent = "Still here, when you’re ready.";
+              stateDescription.textContent = "A gentle breath toward the microphone will let the words drift away.";
+              stateLabel.textContent = "WAITING FOR BREATH";
+              showPoem(generatePoem());
+              remindAndVary();
+            }, INVITATION_REPEAT_MS);
+          };
+          refreshPoem();
+          remindAndVary();
+        }
+
+        function breathErrorMessage(error) {
+          const name = error && typeof error === "object" && "name" in error ? error.name : "";
+          const details = error && typeof error === "object" && "message" in error ? error.message : String(error);
+          const messages = {
+            NotAllowedError: "Microphone access was denied. Allow it in your browser settings, then try again.",
+            NotFoundError: "No microphone was found. Connect a microphone to detect breath.",
+            NotReadableError: "The microphone is busy or unavailable. Close other apps using it and try again.",
+            NotSupportedError: "This browser cannot analyze microphone levels for breath detection.",
+            SecurityError: "Microphone access requires a secure page and browser permission."
+          };
+          return messages[name] || `Microphone setup failed: ${details || "unknown error"}.`;
         }
 
         function setListeningState() {
@@ -916,7 +1175,7 @@
           feedback.textContent = recognition
             ? "Choose a language, then tap Start speaking."
             : "Speech recognition is not available in this browser.";
-          breathButton.hidden = true;
+          breathFallbackButton.hidden = true;
           startListeningButton.disabled = !recognition;
           stopListeningButton.hidden = true;
           languageSelect.disabled = false;
@@ -979,33 +1238,20 @@
           stateTitle.textContent = "I’m waiting.";
           stateDescription.textContent = "The words have settled. When you’re ready, offer a gentle breath back.";
           stateLabel.textContent = "WAITING FOR BREATH";
-          feedback.textContent = "This demo cannot detect breath; use the button to complete the gesture.";
-          showPoem(poems[Math.floor(Math.random() * poems.length)]);
+          showPoem(generatePoem());
           startListeningButton.disabled = true;
           stopListeningButton.hidden = true;
           languageSelect.disabled = true;
-          breathButton.hidden = false;
-          const repeatPoem = () => {
-            timerIds.push(window.setTimeout(() => {
-              if (state === "waiting") {
-                displayPanel.classList.add("is-dispersing");
-                timerIds.push(window.setTimeout(() => {
-                  if (state === "waiting") {
-                    displayPanel.classList.remove("is-dispersing");
-                    showPoem(poems[Math.floor(Math.random() * poems.length)]);
-                    repeatPoem();
-                  }
-                }, 700));
-              }
-            }, INVITATION_REPEAT_MS));
-          };
-          repeatPoem();
+          startBreathDetection();
+          schedulePoemChanges();
         }
 
         function returnBreath() {
           if (state !== "waiting") return;
           clearTimers();
           clearSilenceTimers();
+          clearPoemTimers();
+          releaseBreathAudio();
           voiceSessionActive = false;
           clearRecognitionRestart();
           state = "renewal";
@@ -1017,7 +1263,7 @@
           startListeningButton.disabled = true;
           stopListeningButton.hidden = true;
           languageSelect.disabled = true;
-          breathButton.hidden = true;
+          breathFallbackButton.hidden = true;
           timerIds.push(window.setTimeout(() => {
             showPoem(acknowledgements[Math.floor(Math.random() * acknowledgements.length)], true);
             displayPanel.classList.remove("is-dispersing");
@@ -1031,7 +1277,7 @@
           }, 700));
         }
 
-        function startListening() {
+        async function startListening() {
           if (!recognition) {
             feedback.textContent = "Speech recognition is not available in this browser.";
             return;
@@ -1040,23 +1286,34 @@
             feedback.textContent = "Complete the breath exchange before speaking again.";
             return;
           }
-          if (isRecognizing) return;
+          if (isRecognizing || isPreparing) return;
 
-          recognition.lang = languageSelect.value;
-          finalTranscriptReceived = false;
-          recognitionErrorMessage = "";
-          interimTranscript = "";
-          voiceSessionActive = true;
-          transcriptPreview.textContent = "Listening…";
-          stateLabel.textContent = "LISTENING · MICROPHONE ON";
-          feedback.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
+          isPreparing = true;
           startListeningButton.disabled = true;
-          stopListeningButton.disabled = false;
-          stopListeningButton.hidden = false;
           languageSelect.disabled = true;
-          isRecognizing = true;
+          feedback.textContent = "Requesting microphone access for speech and breath detection…";
+          try {
+            await acquireBreathAudio();
+            breathAvailabilityMessage = "";
+          } catch (error) {
+            releaseBreathAudio();
+            breathAvailabilityMessage = breathErrorMessage(error);
+          }
 
           try {
+            recognition.lang = languageSelect.value;
+            finalTranscriptReceived = false;
+            recognitionErrorMessage = "";
+            interimTranscript = "";
+            voiceSessionActive = true;
+            transcriptPreview.textContent = "Listening…";
+            stateLabel.textContent = "LISTENING · MICROPHONE ON";
+            feedback.textContent = breathAvailabilityMessage
+              ? `Listening in ${languageSelect.selectedOptions[0].textContent}. ${breathAvailabilityMessage} The manual breath control will be available when Ally is still.`
+              : `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
+            stopListeningButton.disabled = false;
+            stopListeningButton.hidden = false;
+            isRecognizing = true;
             recognition.start();
             scheduleSilenceResponse();
           } catch (error) {
@@ -1067,15 +1324,13 @@
             stopListeningButton.disabled = false;
             stopListeningButton.hidden = true;
             languageSelect.disabled = false;
-            if (error.name === "InvalidStateError") {
-              feedback.textContent = "Speech recognition is already active. Wait for it to finish, then try again.";
-              return;
-            }
-            if (error.name === "NotAllowedError" || error.name === "SecurityError") {
-              feedback.textContent = "Microphone access was denied. Allow it in your browser settings, then try again.";
-              return;
-            }
+            feedback.textContent = breathErrorMessage(error);
+            releaseBreathAudio();
+            if (error.name === "InvalidStateError") return;
+            if (["NotAllowedError", "NotFoundError", "NotReadableError", "NotSupportedError", "SecurityError"].includes(error.name)) return;
             throw error;
+          } finally {
+            isPreparing = false;
           }
         }
 
@@ -1105,7 +1360,9 @@
             stateTitle.textContent = "I’m listening.";
             stateDescription.textContent = "Speak naturally. Ally is listening for heat in your words.";
             stateLabel.textContent = "LISTENING · MICROPHONE ON";
-            feedback.textContent = `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
+            feedback.textContent = breathAvailabilityMessage
+              ? `Listening in ${languageSelect.selectedOptions[0].textContent}. ${breathAvailabilityMessage} The manual breath control will be available when Ally is still.`
+              : `Listening in ${languageSelect.selectedOptions[0].textContent}. Speak naturally; you can stop at any time.`;
           };
 
           recognition.onspeechstart = () => {
@@ -1206,8 +1463,7 @@
 
         startListeningButton.addEventListener("click", startListening);
         stopListeningButton.addEventListener("click", stopListening);
-
-        breathButton.addEventListener("click", returnBreath);
+        breathFallbackButton.addEventListener("click", returnBreath);
       })();
     </script>
   </body>
