@@ -103,6 +103,8 @@ Final electrical configuration.
 
 These specifications must be established before producing the final wiring diagrams.
 
+What we have right now and we can work with it:
+
 ## Fan
 
 The fan switch chain will be controlled by the ARDUINO servo
