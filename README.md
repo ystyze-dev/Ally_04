@@ -90,3 +90,55 @@ The visual language of Ally contrasts the familiarity of a domestic appliance wi
 
 Its appearance suggests a functional object, while its behaviour establishes a relational and poetic presence.
 
+## Electronic interface
+
+## Description
+
+The electronic interface is the point of linguistic and bodily communication between Ally and the human subject.
+
+It contains a microphone, speaker and digital display.
+
+## Microphone
+
+The microphone receives human speech and detects the directed exhalation through which the subject reciprocates the object's airflow.
+
+## Speaker
+
+The speaker allows the object to express itself through spoken bilingual poetry.
+
+## Display
+
+The display provides a visual manifestation of the object's linguistic expression.
+
+The typography draws from the original generative poetry experiment:
+
+1. Monospaced typography.
+
+2. English words in regular weight.
+
+3. Spanish words in bold.
+
+4. The letter e highlighted in red.
+
+5. Individual letters behaving as particles.
+
+## Display behaviour
+
+State	 -  Visual expression
+Listening	 -  Minimal visual activity
+Heat recognition	-  Thermal words appear
+Stillness	 -  Visual activity decreases
+Poetic invitation	 -  Bilingual poetry appears
+Waiting for breath	-  Poetry remains visible
+Breath received	 -  Letters disperse
+Renewal	 -  Display returns to listening
+
+## Breath and typography
+
+The subject's exhalation dissolves the displayed poem into individual typographic particles.
+
+Language becomes visually unstable through the same material substance that completes the reciprocal exchange: air.
+
+## Development status
+
+The typographic behaviour is based on the earlier p5.js experiment. Its integration with the Raspberry Pi motor and speech-control system remains under development.
