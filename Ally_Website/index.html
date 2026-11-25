@@ -1152,26 +1152,6 @@
       .principle-strip { margin-bottom: 48px; }
       .principle { min-height: 108px; }
       .site-footer { font-size: 10px; }
-      .source-library { padding: 66px 0 52px; border-top: 1px solid var(--line); }
-      .source-heading { display: grid; grid-template-columns: 1fr minmax(260px, .7fr); gap: 48px; align-items: end; margin-bottom: 25px; }
-      .source-heading h2 { margin: 0; font-family: var(--serif); font-size: clamp(32px, 4vw, 48px); font-weight: 400; letter-spacing: -.045em; }
-      .source-heading > p { max-width: 430px; margin: 0; color: var(--muted); font-size: 11px; }
-      .source-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-bottom: 12px; }
-      .source-tools label { color: var(--muted); font-size: 9px; }
-      .source-tools input, .source-tools select { min-height: 38px; padding: 0 10px; border: 1px solid #c8c8bc; border-radius: 2px; background: var(--paper); color: var(--ink); font: inherit; font-size: 10px; }
-      .source-tools input { flex: 1 1 220px; }
-      .source-status { min-height: 18px; margin: 0 0 12px; color: var(--muted); font-size: 9px; }
-      .source-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); gap: 10px; }
-      .source-card { min-height: 94px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper); color: var(--ink); cursor: pointer; text-align: left; transition: border-color .2s ease, transform .2s ease; }
-      .source-card:hover { border-color: var(--terracotta); transform: translateY(-2px); }
-      .source-card:focus-visible, .source-tools input:focus-visible, .source-tools select:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
-      .source-card-title { font-family: var(--serif); font-size: 16px; line-height: 1.2; }
-      .source-card-folder { color: var(--muted); font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
-      .source-preview { margin-top: 18px; padding: clamp(18px, 3vw, 30px); border: 1px solid var(--line); background: var(--paper); }
-      .source-preview-heading { display: flex; justify-content: space-between; align-items: start; gap: 18px; margin-bottom: 15px; }
-      .source-preview-heading h3 { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 400; }
-      .source-preview pre { max-height: 65vh; margin: 0; overflow: auto; color: var(--ink); font: 11px/1.65 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
-      .source-preview img { display: block; max-width: 100%; max-height: 70vh; margin: auto; object-fit: contain; }
 
       @media (max-width: 680px) {
         .masthead { min-height: 50px; font-size: 8px; }
@@ -1188,15 +1168,6 @@
         .exchange-step + .exchange-step { padding-left: 14px; }
         .exchange-step:nth-child(3) { border-top: 1px solid var(--line); border-left: 0; }
         .exchange-step:nth-child(4) { border-top: 1px solid var(--line); }
-        .source-library { padding-block: 46px 38px; }
-        .source-heading { grid-template-columns: 1fr; gap: 12px; }
-        .source-tools { align-items: stretch; }
-        .source-tools label { width: 100%; }
-        .source-tools input, .source-tools select { flex-basis: 100%; }
-        .source-grid { grid-template-columns: 1fr 1fr; gap: 7px; }
-        .source-card { min-height: 100px; padding: 11px; }
-        .source-card-title { font-size: 14px; }
-        .source-preview-heading { flex-direction: column; }
       }
 </style>
 
@@ -1211,7 +1182,6 @@
         <nav class="masthead-nav" aria-label="Main navigation">
           <a href="#experience">Experience</a>
           <a href="#manifesto">Manifesto</a>
-          <a href="#sources">Sources</a>
         </nav>
       </header>
 
@@ -1335,7 +1305,7 @@
     <blockquote>I gave you the wind.<br><strong>Now lend me your breath.</strong></blockquote>
   </div>
   <div class="manifesto-copy">
-    <p>Ally does not only serve. It expresses absence, desire, and the need for air. Its poem is not an instruction; it is an invitation to come closer.</p>
+    <p>Ally does not only serve. It expresses absence, desire, and the need for air. Its poem is an invitation to come closer.</p>
     <p class="manifesto-signoff">I have given you air.<br><strong>Ahora préstame tu aliento.</strong></p>
   </div>
 </section>
@@ -1345,29 +1315,13 @@
     <p>Speech becomes motion; silence makes room for a voice; breath completes the exchange.</p>
   </div>
   <div class="exchange-track">
-    <article class="exchange-step"><span class="micro-label">01 / Speak</span><h3>Heat in language</h3><p>Words gather. Feeling becomes a physical force.</p></article>
-    <article class="exchange-step"><span class="micro-label">02 / Feel</span><h3>Air in motion</h3><p>The fan answers with a breeze that changes in intensity.</p></article>
-    <article class="exchange-step"><span class="micro-label">03 / Pause</span><h3>A voice appears</h3><p>When the air stills, bilingual poetry asks to be read.</p></article>
-    <article class="exchange-step"><span class="micro-label">04 / Return</span><h3>Breath received</h3><p>Your exhalation dissolves the words. Ally begins again.</p></article>
+    <article class="exchange-step"><span class="micro-label">01 / Speak</span><h3>Heat in language</h3><p>Heat-related words gather into a breeze.</p></article>
+    <article class="exchange-step"><span class="micro-label">02 / Feel</span><h3>Air in motion</h3><p>The fan answers with airflow that changes in intensity.</p></article>
+    <article class="exchange-step"><span class="micro-label">03 / Pause</span><h3>A voice appears</h3><p>In stillness, a bilingual poem asks to be read.</p></article>
+    <article class="exchange-step"><span class="micro-label">04 / Return</span><h3>Breath received</h3><p>Your exhalation dissolves the poem. Ally begins again.</p></article>
   </div>
 </section>
 <section class="principle-strip" aria-label="Ally's principles"><div class="principle"><span class="principle-number">01</span><div><h2>An extension</h2><p>A familiar domestic object, altered by a voice.</p></div></div><div class="principle"><span class="principle-number">02</span><div><h2>A presence</h2><p>Heat, desire, and absence made visible.</p></div></div><div class="principle"><span class="principle-number">03</span><div><h2>A relation</h2><p>Air offered, then asked for in return.</p></div></div></section>
-<section class="source-library" id="sources" aria-labelledby="sources-title">
-  <div class="source-heading">
-    <div><p class="micro-label">The materials behind Ally</p><h2 id="sources-title">The project, in its own words.</h2></div>
-    <p>Behavior, bilingual vocabulary, hardware research, code, images, and earlier experiments remain connected to the prototype as living source material.</p>
-  </div>
-  <div class="source-tools">
-    <label for="sourceSearch">Find a source</label><input id="sourceSearch" type="search" placeholder="Search title or folder">
-    <label for="sourceFolder">Folder</label><select id="sourceFolder"><option value="">All source folders</option></select>
-  </div>
-  <p class="source-status" id="sourceStatus" role="status" aria-live="polite">Loading project source index…</p>
-  <div class="source-grid" id="sourceGrid"></div>
-  <article class="source-preview" id="sourcePreview" hidden aria-labelledby="sourcePreviewTitle">
-    <div class="source-preview-heading"><h3 id="sourcePreviewTitle"></h3><button class="quiet-button" id="closeSourcePreview" type="button">Close source</button></div>
-    <div id="sourcePreviewContent"></div>
-  </article>
-</section>
 </main><footer class="site-footer"><p>ALLY · Reciprocal object</p><p>Language · airflow · breath</p></footer></div>
 <script>
 

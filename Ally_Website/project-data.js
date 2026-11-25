@@ -8,18 +8,19 @@ let spanish_preposition_sconnectors, spanish_interjections_exclamation, spanish_
 let abstractconcept_idioms_spanish, spanish_presence_tangible, spanish_presence_being;
 let spanish_mythical_places_realms, spanish_mythical_beings_creatures_entities;
 let spanish_mystical_objects_artefacts;
+let projectReferenceData;
 
-const sourceVocabularyPaths = [
-  "../05. Heat vocabulary/English/heat_english_adjectives.json",
-  "../05. Heat vocabulary/English/heat_english_adverbs.json",
-  "../05. Heat vocabulary/English/heat_english_interjections_exclamations.json",
-  "../05. Heat vocabulary/English/heat_english_nouns.json",
-  "../05. Heat vocabulary/English/heat_english_verbs.json",
-  "../05. Heat vocabulary/Spanish/calor_espanol_adjetivos.json",
-  "../05. Heat vocabulary/Spanish/calor_espanol_adverbios.json",
-  "../05. Heat vocabulary/Spanish/calor_espanol_interjecciones_exclamaciones.json",
-  "../05. Heat vocabulary/Spanish/calor_espanol_sustantivos.json",
-  "../05. Heat vocabulary/Spanish/calor_espanol_verbos.json"
+const vocabularySources = [
+  { language: "English", src: "../05. Heat vocabulary/English/heat_english_adjectives.json" },
+  { language: "English", src: "../05. Heat vocabulary/English/heat_english_adverbs.json" },
+  { language: "English", src: "../05. Heat vocabulary/English/heat_english_interjections_exclamations.json" },
+  { language: "English", src: "../05. Heat vocabulary/English/heat_english_nouns.json" },
+  { language: "English", src: "../05. Heat vocabulary/English/heat_english_verbs.json" },
+  { language: "Spanish", src: "../05. Heat vocabulary/Spanish/calor_espanol_adjetivos.json" },
+  { language: "Spanish", src: "../05. Heat vocabulary/Spanish/calor_espanol_adverbios.json" },
+  { language: "Spanish", src: "../05. Heat vocabulary/Spanish/calor_espanol_interjecciones_exclamaciones.json" },
+  { language: "Spanish", src: "../05. Heat vocabulary/Spanish/calor_espanol_sustantivos.json" },
+  { language: "Spanish", src: "../05. Heat vocabulary/Spanish/calor_espanol_verbos.json" }
 ];
 
 const poetryBankKeys = [
@@ -38,8 +39,9 @@ const poetryBankKeys = [
 
 function requireWordBank(bank) {
   for (const key of poetryBankKeys) {
-    if (!Array.isArray(bank[key]) || !bank[key].every(word => typeof word === "string")) {
-      throw new Error(`Poetry word bank is missing a valid "${key}" list.`);
+    if (!Array.isArray(bank[key]) || !bank[key].length ||
+        !bank[key].every(word => typeof word === "string")) {
+      throw new Error("Ally's poetry data is incomplete.");
     }
   }
   english_adjective = bank.english_adjective;
@@ -72,162 +74,111 @@ function requireWordBank(bank) {
 
 function readDuration(documentText, label) {
   const position = documentText.indexOf(label);
-  if (position < 0) throw new Error(`Behavior source is missing "${label}".`);
+  if (position < 0) throw new Error("Ally's timing data is incomplete.");
   const value = documentText.slice(position + label.length, position + label.length + 140)
     .match(/Value:\s*(\d+)\s*(seconds?|milliseconds?)/i);
-  if (!value) throw new Error(`Behavior source has no value for "${label}".`);
+  if (!value) throw new Error("Ally's timing data is incomplete.");
   return Number(value[1]) * (/^seconds?$/i.test(value[2]) ? 1000 : 1);
 }
 
 function readHeatThresholds(documentText) {
   const ranges = [...documentText.matchAll(/Heat references:\s*(\d+)\s*[-–]\s*\d+/gi)];
   const high = documentText.match(/Heat references:\s*(\d+)\s+or more/i);
-  if (ranges.length < 2 || !high) throw new Error("Behavior source is missing one or more heat-speed thresholds.");
+  if (ranges.length < 2 || !high) throw new Error("Ally's speed data is incomplete.");
   return { low: Number(ranges[0][1]), medium: Number(ranges[1][1]), high: Number(high[1]) };
 }
 
-function sourceElement(tag, className, text) {
-  const element = document.createElement(tag);
-  if (className) element.className = className;
-  if (text !== undefined) element.textContent = text;
-  return element;
+async function loadProjectFile(source) {
+  const url = new URL(source.src, location.href);
+  if (url.origin !== location.origin) throw new Error("Project data must be served from one origin.");
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Project data request failed (${response.status}).`);
+
+  if (source.kind === "image") return [source.src, await response.blob()];
+  if (source.kind === "json") return [source.src, await response.json()];
+  return [source.src, await response.text()];
 }
 
-function renderSources(sources) {
-  const folders = [...new Set(sources.map(source => source.folder))].sort();
-  for (const folder of folders) {
-    const option = sourceElement("option", "", folder);
-    option.value = folder;
-    $("sourceFolder").append(option);
+function getProjectText(files, path) {
+  const value = files.get(path);
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error("A required project reference is unavailable.");
   }
-
-  const render = () => {
-    const query = $("sourceSearch").value.trim().toLocaleLowerCase();
-    const folder = $("sourceFolder").value;
-    const matches = sources.filter(source => {
-      const matchesFolder = !folder || source.folder === folder;
-      const matchesQuery = `${source.title} ${source.folder}`.toLocaleLowerCase().includes(query);
-      return matchesFolder && matchesQuery;
-    });
-    const grid = $("sourceGrid");
-    grid.replaceChildren();
-    for (const source of matches) {
-      const card = sourceElement("button", "source-card");
-      card.type = "button";
-      card.append(
-        sourceElement("span", "source-card-title", source.title),
-        sourceElement("span", "source-card-folder", source.folder)
-      );
-      card.addEventListener("click", () => previewSource(source));
-      grid.append(card);
-    }
-    if (!matches.length) grid.append(sourceElement("p", "source-empty", "No sources match that search."));
-  };
-
-  $("sourceSearch").addEventListener("input", render);
-  $("sourceFolder").addEventListener("change", render);
-  $("closeSourcePreview").addEventListener("click", () => { $("sourcePreview").hidden = true; });
-  render();
-}
-
-async function previewSource(source) {
-  const preview = $("sourcePreview");
-  const content = $("sourcePreviewContent");
-  $("sourcePreviewTitle").textContent = source.title;
-  content.replaceChildren();
-  preview.hidden = false;
-
-  if (source.kind === "image") {
-    const image = sourceElement("img");
-    image.alt = source.title;
-    image.src = source.src;
-    image.addEventListener("error", () => {
-      content.replaceChildren(sourceElement("p", "", `Could not load ${source.title}.`));
-    }, { once: true });
-    content.append(image);
-    preview.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-
-  const loading = sourceElement("p", "", "Loading source file…");
-  content.append(loading);
-  preview.scrollIntoView({ behavior: "smooth", block: "start" });
-  try {
-    const response = await fetch(source.src);
-    if (!response.ok) throw new Error(`Request failed (${response.status}).`);
-    const raw = await response.text();
-    let text = raw;
-    content.replaceChildren();
-    if (source.kind === "json") {
-      try {
-        text = JSON.stringify(JSON.parse(raw), null, 2);
-      } catch {
-        content.replaceChildren(sourceElement("p", "", "This file is labeled JSON but is not valid JSON; showing its original text."));
-      }
-    }
-    const pre = sourceElement("pre", "", text || "This source file is empty.");
-    content.append(pre);
-  } catch (error) {
-    content.replaceChildren(sourceElement("p", "", `Could not load ${source.title}: ${error.message}`));
-  }
+  return value;
 }
 
 async function loadProjectData() {
-  const sourceStatus = $("sourceStatus");
   try {
     if (location.protocol === "file:") {
-      throw new Error("Serve Ally_04 from localhost or HTTPS to load the project folders. From the repository root, run: python3 -m http.server --bind 127.0.0.1 8000");
+      throw new Error("Open Ally through localhost or HTTPS to connect its project data.");
     }
 
-    const [manifestResponse, behaviorResponse, poetryResponse, ...vocabularyResponses] = await Promise.all([
-      fetch("./data/project-sources.json"),
-      fetch("../01. Instructions/System_Instructions.md"),
-      fetch("../06. Code/heat_poetry_word_banks.json"),
-      ...sourceVocabularyPaths.map(path => fetch(path))
-    ]);
-
-    const responses = [manifestResponse, behaviorResponse, poetryResponse, ...vocabularyResponses];
-    const failed = responses.find(response => !response.ok);
-    if (failed) throw new Error(`A project data request failed (${failed.status} ${failed.url}).`);
-
+    const manifestResponse = await fetch("./data/project-sources.json");
+    if (!manifestResponse.ok) throw new Error("Ally's project data index is unavailable.");
     const manifest = await manifestResponse.json();
-    if (!Array.isArray(manifest.sources) || !manifest.sources.length) {
-      throw new Error("The project source index is empty or invalid.");
-    }
-    const behaviorText = await behaviorResponse.text();
-    const poetryBank = await poetryResponse.json();
-    const categoryLists = await Promise.all(vocabularyResponses.map(response => response.json()));
-    if (!categoryLists.every(list => Array.isArray(list) && list.every(word => typeof word === "string"))) {
-      throw new Error("A bilingual heat vocabulary file must contain an array of words and expressions.");
+    if (!Array.isArray(manifest.sources) || !manifest.sources.length ||
+        manifest.sources.some(source => !source.src || !source.kind)) {
+      throw new Error("Ally's project data index is invalid.");
     }
 
+    const projectFiles = new Map(await Promise.all(manifest.sources.map(loadProjectFile)));
+    const getText = path => getProjectText(projectFiles, path);
+    const vocabularyByLanguage = {
+      English: vocabularySources.filter(source => source.language === "English")
+        .flatMap(source => projectFiles.get(source.src) || []),
+      Spanish: vocabularySources.filter(source => source.language === "Spanish")
+        .flatMap(source => projectFiles.get(source.src) || [])
+    };
+    if (Object.values(vocabularyByLanguage).some(words =>
+      !words.length || !words.every(word => typeof word === "string"))) {
+      throw new Error("Ally's bilingual vocabulary is unavailable.");
+    }
+
+    const poetryBank = projectFiles.get("../06. Code/heat_poetry_word_banks.json");
     requireWordBank(poetryBank);
-    const terms = [...new Set(categoryLists.flat().map(norm).filter(Boolean))]
+    const heatTerms = [...new Set(Object.values(vocabularyByLanguage).flat().map(norm).filter(Boolean))]
       .sort((a, b) => b.length - a.length);
-    if (!terms.length) throw new Error("The bilingual heat vocabulary contains no usable terms.");
-    lex.splice(0, lex.length, ...terms);
+    if (!heatTerms.length) throw new Error("Ally's bilingual vocabulary is empty.");
+    lex.splice(0, lex.length, ...heatTerms);
 
-    heatThresholds = readHeatThresholds(behaviorText);
-    C.window = readDuration(behaviorText, "Vocabulary accumulation window");
-    C.decay = readDuration(behaviorText, "Silence before target speed becomes zero");
-    C.silence = readDuration(behaviorText, "Silence before poetic invitation");
-    C.hold = readDuration(behaviorText, "Minimum breath detection duration");
+    const systemInstructions = getText("../01. Instructions/System_Instructions.md");
+    heatThresholds = readHeatThresholds(systemInstructions);
+    C.window = readDuration(systemInstructions, "Vocabulary accumulation window");
+    C.decay = readDuration(systemInstructions, "Silence before target speed becomes zero");
+    C.silence = readDuration(systemInstructions, "Silence before poetic invitation");
+    C.hold = readDuration(systemInstructions, "Minimum breath detection duration");
 
-    renderSources(manifest.sources);
-    sourceStatus.textContent = `${manifest.sources.length} project files connected · ${foldersCount(manifest.sources)} source folders · ${terms.length.toLocaleString()} bilingual heat references loaded from 10 vocabulary files. Connectors and prepositions are excluded from heat counting.`;
+    projectReferenceData = Object.freeze({
+      index: manifest.sources,
+      files: projectFiles,
+      vocabulary: vocabularyByLanguage,
+      poetry: poetryBank,
+      behavior: Object.freeze({
+        instructions: systemInstructions,
+        matrix: getText("../03. Behavioral chart/Behavioral_Matrix.md"),
+        timing: getText("../03. Behavioral chart/Temporal_Behaviour.md"),
+        flow: getText("../03. Behavioral chart/interaction_flowchart.md"),
+        conceptual: getText("../04. Behavior/Conceptual_Behaviour.md"),
+        linguistic: getText("../04. Behavior/Linguistic_Behavior.md"),
+        physical: getText("../04. Behavior/Physical_behaviour.md"),
+        poetic: getText("../04. Behavior/Poetic_Behavior.md"),
+        reciprocity: getText("../04. Behavior/Reciprocity.md"),
+        thresholds: heatThresholds,
+        parameters: { vocabularyWindow: C.window, decay: C.decay, silence: C.silence, breathHold: C.hold }
+      })
+    });
+
     $("start").disabled = false;
     $("invite").disabled = false;
-    $("detail").textContent = "Project vocabulary and behavior settings are ready. Enable the microphone and speak about heat.";
+    $("detail").textContent = "The listening system is ready. Enable the microphone and speak about heat.";
   } catch (error) {
-    sourceStatus.textContent = error.message;
-    $("detail").textContent = "Live interaction is unavailable until project sources load.";
+    console.error("Ally's internal project data could not be loaded.", error);
+    status("Data unavailable", location.protocol === "file:"
+      ? "Open this page through localhost or HTTPS to connect Ally's project data."
+      : "Ally's data is unavailable. Check the connection and reload.");
     $("start").disabled = true;
     $("invite").disabled = true;
   }
-}
-
-function foldersCount(sources) {
-  return new Set(sources.map(source => source.folder)).size;
 }
 
 loadProjectData();

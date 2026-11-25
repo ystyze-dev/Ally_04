@@ -167,7 +167,7 @@ The typographic behaviour is based on the earlier p5.js experiment. Its integrat
 
 ## Website and project sources
 
-The browser prototype in `Ally_Website/` reads the bilingual heat categories, poetry word banks, and interaction thresholds from their source files in this repository. Its Sources section provides searchable previews of the project's instructions, behavior research, vocabulary, code, images, hardware documentation, and archived experiments. The merged `Heat-lexicon.json` files are retained as source material, but the prototype uses the valid category JSON files.
+The browser prototype in `Ally_Website/` loads the project's vocabulary, poetry banks, behavior documents, instructions, code, images, hardware research, and archives into an internal data store. These materials inform the interaction and remain hidden from the website's public interface. The merged `Heat-lexicon.json` files are retained as reference material; the prototype uses the valid category JSON files for heat recognition.
 
 Serve the repository root over localhost so the browser can read the sibling folders:
 
@@ -175,4 +175,4 @@ Serve the repository root over localhost so the browser can read the sibling fol
 python3 -m http.server --bind 127.0.0.1 8000
 ```
 
-Then open `http://127.0.0.1:8000/Ally_Website/`. When adding or moving project files, update `Ally_Website/data/project-sources.json` so they remain available in the Sources section.
+Then open `http://127.0.0.1:8000/Ally_Website/`. When adding or moving project files, update `Ally_Website/data/project-sources.json` so the internal data store can include them.
