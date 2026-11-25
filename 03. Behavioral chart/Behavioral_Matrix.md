@@ -39,7 +39,7 @@ Linguistic output: None
 Human input: Prolonged silence
 Object state: Invitation
 Physical output:  Stillness
-Linguistic output: Spoken heat poetry
+Linguistic output: Displayed heat poetry
 
 ## Phase 7 
 Human input: Subject approaches	
@@ -76,7 +76,7 @@ Linguistic output: None
 
 State	-  Function
 LISTEN: Recognize speech and regulate airflow.
-INVITE: Generate and recite heat poetry.
+INVITE: Generate and display heat poetry.
 WAIT_BREATH: Wait for directed human exhalation.
 ACK: Acknowledge the breath and reset the interaction.
 

@@ -1,6 +1,6 @@
 ## System objective
 
-Translate human language into airflow and establish a reciprocal exchange through spoken poetry and human breath.
+Translate human language into airflow and establish a reciprocal exchange through displayed poetry and human breath.
 
 ## Input
 
@@ -46,7 +46,7 @@ Fan blades spinning.
 
 Variable airflow.
 
-Spoken bilingual poetry.
+Displayed bilingual poetry for the subject to read.
 
 Displayed language.
 

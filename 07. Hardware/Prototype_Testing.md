@@ -77,7 +77,7 @@ Generate different thematic compositions.
 Express the object's need for breath.
 
 
-Recite poetry through the speaker.
+Display bilingual poetry for the subject to read, without voice playback.
 
 
 Display the corresponding poetry.

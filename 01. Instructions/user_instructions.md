@@ -24,10 +24,10 @@ The object responds to the content of your speech rather than it'c volume.
 
 Stop speaking and observe how the object gradually decreases its speed until it becomes still. 
 
-5. Listen
+5. Read
 
-During prolonged silence the object generates and recites a poem. 
-The open expresses its own need for air, proximity and human breath. 
+During prolonged silence, read the bilingual poem displayed by the object.
+The poem expresses its own need for air and human breath.
 
 6. Reciprocate
 

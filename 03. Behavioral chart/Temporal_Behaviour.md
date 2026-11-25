@@ -21,7 +21,7 @@ Dissipation: Thermal references expire and the fan decreases its speed.
 ## Phase 5
 Stillness: The fan stops rotating.
 ## Phase 5
-Invitation: The object generates and recites poetry.
+Invitation: The object displays poetry for the subject to read.
 ## Phase 6
 Waiting: The object awaits human breath.
 ## Phase 7

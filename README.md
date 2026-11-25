@@ -14,7 +14,7 @@ Ally is an interactive fan conceived as an extension of the human subject. Throu
 
 The fan listens to human speech and identifies words, expressions and discourses associated with heat. The accumulation of thermal references determines the intensity of its airflow. 
 
-When the subject stops speaking about heat, the fan gradually decreases its speed until it reaches stillness. Once the five-second fade ends, a bilingual poem using the heat vocabulary appears and remains visible until the subject breathes into the microphone. Breath detection keeps the microphone active while the poem is displayed.
+When the subject stops speaking about heat, the fan gradually decreases its speed until it reaches stillness. After prolonged silence, a bilingual poem using the heat vocabulary appears for the subject to read. The poem remains visible until the subject breathes into the microphone; the fan then dissolves it and returns to listening for speech.
 
 Through this poetic invitation, the subject is encouraged to approach the microphone and return their breath to the object. 
 
@@ -105,7 +105,7 @@ The microphone receives human speech and detects the directed exhalation through
 
 ## Speaker
 
-The speaker allows the object to express itself through spoken bilingual poetry.
+The current prototype presents bilingual poetry on the display for the subject to read; it does not read the poem aloud.
 
 ## Display
 
