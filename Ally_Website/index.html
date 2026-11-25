@@ -1068,6 +1068,107 @@
 
     
 .poem-stage{max-width:620px;margin:16px auto;background:var(--deep);border:6px solid var(--sage);border-radius:6px;color:var(--paper);position:relative}.poem-stage canvas{display:block;width:100%;height:clamp(360px,60vh,560px)}.poem-stage p{margin:0;padding:8px;text-align:center;font-size:10px}.controls-extra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}.meter{font-size:10px;color:var(--muted)}.display-window{font-size:clamp(7px,1vw,10px);text-align:center}
+
+      .masthead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        min-height: 58px;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+      }
+
+      .masthead a { text-decoration: none; }
+      .masthead a:hover { color: var(--terracotta); }
+      .masthead-brand { color: var(--ink); font-weight: 700; }
+      .masthead-nav { display: flex; gap: 24px; }
+      .hero { padding-top: 40px; }
+      .project-heading .eyebrow { font-size: 9px; }
+      .project-heading h1 {
+        max-width: 860px;
+        font-size: clamp(54px, 7vw, 88px);
+        line-height: .96;
+      }
+      .hero-description { max-width: 490px; font-size: 15px; line-height: 1.65; }
+      .project-heading::after { margin-top: 26px; }
+      .interaction-stage { max-width: 1000px; margin-top: 26px; }
+      .stage-note h2 { font-family: var(--serif); font-size: 17px; font-weight: 400; }
+      .stage-note p { font-family: var(--serif); font-size: 13px; line-height: 1.55; }
+      .concept-caption { margin-top: 9px; }
+      .interaction-instruction { font-family: var(--serif); font-size: 16px; }
+      .interaction-status h2 { font-size: 24px; }
+      .interaction-status p, .speech-controls label { font-size: 11px; }
+      .transcript-preview { max-width: 620px; margin-inline: auto; }
+      .manifesto-note {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, .75fr);
+        align-items: center;
+        gap: clamp(28px, 7vw, 100px);
+        margin-top: 74px;
+        padding: clamp(28px, 5vw, 62px);
+        background: var(--deep);
+        color: var(--paper);
+      }
+      .manifesto-note .micro-label { color: #d79473; }
+      .manifesto-note blockquote {
+        max-width: 670px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(34px, 5vw, 62px);
+        letter-spacing: -.05em;
+        line-height: 1.08;
+      }
+      .manifesto-note blockquote strong { font-weight: 700; }
+      .manifesto-note .red-letter { color: #e87963; }
+      .manifesto-copy { color: #c8d0c8; font-size: 12px; line-height: 1.8; }
+      .manifesto-copy p:last-child { margin-bottom: 0; }
+      .manifesto-signoff { color: #e5a181; font-family: var(--serif); font-size: 18px; }
+      .exchange { padding: 66px 0 74px; }
+      .exchange-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 24px;
+        margin-bottom: 25px;
+      }
+      .exchange-heading h2 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(32px, 4vw, 48px);
+        font-weight: 400;
+        letter-spacing: -.045em;
+      }
+      .exchange-heading p { max-width: 320px; margin: 0; color: var(--muted); font-size: 10px; }
+      .exchange-track { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid var(--line); }
+      .exchange-step { position: relative; min-height: 126px; padding: 19px 24px 18px 0; }
+      .exchange-step + .exchange-step { padding-left: 22px; border-left: 1px solid var(--line); }
+      .exchange-step .micro-label { display: block; margin-bottom: 12px; color: var(--terracotta); }
+      .exchange-step h3 { margin: 0 0 6px; font-family: var(--serif); font-size: 19px; font-weight: 400; }
+      .exchange-step p { max-width: 210px; margin: 0; color: var(--muted); font-size: 10px; }
+      .principle-strip { margin-bottom: 48px; }
+      .principle { min-height: 108px; }
+      .site-footer { font-size: 10px; }
+
+      @media (max-width: 680px) {
+        .masthead { min-height: 50px; font-size: 8px; }
+        .masthead-nav { gap: 13px; }
+        .hero { padding-top: 30px; }
+        .project-heading h1 { font-size: clamp(42px, 12vw, 62px); }
+        .hero-description { font-size: 13px; }
+        .manifesto-note { grid-template-columns: 1fr; gap: 22px; margin-top: 48px; }
+        .manifesto-note blockquote { font-size: clamp(36px, 10vw, 52px); }
+        .exchange { padding-block: 46px 52px; }
+        .exchange-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+        .exchange-track { grid-template-columns: 1fr 1fr; }
+        .exchange-step { min-height: 120px; padding: 16px 12px 16px 0; }
+        .exchange-step + .exchange-step { padding-left: 14px; }
+        .exchange-step:nth-child(3) { border-top: 1px solid var(--line); border-left: 0; }
+        .exchange-step:nth-child(4) { border-top: 1px solid var(--line); }
+      }
 </style>
 
   </head>
@@ -1076,17 +1177,25 @@
 
     <div class="page-shell">
 
+      <header class="masthead">
+        <a class="masthead-brand" href="#top" aria-label="Ally home">Ally <span aria-hidden="true">/</span> Reciprocal object</a>
+        <nav class="masthead-nav" aria-label="Main navigation">
+          <a href="#experience">Experience</a>
+          <a href="#manifesto">Manifesto</a>
+        </nav>
+      </header>
+
       <main>
 
-        <section class="hero" aria-labelledby="hero-title">
+        <section class="hero" id="experience" aria-labelledby="hero-title">
 
           <div class="project-heading">
 
-            <p class="eyebrow">A voice-responsive fan concept</p>
+            <p class="eyebrow">An object with a need of its own</p>
 
-            <h1 id="hero-title"><span>A breeze shaped by</span><span>your words.</span></h1>
+            <h1 id="hero-title"><span>I have no lungs,</span><span>but I need to breathe.</span></h1>
 
-            <p class="hero-description">Ally imagines the fan as an extension of the person speaking: heat in your words gathers into a breeze, and a poem arrives when the conversation falls quiet.</p>
+            <p class="hero-description">Ally is a fan that listens for heat, gives air, and asks for breath in return. A functional object becomes an extension of the body—and a relationship of mutual need.</p>
 
           </div>
 
@@ -1108,9 +1217,9 @@
 
               </span>
 
-              <h2>Listen for heat.</h2>
+              <h2>Language becomes air.</h2>
 
-              <p>Heat-related words build the breeze. No distance or presence sensing is part of this concept.</p>
+              <p>Speak what is warm, burning, humid, or dry. Your words gather into a breeze; the object listens to language, not volume.</p>
 
             </aside>
 
@@ -1180,8 +1289,8 @@
 
               <circle cx="181" cy="519" r="3" fill="#c87b54"/><path d="M300 519h20" stroke="#64796c" stroke-width="3"/></svg>
 <div class="display-panel"><div class="display-window" id="mini">Listening</div></div></div><p class="concept-caption">ALLY · CEILING-SUSPENDED CONCEPT</p></div>
-<aside class="stage-note stage-note-right"><h2>Three speeds, then stillness.</h2><p>More heat references lift the fan from low to medium to high. When they stop, the breeze fades.</p></aside></div>
-<div class="interaction-controls"><p class="interaction-instruction">Speak about heat. When the poem arrives, return your breath.</p>
+<aside class="stage-note stage-note-right"><h2>Silence is a beginning.</h2><p>As your words fall away, the breeze fades. In stillness, Ally finds its own voice.</p></aside></div>
+<div class="interaction-controls"><p class="interaction-instruction">Speak. Let the room grow quiet. When the poem arrives, return your breath.</p>
 <div class="speech-controls"><label for="lang">Speech language</label><select class="speech-select" id="lang"><option value="en-US">English</option><option value="es-ES">Español</option></select><button class="button" id="start">Enable microphone</button><button class="button" id="stop" disabled>Stop</button></div>
 <div class="interaction-status"><h2 id="status">Ready</h2><p id="detail">Enable the microphone and speak about heat.</p></div>
 <div class="transcript-preview" id="transcript">Your words appear here.</div>
@@ -1189,7 +1298,30 @@
 <div class="meter" id="meter">Microphone inactive</div><label class="meter">Breath sensitivity <input id="threshold" type="range" min="-70" max="-15" value="-45"><span id="dbLabel">-45 dB</span></label>
 <div class="controls-extra"><button class="button" id="invite">Test poem</button><button class="button" id="blow" disabled>Simulate breath</button></div>
 <p class="speech-privacy">Browser simulation only. Speech recognition may use an online browser service. Microphone audio for breath analysis is processed in this page.</p></div></section>
-<section class="principle-strip"><div class="principle"><span class="principle-number">01</span><div><h2>Language</h2><p>Heat in your words becomes airflow.</p></div></div><div class="principle"><span class="principle-number">02</span><div><h2>Silence</h2><p>The object expresses its need through poetry.</p></div></div><div class="principle"><span class="principle-number">03</span><div><h2>Reciprocity</h2><p>Your breath dissolves the poem.</p></div></div></section></main><footer class="site-footer"><p>ALLY · Reciprocal object</p><p>Browser prototype</p></footer></div>
+<section class="manifesto-note" id="manifesto" aria-labelledby="manifesto-title">
+  <div>
+    <p class="micro-label">A proposition for reciprocity</p>
+    <h2 class="visually-hidden" id="manifesto-title">An exchange between object and subject</h2>
+    <blockquote>I gave you the wind.<br><strong>Now lend me your breath.</strong></blockquote>
+  </div>
+  <div class="manifesto-copy">
+    <p>Ally does not only serve. It expresses absence, desire, and the need for air. Its poem is not an instruction; it is an invitation to come closer.</p>
+    <p class="manifesto-signoff">I have given you air.<br><strong>Ahora préstame tu aliento.</strong></p>
+  </div>
+</section>
+<section class="exchange" aria-labelledby="exchange-title">
+  <div class="exchange-heading">
+    <h2 id="exchange-title">Air moves both ways.</h2>
+    <p>Speech becomes motion; silence makes room for a voice; breath completes the exchange.</p>
+  </div>
+  <div class="exchange-track">
+    <article class="exchange-step"><span class="micro-label">01 / Speak</span><h3>Heat in language</h3><p>Words gather. Feeling becomes a physical force.</p></article>
+    <article class="exchange-step"><span class="micro-label">02 / Feel</span><h3>Air in motion</h3><p>The fan answers with a breeze that changes in intensity.</p></article>
+    <article class="exchange-step"><span class="micro-label">03 / Pause</span><h3>A voice appears</h3><p>When the air stills, bilingual poetry asks to be read.</p></article>
+    <article class="exchange-step"><span class="micro-label">04 / Return</span><h3>Breath received</h3><p>Your exhalation dissolves the words. Ally begins again.</p></article>
+  </div>
+</section>
+<section class="principle-strip" aria-label="Ally's principles"><div class="principle"><span class="principle-number">01</span><div><h2>An extension</h2><p>A familiar domestic object, altered by a voice.</p></div></div><div class="principle"><span class="principle-number">02</span><div><h2>A presence</h2><p>Heat, desire, and absence made visible.</p></div></div><div class="principle"><span class="principle-number">03</span><div><h2>A relation</h2><p>Air offered, then asked for in return.</p></div></div></section></main><footer class="site-footer"><p>ALLY · Reciprocal object</p><p>Language · airflow · breath</p></footer></div>
 <script>
 const vocabulary = [["Ardor", "Fervor", "Passion", "Desire", "Lust", "Yearning", "Zeal", "Intensity", "Excitement", "Agitation", "Anger", "Rage", "Fury", "Ire", "Wrath", "Affection", "Tenderness", "Ebullience", "Warmth", "Tepidity", "Lukewarm", "Hotness", "Heat", "Temperature", "Thermal", "Boiling", "Evaporation", "Vaporization", "Condensation", "Conduction", "Convection", "Radiation", "Irradiation", "Heat capacity", "Thermal expansion", "Heat flux", "Gradient", "Equilibrium", "Entropy", "Cooling", "Melting", "Balmy", "Sultry", "Sweltering", "Scorching", "Searing", "Blistering", "Torrid", "Tropical", "Sizzling", "Simmering", "Steaming", "Insulation", "Thermal mass", "Thermal conductivity", "Thermal resistance", "Combustion", "Ignition", "Flame", "Fire", "Blaze", "Inferno", "Conflagration", "Ember", "Cinder", "Ash", "Char", "Soot", "Smoke", "Glow", "Incandescence", "Red-hot", "White-hot", "Radiance", "Shimmer", "Heat haze", "Mirage", "Scintillation", "Flicker", "Glare", "Sunlight", "Solar gain", "Insolation", "Heatwave", "Drought", "Aridity", "Desiccation", "Parched", "Geothermal", "Magma", "Lava", "Volcanic", "Fumarole", "Friction", "Overheating", "Heat dissipation", "Quenching", "Annealing", "Tempering", "Forging", "Welding", "Soldering", "Fusion", "Softening", "Warping", "Charring", "Pyrolysis", "Calcination", "Sintering", "Vitrification", "Firing", "Kiln", "Furnace", "Hearth", "Fireplace", "Radiator", "Heater", "Thermostat", "Thermal comfort", "Microclimate", "Heat island", "Ventilation", "Shade", "Shelter", "Refuge", "Cozy", "Snug", "Toasty", "Stifling", "Suffocating", "Burning", "Stinging", "Flushing", "Blushing", "Sweating", "Perspiration", "Fever", "Feverish", "Hyperthermia", "Heatstroke", "Heat exhaustion", "Dehydration", "Metabolism", "Thermogenesis", "Thermoregulation", "Inflammation", "Burn", "Scald", "Warmhearted", "Hospitality", "Intimacy", "Solidarity", "Heated debate", "Pressure", "Flashpoint", "Spark", "Kindling", "Catalyst", "Momentum", "Burnout", "Afterglow", "Smoldering", "Rekindling", "Effervescence", "Volatility", "Transformation", "Transmutation", "Alchemy", "Purification", "Sacrifice", "Renewal", "Phoenix", "Prometheus", "Solar", "Vitality", "Animus", "Liquefaction", "Thawing", "Molten", "Dripping", "Oozing", "Flowing", "Viscosity", "Fluidity", "Pliability", "Malleability", "Plasticity", "Sagging", "Buckling", "Shrinkage", "Distortion", "Deformation", "Delamination", "Cracking", "Bubbling", "Blister formation", "Thermal creep", "Heat-induced collapse", "Sweat", "Sweaty", "Beads of sweat", "Night sweats", "Hot flashes", "Heat rash", "Thirst", "Lethargy", "Fatigue", "Panting", "Chafing", "Maceration", "Vasodilation", "Oppression", "Exudation", "Clammy", "Sticky", "Damp", "Moist", "Wet", "Drenched", "Soaked", "Glistening", "Humidity", "Mugginess", "Humid heat", "Moisture", "Dampness", "Saturation", "Vapor", "Steam", "Mist", "Fogging", "Water droplets", "Surface condensation", "Dew point", "Wet-bulb temperature", "Evaporative cooling", "Hygroscopicity", "Moisture absorption", "Transpiration", "Evapotranspiration", "Tropical humidity", "Steam bath", "Greenhouse effect", "Wax", "Paraffin", "Beeswax", "Ice", "Snow", "Frost", "Butter", "Chocolate", "Fat", "Resin", "Bitumen", "Asphalt", "Tar", "Thermoplastic", "Hot-melt adhesive", "Molten glass", "Molten metal", "Phase-change material", "Tackiness", "Slipperiness", "Slickness", "Greasiness", "Oiliness", "Glossiness", "Glazed", "Waxy", "Gelatinous", "Viscous", "Slimy", "Rubbery", "Supple", "Porous", "Swollen", "Blistered", "Wrinkled", "Brittle", "Crusted", "Leathery", "Scorched", "Crystallized", "Residue", "Stain", "Discoloration", "Watermark", "Sweat stain", "Salt deposit", "Efflorescence", "Heat imprint", "Thermochromism", "Thermochromic", "Thermal memory", "Thermal fatigue", "Thermal shock", "Melting point", "Glass transition", "Re-solidification", "Solidification", "Latent heat", "Endothermic", "Exothermic", "Heat retention", "Heat accumulation", "Heat absorption", "Heat release", "Thermal sensation", "Thermoreception", "Heat sensitivity", "Heat acclimatization", "Thermal stress"], ["Ardor", "Fervor", "Pasión", "Deseo", "Lujuria", "Añoranza", "Celo", "Intensidad", "Excitación", "Agitación", "Ira", "Rabia", "Furia", "Enojo", "Cólera", "Afecto", "Ternura", "Exuberancia", "Calidez", "Tibieza", "Tibio", "Calor intenso", "Calor", "Temperatura", "Térmico", "Ebullición", "Evaporación", "Vaporización", "Condensación", "Conducción", "Convección", "Radiación", "Irradiación", "Capacidad calorífica", "Dilatación térmica", "Flujo térmico", "Gradiente", "Equilibrio", "Entropía", "Enfriamiento", "Derretimiento", "Apacible", "Bochornoso", "Sofocante", "Abrasador", "Abrasante", "Calcinante", "Tórrido", "Tropical", "Chisporroteante", "Cocción a fuego lento", "Humeante", "Aislamiento", "Masa térmica", "Conductividad térmica", "Resistencia térmica", "Combustión", "Ignición", "Llama", "Fuego", "Llamarada", "Infierno", "Conflagración", "Brasa", "Rescoldo", "Ceniza", "Carbonilla", "Hollín", "Humo", "Resplandor", "Incandescencia", "Al rojo vivo", "Al blanco vivo", "Radiancia", "Reverberación", "Calima térmica", "Espejismo", "Centelleo", "Parpadeo", "Deslumbramiento", "Luz solar", "Ganancia solar", "Insolación", "Ola de calor", "Sequía", "Aridez", "Desecación", "Reseco", "Geotérmico", "Magma", "Lava", "Volcánico", "Fumarola", "Fricción", "Sobrecalentamiento", "Disipación térmica", "Temple", "Recocido", "Revenido", "Forja", "Soldadura", "Soldadura blanda", "Fusión", "Ablandamiento", "Alabeo", "Carbonización", "Pirólisis", "Calcinación", "Sinterización", "Vitrificación", "Cocción", "Horno cerámico", "Horno industrial", "Hogar", "Chimenea", "Radiador", "Calefactor", "Termostato", "Confort térmico", "Microclima", "Isla de calor", "Ventilación", "Sombra", "Cobijo", "Refugio", "Acogedor", "Arropado", "Calentito", "Asfixiante", "Agobiante", "Quemante", "Escozor", "Rubefacción", "Rubor", "Sudoración", "Transpiración", "Fiebre", "Febril", "Hipertermia", "Golpe de calor", "Agotamiento por calor", "Deshidratación", "Metabolismo", "Termogénesis", "Termorregulación", "Inflamación", "Quemadura", "Escaldadura", "Cordialidad", "Hospitalidad", "Intimidad", "Solidaridad", "Debate acalorado", "Presión", "Punto de inflamación", "Chispa", "Encendido", "Catalizador", "Impulso", "Agotamiento", "Resplandor residual", "Latente", "Reavivamiento", "Efervescencia", "Volatilidad", "Transformación", "Transmutación", "Alquimia", "Purificación", "Sacrificio", "Renovación", "Fénix", "Prometeo", "Solar", "Vitalidad", "Ánimo", "Licuefacción", "Descongelación", "Fundido", "Goteo", "Rezumamiento", "Flujo", "Viscosidad", "Fluidez", "Flexibilidad", "Maleabilidad", "Plasticidad", "Combamiento", "Pandeo", "Contracción", "Distorsión", "Deformación", "Delaminación", "Agrietamiento", "Burbujeo", "Ampollamiento", "Fluencia térmica", "Colapso térmico", "Sudor", "Sudoroso", "Gotas de sudor", "Sudores nocturnos", "Sofocos", "Sarpullido por calor", "Sed", "Letargo", "Fatiga", "Jadeo", "Rozadura", "Maceración", "Vasodilatación", "Opresión", "Exudación", "Húmedo y pegajoso", "Pegajoso", "Húmedo", "Humectado", "Mojado", "Empapado", "Encharcado", "Reluciente", "Humedad", "Bochorno", "Calor húmedo", "Contenido de humedad", "Humedad superficial", "Saturación", "Vapor", "Vapor de agua", "Neblina", "Empañamiento", "Gotas de agua", "Condensación superficial", "Punto de rocío", "Temperatura de bulbo húmedo", "Enfriamiento evaporativo", "Higroscopicidad", "Absorción de humedad", "Transpiración vegetal", "Evapotranspiración", "Humedad tropical", "Baño de vapor", "Efecto invernadero", "Cera", "Parafina", "Cera de abeja", "Hielo", "Nieve", "Escarcha", "Mantequilla", "Chocolate", "Grasa", "Resina", "Betún", "Asfalto", "Alquitrán", "Termoplástico", "Adhesivo termofusible", "Vidrio fundido", "Metal fundido", "Material de cambio de fase", "Pegajosidad", "Cualidad resbaladiza", "Lisura resbaladiza", "Grasitud", "Untuosidad", "Brillo", "Vidriado", "Ceroso", "Gelatinoso", "Viscoso", "Baboso", "Gomoso", "Flexible", "Poroso", "Hinchado", "Ampollado", "Arrugado", "Quebradizo", "Encostrado", "Coriáceo", "Chamuscado", "Cristalizado", "Residuo", "Mancha", "Decoloración", "Marca de agua", "Mancha de sudor", "Depósito salino", "Eflorescencia salina", "Huella térmica", "Termocromismo", "Termocrómico", "Memoria térmica", "Fatiga térmica", "Choque térmico", "Punto de fusión", "Transición vítrea", "Resolidificación", "Solidificación", "Calor latente", "Endotérmico", "Exotérmico", "Retención de calor", "Acumulación de calor", "Absorción de calor", "Liberación de calor", "Sensación térmica", "Termorrecepción", "Sensibilidad térmica", "Aclimatación al calor", "Estrés térmico"]];
 
