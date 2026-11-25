@@ -164,3 +164,15 @@ Language becomes visually unstable through the same material substance that comp
 ## Development status
 
 The typographic behaviour is based on the earlier p5.js experiment. Its integration with the Raspberry Pi motor and speech-control system remains under development.
+
+## Website and project sources
+
+The browser prototype in `Ally_Website/` reads the bilingual heat categories, poetry word banks, and interaction thresholds from their source files in this repository. Its Sources section provides searchable previews of the project's instructions, behavior research, vocabulary, code, images, hardware documentation, and archived experiments. The merged `Heat-lexicon.json` files are retained as source material, but the prototype uses the valid category JSON files.
+
+Serve the repository root over localhost so the browser can read the sibling folders:
+
+```sh
+python3 -m http.server --bind 127.0.0.1 8000
+```
+
+Then open `http://127.0.0.1:8000/Ally_Website/`. When adding or moving project files, update `Ally_Website/data/project-sources.json` so they remain available in the Sources section.
