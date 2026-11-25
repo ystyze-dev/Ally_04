@@ -1,0 +1,1370 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="theme-color" content="#f3f0e7">
+
+    <meta name="description" content="Ally is a reciprocal fan concept. Heat gathers in your words, and a poem asks for your breath in return.">
+
+    <title>Ally — a breeze shaped by your words</title>
+
+    <style>
+
+      :root {
+
+        color-scheme: light;
+
+        --ivory: #f3f0e7;
+
+        --paper: #fbf9f3;
+
+        --sage: #a5b4a8;
+
+        --sage-dark: #64796c;
+
+        --terracotta: #c87b54;
+
+        --red: #bd4d3e;
+
+        --ink: #292a25;
+
+        --muted: #77786e;
+
+        --deep: #29352f;
+
+        --line: #d7d6ca;
+
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+        --serif: Georgia, "Times New Roman", serif;
+
+      }
+
+
+
+      * { box-sizing: border-box; }
+
+
+
+      html { scroll-behavior: smooth; }
+
+
+
+      body {
+
+        margin: 0;
+
+        background: var(--ivory);
+
+        color: var(--ink);
+
+        font-family: var(--mono);
+
+        font-size: 13px;
+
+        line-height: 1.65;
+
+      }
+
+
+
+      button, input { font: inherit; }
+
+      button { color: inherit; }
+
+      a { color: inherit; }
+
+
+
+      .page-shell {
+
+        width: min(1120px, calc(100% - 48px));
+
+        margin-inline: auto;
+
+      }
+
+
+
+      .eyebrow, .micro-label {
+
+        color: var(--muted);
+
+        font-size: 10px;
+
+        letter-spacing: .14em;
+
+        text-transform: uppercase;
+
+      }
+
+
+
+      .hero { padding: 12px 0 34px; }
+
+      .project-heading { padding-top: 0; text-align: center; }
+
+      .project-heading .eyebrow { margin-bottom: 13px; color: #9c573a; font-size: 8px; }
+
+      .project-heading h1 {
+
+        max-width: 760px;
+
+        margin: 0 auto 14px;
+
+        font-size: clamp(42px, 5.6vw, 61px);
+
+        line-height: .9;
+
+      }
+
+      .project-heading h1 span { display: block; }
+
+      .hero-description {
+
+        max-width: 360px;
+
+        margin: 0 auto;
+
+        color: #77786e;
+
+        font-family: var(--serif);
+
+        font-size: 11px;
+
+        line-height: 1.5;
+
+      }
+
+      .project-heading::after {
+
+        width: min(340px, 82%);
+
+        display: block;
+
+        margin: 14px auto 0;
+
+        border-top: 1px solid var(--line);
+
+        content: "";
+
+      }
+
+
+
+      h1, h2, h3, p { margin-top: 0; }
+
+
+
+      h1 {
+
+        max-width: 660px;
+
+        margin-bottom: 24px;
+
+        font-family: var(--serif);
+
+        font-size: clamp(58px, 7.2vw, 100px);
+
+        font-weight: 400;
+
+        letter-spacing: -.075em;
+
+        line-height: .96;
+
+      }
+
+
+
+      h1 em { font-weight: 400; }
+
+
+
+      .button {
+
+        min-height: 46px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 10px;
+
+        padding: 0 17px;
+
+        border: 1px solid var(--deep);
+
+        border-radius: 2px;
+
+        background: var(--deep);
+
+        color: var(--paper);
+
+        cursor: pointer;
+
+        font-size: 11px;
+
+        letter-spacing: .03em;
+
+        text-decoration: none;
+
+        transition: background .2s ease, color .2s ease, transform .2s ease;
+
+      }
+
+
+
+      .button:hover { transform: translateY(-2px); }
+
+      .button:focus-visible, .text-input:focus-visible, a:focus-visible {
+
+        outline: 2px solid var(--terracotta);
+
+        outline-offset: 4px;
+
+      }
+
+
+
+      .button-secondary {
+
+        background: transparent;
+
+        color: var(--deep);
+
+      }
+
+
+
+      .button-secondary:hover { background: var(--deep); color: var(--paper); }
+
+      .button:disabled { cursor: not-allowed; opacity: .46; transform: none; }
+
+
+
+      .interaction-stage {
+
+        max-width: 870px;
+
+        display: grid;
+
+        grid-template-columns: minmax(150px, 1fr) minmax(300px, 400px) minmax(150px, 1fr);
+
+        align-items: center;
+
+        gap: 24px;
+
+        margin: 12px auto 8px;
+
+      }
+
+
+
+      .stage-note {
+
+        position: relative;
+
+        width: min(100%, 170px);
+
+        justify-self: center;
+
+        color: #33342e;
+
+      }
+
+
+
+      .stage-note-left::after, .stage-note-right::before {
+
+        position: absolute;
+
+        top: 14px;
+
+        width: 70px;
+
+        border-top: 1px solid var(--line);
+
+        content: "";
+
+      }
+
+
+
+      .stage-note-left::after { right: -94px; }
+
+      .stage-note-right::before { left: -94px; }
+
+
+
+      .callout-icon {
+
+        width: 27px;
+
+        height: 27px;
+
+        display: grid;
+
+        place-items: center;
+
+        margin-bottom: 10px;
+
+        border: 1px solid var(--line);
+
+        border-radius: 50%;
+
+        background: var(--paper);
+
+        color: #a76b4b;
+
+      }
+
+
+
+      .callout-icon svg { width: 13px; height: 13px; }
+
+      .stage-note h2 { margin: 0 0 4px; font-size: 10px; font-weight: 600; }
+
+      .stage-note p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+
+
+
+      .fan-column { min-width: 0; text-align: center; }
+
+
+
+      .fan-assembly {
+
+        position: relative;
+
+        width: min(100%, 400px);
+
+        margin-inline: auto;
+
+      }
+
+
+
+      .fan-art {
+
+        width: 100%;
+
+        display: block;
+
+        overflow: hidden;
+
+        filter: drop-shadow(0 16px 20px rgb(52 61 53 / 8%));
+
+      }
+
+
+
+      .display-panel {
+
+        position: absolute;
+
+        top: 80.4%;
+
+        left: 34.8%;
+
+        width: 30.4%;
+
+        height: 13.6%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        padding: 4px 5px 3px;
+
+        overflow: hidden;
+
+        border-radius: 4px;
+
+        background: #29352f;
+
+        color: #d7e0d6;
+
+      }
+
+
+
+      .display-window {
+
+        min-height: 0;
+
+        flex: 1;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        overflow: hidden;
+
+        font-family: var(--mono);
+
+        font-size: clamp(5px, .62vw, 7px);
+
+        line-height: 1.15;
+
+        text-align: left;
+
+      }
+
+
+
+      .display-line { min-height: 0; }
+
+      .poem-en { font-weight: 400; }
+
+      .poem-es { font-weight: 700; }
+
+      .letter { display: inline-block; transition: transform .6s ease, opacity .6s ease; }
+
+      .letter.is-e { color: #e87963; }
+
+
+
+      .display-panel.is-poetic .letter {
+
+        animation: none;
+
+      }
+
+
+
+      .display-panel.is-revealing .letter {
+
+        animation: letter-arrive .7s cubic-bezier(.2, .75, .25, 1) both;
+
+        animation-delay: var(--reveal-delay, 0ms);
+
+      }
+
+
+
+      .display-panel.is-dispersing .letter {
+
+        animation: none;
+
+        opacity: 0;
+
+        transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) rotate(25deg);
+
+      }
+
+
+
+      @keyframes letter-arrive {
+
+        from { opacity: 0; transform: translate(var(--drift-x, 12px), var(--drift-y, -22px)) scale(.82); }
+
+        to { opacity: 1; transform: translate(0, 0) scale(1); }
+
+      }
+
+
+
+      .display-foot { height: 4px; flex: 0 0 4px; display: flex; justify-content: flex-end; }
+
+      .display-lights { display: inline-flex; gap: 4px; align-items: center; }
+
+      .display-lights i { width: 2px; height: 2px; display: block; border-radius: 50%; background: #77877a; }
+
+      .display-lights i:first-child { background: var(--terracotta); }
+
+
+
+      .concept-caption {
+
+        margin: 3px 0 0;
+
+        color: var(--muted);
+
+        font-size: 8px;
+
+        letter-spacing: .12em;
+
+        text-transform: uppercase;
+
+      }
+
+
+
+      .interaction-controls {
+
+        max-width: 760px;
+
+        margin: 6px auto 0;
+
+        text-align: center;
+
+      }
+
+
+
+      .interaction-instruction { margin: 0 0 10px; color: #63645c; font-size: 10px; }
+
+      .interaction-instruction strong { color: var(--ink); }
+
+
+
+      .speech-controls {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 8px;
+
+      }
+
+
+
+      .speech-controls label { color: var(--muted); font-size: 9px; }
+
+
+
+      .speech-select {
+
+        min-height: 38px;
+
+        padding: 0 10px;
+
+        border: 1px solid #c8c8bc;
+
+        border-radius: 2px;
+
+        background: var(--paper);
+
+        color: var(--ink);
+
+        font: inherit;
+
+        font-size: 10px;
+
+      }
+
+
+
+      .speech-actions { display: flex; gap: 8px; }
+
+      .interaction-controls .button { min-height: 38px; border-color: var(--terracotta); background: var(--terracotta); color: #201f1b; }
+
+      .interaction-controls .button:hover { background: #d58d68; }
+
+      .speech-actions .button { padding-inline: 12px; font-size: 9px; }
+
+      .speech-icon { width: 14px; height: 14px; flex: 0 0 auto; }
+
+
+
+      .interaction-status { margin: 11px 0 0; }
+
+      .interaction-status h2 { margin: 0; font-family: var(--serif); font-size: 16px; font-weight: 400; }
+
+      .interaction-status p { margin: 2px 0 0; color: var(--muted); font-size: 9px; }
+
+      .state-readout { display: flex; justify-content: center; align-items: center; gap: 7px; color: var(--muted); font-size: 8px; }
+
+      .state-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); }
+
+      .transcript-preview {
+
+        min-height: 76px;
+
+        max-height: 150px;
+
+        margin: 12px 0 0;
+
+        padding: 12px 16px;
+
+        overflow: auto;
+
+        border: 1px solid var(--line);
+
+        border-radius: 2px;
+
+        background: var(--paper);
+
+        color: var(--ink);
+
+        font-family: var(--mono);
+
+        font-size: clamp(12px, 1.2vw, 14px);
+
+        line-height: 1.5;
+
+        text-align: left;
+
+        overflow-wrap: anywhere;
+
+        white-space: pre-wrap;
+
+      }
+
+      .demo-feedback { min-height: 15px; margin: 3px 0 0; color: #9c573a; font-size: 8px; }
+
+      .speech-privacy { max-width: 480px; margin: 6px auto 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
+
+      .quiet-button { margin-top: 5px; padding: 0; border: 0; background: transparent; color: var(--ink); cursor: pointer; font-size: 9px; text-decoration: underline; text-underline-offset: 3px; }
+
+      [hidden] { display: none !important; }
+
+
+
+      .process-caption {
+
+        margin: 16px 0 0;
+
+        color: var(--muted);
+
+        font-size: 8px;
+
+        letter-spacing: .12em;
+
+        text-align: center;
+
+      }
+
+      .process-caption span { padding-inline: 7px; color: var(--terracotta); }
+
+
+
+      .visually-hidden {
+
+        position: absolute;
+
+        width: 1px;
+
+        height: 1px;
+
+        padding: 0;
+
+        overflow: hidden;
+
+        clip: rect(0, 0, 0, 0);
+
+        white-space: nowrap;
+
+        border: 0;
+
+      }
+
+
+
+      .fan-rotor {
+
+        transform-origin: 250px 252px;
+
+        animation: rotate-fan var(--spin-time, 0s) linear infinite;
+
+      }
+
+
+
+      .fan-scene[data-speed="0"] .fan-rotor { animation: none; }
+
+      .fan-scene[data-speed="1"] .fan-rotor { --spin-time: 2.2s; }
+
+      .fan-scene[data-speed="2"] .fan-rotor { --spin-time: 1.35s; }
+
+      .fan-scene[data-speed="3"] .fan-rotor { --spin-time: .8s; }
+
+
+
+      .air-lines { opacity: 0; transition: opacity .6s ease; }
+
+      .fan-scene[data-speed="1"] .air-lines { opacity: .25; }
+
+      .fan-scene[data-speed="2"] .air-lines { opacity: .5; }
+
+      .fan-scene[data-speed="3"] .air-lines { opacity: .8; }
+
+
+
+      @keyframes rotate-fan { to { transform: rotate(360deg); } }
+
+
+
+      .principle-strip {
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        border-top: 1px solid var(--line);
+
+        border-bottom: 1px solid var(--line);
+
+      }
+
+
+
+      .principle {
+
+        min-height: 124px;
+
+        display: flex;
+
+        gap: 17px;
+
+        align-items: flex-start;
+
+        padding: 26px 26px 24px 0;
+
+      }
+
+
+
+      .principle + .principle {
+
+        padding-left: 26px;
+
+        border-left: 1px solid var(--line);
+
+      }
+
+
+
+      .principle-number {
+
+        color: var(--terracotta);
+
+        font-size: 10px;
+
+        letter-spacing: .08em;
+
+      }
+
+
+
+      .principle h2 {
+
+        margin: 0 0 5px;
+
+        font-size: 11px;
+
+        font-weight: 600;
+
+      }
+
+
+
+      .principle p { max-width: 270px; margin: 0; color: var(--muted); font-size: 10px; }
+
+
+
+      .section-heading {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: end;
+
+        gap: 24px;
+
+        margin-bottom: 25px;
+
+      }
+
+
+
+      .section-heading h2 {
+
+        margin: 0;
+
+        font-family: var(--serif);
+
+        font-size: clamp(36px, 5vw, 58px);
+
+        font-weight: 400;
+
+        letter-spacing: -.055em;
+
+        line-height: 1;
+
+      }
+
+
+
+      .section-heading p {
+
+        max-width: 370px;
+
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 10px;
+
+      }
+
+
+
+      .cycle { padding-block: 54px 106px; }
+
+
+
+      .cycle-track {
+
+        display: grid;
+
+        grid-template-columns: repeat(5, 1fr);
+
+        border-top: 1px solid var(--line);
+
+        border-bottom: 1px solid var(--line);
+
+      }
+
+
+
+      .cycle-step {
+
+        position: relative;
+
+        min-height: 123px;
+
+        padding: 19px 16px 18px 0;
+
+      }
+
+
+
+      .cycle-step + .cycle-step { padding-left: 18px; border-left: 1px solid var(--line); }
+
+
+
+      .cycle-step:not(:last-child)::after {
+
+        position: absolute;
+
+        top: 27px;
+
+        right: 12px;
+
+        width: 6px;
+
+        height: 6px;
+
+        border-top: 1px solid var(--sage-dark);
+
+        border-right: 1px solid var(--sage-dark);
+
+        content: "";
+
+        transform: rotate(45deg);
+
+      }
+
+
+
+      .cycle-step .micro-label { display: block; margin-bottom: 10px; color: var(--terracotta); }
+
+      .cycle-step h3 { margin: 0 0 5px; font-size: 11px; font-weight: 600; }
+
+      .cycle-step p { max-width: 170px; margin: 0; color: var(--muted); font-size: 9px; }
+
+
+
+      .closing-note {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 40px;
+
+        align-items: center;
+
+        padding: 42px 0 49px;
+
+        border-top: 1px solid var(--line);
+
+      }
+
+
+
+      .closing-note blockquote {
+
+        margin: 0;
+
+        font-family: var(--serif);
+
+        font-size: clamp(30px, 4vw, 46px);
+
+        letter-spacing: -.04em;
+
+        line-height: 1.15;
+
+      }
+
+
+
+      .closing-note blockquote em { color: #9b5539; font-weight: 400; }
+
+      .closing-note p { max-width: 440px; margin: 0; color: var(--muted); font-size: 10px; }
+
+
+
+      .site-footer {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 18px;
+
+        padding-block: 17px 24px;
+
+        border-top: 1px solid var(--line);
+
+        color: var(--muted);
+
+        font-size: 9px;
+
+      }
+
+
+
+      .site-footer p { margin: 0; }
+
+
+
+      @media (max-width: 960px) {
+
+        .page-shell { width: min(calc(100% - 48px), 760px); }
+
+        .interaction-stage { grid-template-columns: minmax(120px, 1fr) minmax(280px, 360px) minmax(120px, 1fr); gap: 16px; }
+
+      }
+
+
+
+      @media (max-width: 680px) {
+
+        body { font-size: 12px; }
+
+        .page-shell { width: calc(100% - 36px); }
+
+        .hero { padding-top: 22px; }
+
+        .project-heading h1 { font-size: clamp(42px, 11vw, 58px); }
+
+        .hero-description { max-width: 330px; font-size: 12px; }
+
+        .interaction-stage { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; margin-top: 22px; }
+
+        .fan-column { grid-column: 1 / -1; grid-row: 1; }
+
+        .stage-note-left { grid-column: 1; grid-row: 2; }
+
+        .stage-note-right { grid-column: 2; grid-row: 2; }
+
+        .stage-note { width: 100%; max-width: 170px; }
+
+        .stage-note-left::after, .stage-note-right::before { display: none; }
+
+        .fan-assembly { width: min(100%, 340px); }
+
+        .interaction-controls { margin-top: 18px; }
+
+        .interaction-instruction { max-width: 330px; margin-inline: auto; }
+
+        .speech-controls { gap: 7px; }
+
+        .speech-controls label { width: 100%; }
+
+        .speech-select { min-height: 36px; }
+
+        .principle-strip { grid-template-columns: 1fr; }
+
+        .principle { min-height: auto; padding: 19px 0; }
+
+        .principle + .principle { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
+
+        .section-heading { align-items: flex-start; flex-direction: column; margin-bottom: 20px; }
+
+        .cycle { padding-block: 40px 72px; }
+
+        .cycle-track { grid-template-columns: 1fr; }
+
+        .cycle-step, .cycle-step + .cycle-step { min-height: 95px; padding: 15px 28px 14px 0; border-left: 0; }
+
+        .cycle-step + .cycle-step { border-top: 1px solid var(--line); }
+
+        .cycle-step:not(:last-child)::after { top: auto; right: 4px; bottom: 22px; transform: rotate(135deg); }
+
+        .cycle-step p { max-width: 280px; }
+
+        .closing-note { grid-template-columns: 1fr; gap: 22px; padding-block: 32px; }
+
+        .site-footer { flex-direction: column; gap: 5px; }
+
+      }
+
+
+
+      @media (prefers-reduced-motion: reduce) {
+
+        *, *::before, *::after {
+
+          scroll-behavior: auto !important;
+
+          animation-duration: .01ms !important;
+
+          animation-iteration-count: 1 !important;
+
+          transition-duration: .01ms !important;
+
+        }
+
+
+
+        .fan-scene[data-speed="1"] .fan-rotor {
+
+          animation-duration: 4.4s !important;
+
+          animation-iteration-count: infinite !important;
+
+        }
+
+
+
+        .fan-scene[data-speed="2"] .fan-rotor {
+
+          animation-duration: 2.7s !important;
+
+          animation-iteration-count: infinite !important;
+
+        }
+
+
+
+        .fan-scene[data-speed="3"] .fan-rotor {
+
+          animation-duration: 1.6s !important;
+
+          animation-iteration-count: infinite !important;
+
+        }
+
+      }
+
+    
+.poem-stage{max-width:620px;margin:16px auto;background:var(--deep);border:6px solid var(--sage);border-radius:6px;color:var(--paper);position:relative}.poem-stage canvas{display:block;width:100%;height:clamp(360px,60vh,560px)}.poem-stage p{margin:0;padding:8px;text-align:center;font-size:10px}.controls-extra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}.meter{font-size:10px;color:var(--muted)}.display-window{font-size:clamp(7px,1vw,10px);text-align:center}
+</style>
+
+  </head>
+
+  <body>
+
+    <div class="page-shell">
+
+      <main>
+
+        <section class="hero" aria-labelledby="hero-title">
+
+          <div class="project-heading">
+
+            <p class="eyebrow">A voice-responsive fan concept</p>
+
+            <h1 id="hero-title"><span>A breeze shaped by</span><span>your words.</span></h1>
+
+            <p class="hero-description">Ally imagines the fan as an extension of the person speaking: heat in your words gathers into a breeze, and a poem arrives when the conversation falls quiet.</p>
+
+          </div>
+
+
+
+          <div class="interaction-stage fan-scene" id="fan-scene" data-speed="0">
+
+            <aside class="stage-note stage-note-left">
+
+              <span class="callout-icon" aria-hidden="true">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+
+                  <rect x="9" y="2" width="6" height="12" rx="3"/>
+
+                  <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>
+
+                </svg>
+
+              </span>
+
+              <h2>Listen for heat.</h2>
+
+              <p>Heat-related words build the breeze. No distance or presence sensing is part of this concept.</p>
+
+            </aside>
+
+
+
+            <div class="fan-column">
+
+              <div class="fan-assembly">
+
+                <svg class="fan-art" viewBox="0 40 500 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage green ceiling fan with four terracotta blades and a display">
+
+              <defs>
+
+                <pattern id="grille" width="18" height="18" patternUnits="userSpaceOnUse">
+
+                  <path d="M0 0L18 18M18 0L0 18" fill="none" stroke="#718378" stroke-width=".65" opacity=".58"/>
+
+                </pattern>
+
+              </defs>
+
+              <path d="M250 0v67M225 13h50v19h-50z" fill="#a5b4a8" stroke="#74877b" stroke-width="2"/>
+
+              <path d="M208 65h84v10h-84z" fill="#dbe0d5" stroke="#74877b" stroke-width="2"/>
+
+              <circle cx="250" cy="252" r="151" fill="#d9e0d6" stroke="#899a8d" stroke-width="8"/>
+
+              <circle cx="250" cy="252" r="138" fill="#e8ece3" stroke="#f8f6ef" stroke-width="5"/>
+
+              <circle cx="250" cy="252" r="128" fill="url(#grille)" stroke="#aab7aa" stroke-width="2"/>
+
+              <circle cx="250" cy="252" r="101" fill="none" stroke="#91a196" stroke-width="1.2" opacity=".78"/>
+
+              <circle cx="250" cy="252" r="75" fill="none" stroke="#91a196" stroke-width="1.2" opacity=".78"/>
+
+              <circle cx="250" cy="252" r="49" fill="none" stroke="#91a196" stroke-width="1.2" opacity=".78"/>
+
+              <g class="air-lines" fill="none" stroke="#8da095" stroke-width="2" stroke-linecap="round">
+
+                <path d="M60 187c-15-8-27-8-40 0M51 205c-16-5-26-3-36 6M440 188c16-8 28-8 41 0M449 207c16-6 28-3 38 6"/>
+
+                <path d="M67 318c-15 7-25 16-31 29M432 318c16 7 26 16 32 29"/>
+
+              </g>
+
+              <g class="fan-rotor" fill="#c87b54" stroke="#b76a48" stroke-width="1">
+
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z"/>
+
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z" transform="rotate(90 250 252)"/>
+
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z" transform="rotate(180 250 252)"/>
+
+                <path d="M250 250c-13-24-36-80-32-115 3-27 21-43 33-43s30 16 33 43c4 35-19 91-34 115z" transform="rotate(270 250 252)"/>
+
+              </g>
+
+              <circle cx="250" cy="252" r="15" fill="#f3f0e7" stroke="#74877b" stroke-width="3"/>
+
+              <circle cx="250" cy="252" r="5" fill="#a5b4a8"/>
+
+              <path d="M250 403v29" stroke="#74877b" stroke-width="5"/>
+
+              <rect x="163" y="431" width="174" height="98" rx="12" fill="#a5b4a8" stroke="#74877b" stroke-width="3"/>
+
+              <rect x="174" y="442" width="152" height="68" rx="5" fill="#29352f"/>
+
+              <circle cx="181" cy="519" r="3" fill="#c87b54"/><path d="M300 519h20" stroke="#64796c" stroke-width="3"/></svg>
+<div class="display-panel"><div class="display-window" id="mini">Listening</div></div></div><p class="concept-caption">ALLY · CEILING-SUSPENDED CONCEPT</p></div>
+<aside class="stage-note stage-note-right"><h2>Three speeds, then stillness.</h2><p>More heat references lift the fan from low to medium to high. When they stop, the breeze fades.</p></aside></div>
+<div class="interaction-controls"><p class="interaction-instruction">Speak about heat. When the poem arrives, return your breath.</p>
+<div class="speech-controls"><label for="lang">Speech language</label><select class="speech-select" id="lang"><option value="en-US">English</option><option value="es-ES">Español</option></select><button class="button" id="start">Enable microphone</button><button class="button" id="stop" disabled>Stop</button></div>
+<div class="interaction-status"><h2 id="status">Ready</h2><p id="detail">Enable the microphone and speak about heat.</p></div>
+<div class="transcript-preview" id="transcript">Your words appear here.</div>
+<div class="poem-stage" id="poemStage" hidden><canvas id="poem" role="img" aria-label="Bilingual poem dissolving into particles"></canvas><p id="poemNote" aria-live="polite"></p></div>
+<div class="meter" id="meter">Microphone inactive</div><label class="meter">Breath sensitivity <input id="threshold" type="range" min="-70" max="-15" value="-45"><span id="dbLabel">-45 dB</span></label>
+<div class="controls-extra"><button class="button" id="invite">Test poem</button><button class="button" id="blow" disabled>Simulate breath</button></div>
+<p class="speech-privacy">Browser simulation only. Speech recognition may use an online browser service. Microphone audio for breath analysis is processed in this page.</p></div></section>
+<section class="principle-strip"><div class="principle"><span class="principle-number">01</span><div><h2>Language</h2><p>Heat in your words becomes airflow.</p></div></div><div class="principle"><span class="principle-number">02</span><div><h2>Silence</h2><p>The object expresses its need through poetry.</p></div></div><div class="principle"><span class="principle-number">03</span><div><h2>Reciprocity</h2><p>Your breath dissolves the poem.</p></div></div></section></main><footer class="site-footer"><p>ALLY · Reciprocal object</p><p>Browser prototype</p></footer></div>
+<script>
+const vocabulary = [["Ardor", "Fervor", "Passion", "Desire", "Lust", "Yearning", "Zeal", "Intensity", "Excitement", "Agitation", "Anger", "Rage", "Fury", "Ire", "Wrath", "Affection", "Tenderness", "Ebullience", "Warmth", "Tepidity", "Lukewarm", "Hotness", "Heat", "Temperature", "Thermal", "Boiling", "Evaporation", "Vaporization", "Condensation", "Conduction", "Convection", "Radiation", "Irradiation", "Heat capacity", "Thermal expansion", "Heat flux", "Gradient", "Equilibrium", "Entropy", "Cooling", "Melting", "Balmy", "Sultry", "Sweltering", "Scorching", "Searing", "Blistering", "Torrid", "Tropical", "Sizzling", "Simmering", "Steaming", "Insulation", "Thermal mass", "Thermal conductivity", "Thermal resistance", "Combustion", "Ignition", "Flame", "Fire", "Blaze", "Inferno", "Conflagration", "Ember", "Cinder", "Ash", "Char", "Soot", "Smoke", "Glow", "Incandescence", "Red-hot", "White-hot", "Radiance", "Shimmer", "Heat haze", "Mirage", "Scintillation", "Flicker", "Glare", "Sunlight", "Solar gain", "Insolation", "Heatwave", "Drought", "Aridity", "Desiccation", "Parched", "Geothermal", "Magma", "Lava", "Volcanic", "Fumarole", "Friction", "Overheating", "Heat dissipation", "Quenching", "Annealing", "Tempering", "Forging", "Welding", "Soldering", "Fusion", "Softening", "Warping", "Charring", "Pyrolysis", "Calcination", "Sintering", "Vitrification", "Firing", "Kiln", "Furnace", "Hearth", "Fireplace", "Radiator", "Heater", "Thermostat", "Thermal comfort", "Microclimate", "Heat island", "Ventilation", "Shade", "Shelter", "Refuge", "Cozy", "Snug", "Toasty", "Stifling", "Suffocating", "Burning", "Stinging", "Flushing", "Blushing", "Sweating", "Perspiration", "Fever", "Feverish", "Hyperthermia", "Heatstroke", "Heat exhaustion", "Dehydration", "Metabolism", "Thermogenesis", "Thermoregulation", "Inflammation", "Burn", "Scald", "Warmhearted", "Hospitality", "Intimacy", "Solidarity", "Heated debate", "Pressure", "Flashpoint", "Spark", "Kindling", "Catalyst", "Momentum", "Burnout", "Afterglow", "Smoldering", "Rekindling", "Effervescence", "Volatility", "Transformation", "Transmutation", "Alchemy", "Purification", "Sacrifice", "Renewal", "Phoenix", "Prometheus", "Solar", "Vitality", "Animus", "Liquefaction", "Thawing", "Molten", "Dripping", "Oozing", "Flowing", "Viscosity", "Fluidity", "Pliability", "Malleability", "Plasticity", "Sagging", "Buckling", "Shrinkage", "Distortion", "Deformation", "Delamination", "Cracking", "Bubbling", "Blister formation", "Thermal creep", "Heat-induced collapse", "Sweat", "Sweaty", "Beads of sweat", "Night sweats", "Hot flashes", "Heat rash", "Thirst", "Lethargy", "Fatigue", "Panting", "Chafing", "Maceration", "Vasodilation", "Oppression", "Exudation", "Clammy", "Sticky", "Damp", "Moist", "Wet", "Drenched", "Soaked", "Glistening", "Humidity", "Mugginess", "Humid heat", "Moisture", "Dampness", "Saturation", "Vapor", "Steam", "Mist", "Fogging", "Water droplets", "Surface condensation", "Dew point", "Wet-bulb temperature", "Evaporative cooling", "Hygroscopicity", "Moisture absorption", "Transpiration", "Evapotranspiration", "Tropical humidity", "Steam bath", "Greenhouse effect", "Wax", "Paraffin", "Beeswax", "Ice", "Snow", "Frost", "Butter", "Chocolate", "Fat", "Resin", "Bitumen", "Asphalt", "Tar", "Thermoplastic", "Hot-melt adhesive", "Molten glass", "Molten metal", "Phase-change material", "Tackiness", "Slipperiness", "Slickness", "Greasiness", "Oiliness", "Glossiness", "Glazed", "Waxy", "Gelatinous", "Viscous", "Slimy", "Rubbery", "Supple", "Porous", "Swollen", "Blistered", "Wrinkled", "Brittle", "Crusted", "Leathery", "Scorched", "Crystallized", "Residue", "Stain", "Discoloration", "Watermark", "Sweat stain", "Salt deposit", "Efflorescence", "Heat imprint", "Thermochromism", "Thermochromic", "Thermal memory", "Thermal fatigue", "Thermal shock", "Melting point", "Glass transition", "Re-solidification", "Solidification", "Latent heat", "Endothermic", "Exothermic", "Heat retention", "Heat accumulation", "Heat absorption", "Heat release", "Thermal sensation", "Thermoreception", "Heat sensitivity", "Heat acclimatization", "Thermal stress"], ["Ardor", "Fervor", "Pasión", "Deseo", "Lujuria", "Añoranza", "Celo", "Intensidad", "Excitación", "Agitación", "Ira", "Rabia", "Furia", "Enojo", "Cólera", "Afecto", "Ternura", "Exuberancia", "Calidez", "Tibieza", "Tibio", "Calor intenso", "Calor", "Temperatura", "Térmico", "Ebullición", "Evaporación", "Vaporización", "Condensación", "Conducción", "Convección", "Radiación", "Irradiación", "Capacidad calorífica", "Dilatación térmica", "Flujo térmico", "Gradiente", "Equilibrio", "Entropía", "Enfriamiento", "Derretimiento", "Apacible", "Bochornoso", "Sofocante", "Abrasador", "Abrasante", "Calcinante", "Tórrido", "Tropical", "Chisporroteante", "Cocción a fuego lento", "Humeante", "Aislamiento", "Masa térmica", "Conductividad térmica", "Resistencia térmica", "Combustión", "Ignición", "Llama", "Fuego", "Llamarada", "Infierno", "Conflagración", "Brasa", "Rescoldo", "Ceniza", "Carbonilla", "Hollín", "Humo", "Resplandor", "Incandescencia", "Al rojo vivo", "Al blanco vivo", "Radiancia", "Reverberación", "Calima térmica", "Espejismo", "Centelleo", "Parpadeo", "Deslumbramiento", "Luz solar", "Ganancia solar", "Insolación", "Ola de calor", "Sequía", "Aridez", "Desecación", "Reseco", "Geotérmico", "Magma", "Lava", "Volcánico", "Fumarola", "Fricción", "Sobrecalentamiento", "Disipación térmica", "Temple", "Recocido", "Revenido", "Forja", "Soldadura", "Soldadura blanda", "Fusión", "Ablandamiento", "Alabeo", "Carbonización", "Pirólisis", "Calcinación", "Sinterización", "Vitrificación", "Cocción", "Horno cerámico", "Horno industrial", "Hogar", "Chimenea", "Radiador", "Calefactor", "Termostato", "Confort térmico", "Microclima", "Isla de calor", "Ventilación", "Sombra", "Cobijo", "Refugio", "Acogedor", "Arropado", "Calentito", "Asfixiante", "Agobiante", "Quemante", "Escozor", "Rubefacción", "Rubor", "Sudoración", "Transpiración", "Fiebre", "Febril", "Hipertermia", "Golpe de calor", "Agotamiento por calor", "Deshidratación", "Metabolismo", "Termogénesis", "Termorregulación", "Inflamación", "Quemadura", "Escaldadura", "Cordialidad", "Hospitalidad", "Intimidad", "Solidaridad", "Debate acalorado", "Presión", "Punto de inflamación", "Chispa", "Encendido", "Catalizador", "Impulso", "Agotamiento", "Resplandor residual", "Latente", "Reavivamiento", "Efervescencia", "Volatilidad", "Transformación", "Transmutación", "Alquimia", "Purificación", "Sacrificio", "Renovación", "Fénix", "Prometeo", "Solar", "Vitalidad", "Ánimo", "Licuefacción", "Descongelación", "Fundido", "Goteo", "Rezumamiento", "Flujo", "Viscosidad", "Fluidez", "Flexibilidad", "Maleabilidad", "Plasticidad", "Combamiento", "Pandeo", "Contracción", "Distorsión", "Deformación", "Delaminación", "Agrietamiento", "Burbujeo", "Ampollamiento", "Fluencia térmica", "Colapso térmico", "Sudor", "Sudoroso", "Gotas de sudor", "Sudores nocturnos", "Sofocos", "Sarpullido por calor", "Sed", "Letargo", "Fatiga", "Jadeo", "Rozadura", "Maceración", "Vasodilatación", "Opresión", "Exudación", "Húmedo y pegajoso", "Pegajoso", "Húmedo", "Humectado", "Mojado", "Empapado", "Encharcado", "Reluciente", "Humedad", "Bochorno", "Calor húmedo", "Contenido de humedad", "Humedad superficial", "Saturación", "Vapor", "Vapor de agua", "Neblina", "Empañamiento", "Gotas de agua", "Condensación superficial", "Punto de rocío", "Temperatura de bulbo húmedo", "Enfriamiento evaporativo", "Higroscopicidad", "Absorción de humedad", "Transpiración vegetal", "Evapotranspiración", "Humedad tropical", "Baño de vapor", "Efecto invernadero", "Cera", "Parafina", "Cera de abeja", "Hielo", "Nieve", "Escarcha", "Mantequilla", "Chocolate", "Grasa", "Resina", "Betún", "Asfalto", "Alquitrán", "Termoplástico", "Adhesivo termofusible", "Vidrio fundido", "Metal fundido", "Material de cambio de fase", "Pegajosidad", "Cualidad resbaladiza", "Lisura resbaladiza", "Grasitud", "Untuosidad", "Brillo", "Vidriado", "Ceroso", "Gelatinoso", "Viscoso", "Baboso", "Gomoso", "Flexible", "Poroso", "Hinchado", "Ampollado", "Arrugado", "Quebradizo", "Encostrado", "Coriáceo", "Chamuscado", "Cristalizado", "Residuo", "Mancha", "Decoloración", "Marca de agua", "Mancha de sudor", "Depósito salino", "Eflorescencia salina", "Huella térmica", "Termocromismo", "Termocrómico", "Memoria térmica", "Fatiga térmica", "Choque térmico", "Punto de fusión", "Transición vítrea", "Resolidificación", "Solidificación", "Calor latente", "Endotérmico", "Exotérmico", "Retención de calor", "Acumulación de calor", "Absorción de calor", "Liberación de calor", "Sensación térmica", "Termorrecepción", "Sensibilidad térmica", "Aclimatación al calor", "Estrés térmico"]];
+
+const $=id=>document.getElementById(id), C={window:15000,silence:20000,decay:5000,hold:450,dispersion:3500};
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/\p{M}/gu,'').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+const lex=[...new Set(vocabulary.flat().map(norm))].sort((a,b)=>b.length-a.length);
+let state='READY',running=false,stream,ac,analyser,buffer,recognition,recognizing=false,session=0,lastVoice=0,hits=[],speed=0,lastStep=0,breathSince=0,armedAt=0,noiseFloor=-65,particles=[],poemLines=[],startFade=0,fadePower=1;
+const canvas=$('poem'),ctx=canvas.getContext('2d');let W=0,H=0;
+function status(a,b){$('status').textContent=a;$('detail').textContent=b;$('mini').textContent=a;}
+function setSpeed(n){speed=n;$('fan-scene').dataset.speed=n;}
+function countHeat(text){let remaining=' '+norm(text)+' ',n=0;for(const word of lex){if(!word)continue;const pattern=' '+word+' ';while(remaining.includes(pattern)){n++;remaining=remaining.replace(pattern,' ');}}return n;}
+function accept(text){if(state!=='LISTEN')return;lastVoice=performance.now();let n=countHeat(text);for(let i=0;i<n;i++)hits.push(lastVoice);$('transcript').textContent=text+'\nHeat references: '+n;}
+function listen(){state='LISTEN';hits=[];lastVoice=performance.now();breathSince=0;$('poemStage').hidden=true;$('blow').disabled=true;status('Listening','Speak about heat.');startRecognition();}
+function startRecognition(){if(!running||!stream||state!=='LISTEN'||recognizing)return;const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){$('detail').textContent='Speech recognition is unavailable in this browser.';return;}const r=new R();recognition=r;r.lang=$('lang').value;r.continuous=true;r.interimResults=true;const token=session;r.onstart=()=>{if(recognition===r)recognizing=true};r.onresult=e=>{if(token!==session||state!=='LISTEN'||recognition!==r)return;for(let i=e.resultIndex;i<e.results.length;i++){lastVoice=performance.now();if(e.results[i].isFinal)accept(e.results[i][0].transcript);}};r.onerror=e=>{if(recognition!==r)return;$('detail').textContent='Speech recognition: '+e.error+'. Check microphone permission and browser support.';if(['not-allowed','service-not-allowed','audio-capture'].includes(e.error))r.blockRestart=true;};r.onend=()=>{if(recognition!==r)return;recognizing=false;recognition=null;if(!r.blockRestart&&token===session)setTimeout(startRecognition,500);};try{recognizing=true;r.start()}catch(e){recognizing=false;recognition=null;}}
+function stopRecognition(){const r=recognition;recognition=null;recognizing=false;if(r)try{r.abort()}catch(e){}}
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function poetryRandom(a,b){if(Array.isArray(a))return pick(a);return b===undefined?Math.random()*a:a+Math.random()*(b-a);}
+let history = [];
+let english_adjective = ["lukewarm", "thermal", "balmy", "sultry", "sweltering", "scorching", "searing", "blistering", "torrid", "tropical", "sizzling", "steaming", "red-hot", "white-hot", "parched", "geothermal", "volcanic", "cozy", "snug", "toasty", "stifling", "suffocating", "burning", "feverish", "warmhearted", "smoldering", "solar", "molten", "sweaty", "clammy", "sticky", "damp", "moist", "wet", "drenched", "soaked", "glistening", "glazed", "waxy", "gelatinous", "viscous", "slimy", "rubbery", "supple", "porous", "swollen", "blistered", "wrinkled", "brittle", "crusted", "leathery", "scorched", "crystallized", "thermochromic", "endothermic", "exothermic", "hot", "warm", "cold", "cool", "humid", "dry", "heated", "melted", "flammable", "combustible", "inflamed", "radiant", "saturated", "thermosensitive", "burnt", "stinging"];
+let english_noun = ["ardor", "fervor", "passion", "desire", "lust", "yearning", "zeal", "intensity", "excitement", "agitation", "anger", "rage", "fury", "ire", "wrath", "affection", "tenderness", "ebullience", "warmth", "tepidity", "hotness", "heat", "temperature", "boiling", "evaporation", "vaporization", "condensation", "conduction", "convection", "radiation", "irradiation", "heat capacity", "thermal expansion", "heat flux", "gradient", "equilibrium", "entropy", "cooling", "melting", "simmering", "insulation", "thermal mass", "thermal conductivity", "thermal resistance", "combustion", "ignition", "flame", "fire", "blaze", "inferno", "conflagration", "ember", "cinder", "ash", "char", "soot", "smoke", "glow", "incandescence", "radiance", "shimmer", "heat haze", "mirage", "scintillation", "flicker", "glare", "sunlight", "solar gain", "insolation", "heatwave", "drought", "aridity", "desiccation", "magma", "lava", "fumarole", "friction", "overheating", "heat dissipation", "quenching", "annealing", "tempering", "forging", "welding", "soldering", "fusion", "softening", "warping", "charring", "pyrolysis", "calcination", "sintering", "vitrification", "firing", "kiln", "furnace", "hearth", "fireplace", "radiator", "heater", "thermostat", "thermal comfort", "microclimate", "heat island", "ventilation", "shade", "shelter", "refuge", "stinging", "flushing", "blushing", "sweating", "perspiration", "fever", "hyperthermia", "heatstroke", "heat exhaustion", "dehydration", "metabolism", "thermogenesis", "thermoregulation", "inflammation", "burn", "scald", "hospitality", "intimacy", "solidarity", "heated debate", "pressure", "flashpoint", "spark", "kindling", "catalyst", "momentum", "burnout", "afterglow", "rekindling", "effervescence", "volatility", "transformation", "transmutation", "alchemy", "purification", "sacrifice", "renewal", "phoenix", "prometheus", "vitality", "animus", "liquefaction", "thawing", "dripping", "oozing", "flowing", "viscosity", "fluidity", "pliability", "malleability", "plasticity", "sagging", "buckling", "shrinkage", "distortion", "deformation", "delamination", "cracking", "bubbling", "blister formation", "thermal creep", "heat-induced collapse", "sweat", "beads of sweat", "night sweats", "hot flashes", "heat rash", "thirst", "lethargy", "fatigue", "panting", "chafing", "maceration", "vasodilation", "oppression", "exudation", "humidity", "mugginess", "humid heat", "moisture", "dampness", "saturation", "vapor", "steam", "mist", "fogging", "water droplets", "surface condensation", "dew point", "wet-bulb temperature", "evaporative cooling", "hygroscopicity", "moisture absorption", "transpiration", "evapotranspiration", "tropical humidity", "steam bath", "greenhouse effect", "wax", "paraffin", "beeswax", "ice", "snow", "frost", "butter", "chocolate", "fat", "resin", "bitumen", "asphalt", "tar", "thermoplastic", "hot-melt adhesive", "molten glass", "molten metal", "phase-change material", "tackiness", "slipperiness", "slickness", "greasiness", "oiliness", "glossiness", "residue", "stain", "discoloration", "watermark", "sweat stain", "salt deposit", "efflorescence", "heat imprint", "thermochromism", "thermal memory", "thermal fatigue", "thermal shock", "melting point", "glass transition", "re-solidification", "solidification", "latent heat", "heat retention", "heat accumulation", "heat absorption", "heat release", "thermal sensation", "thermoreception", "heat sensitivity", "heat acclimatization", "thermal stress"];
+let english_verb = ["heat", "warm", "overheat", "melt", "liquefy", "dissolve", "soften", "deform", "expand", "contract", "bend", "collapse", "sweat", "perspire", "exude", "ooze", "drip", "seep", "soak", "moisten", "wet", "saturate", "evaporate", "condense", "dry", "wither", "dehydrate", "burn", "ignite", "scorch", "smolder", "glow", "shimmer", "radiate", "absorb", "release", "crack", "blister", "wrinkle", "stain", "crystallize", "solidify", "suffocate", "simmer", "ferment", "transform", "transmute", "embrace", "desire", "inflame", "rekindle", "consume", "extinguish", "boil", "flow", "blush", "thaw", "cool", "steam", "sizzle", "warp", "char", "flicker", "quench", "anneal", "temper", "forge", "weld", "solder", "vitrify", "sinter", "pant", "chafe", "flush", "bubble", "shrink", "sag", "buckle", "delaminate", "scald", "fire", "freeze", "arise", "spread", "intensify", "dissipate"];
+let english_adverb = ["warmly", "hotly", "intensely", "gradually", "slowly", "rapidly", "gently", "violently", "continuously", "suddenly", "increasingly", "excessively", "thermally", "painfully", "passionately", "feverishly", "fiercely", "softly", "deeply", "barely", "almost", "completely", "partially", "enough", "too", "very", "more", "less", "again", "still", "eventually"];
+let english_prepositionsconnectors = ["above", "across", "against", "along", "among", "around", "at", "before", "behind", "below", "beneath", "beside", "between", "beyond", "by", "during", "from", "in", "inside", "into", "near", "of", "off", "on", "onto", "outside", "over", "past", "through", "throughout", "to", "toward", "under", "until", "upon", "with", "within", "without", "and", "or", "but", "nor", "yet", "because", "since", "although", "even though", "while", "when", "whenever", "if", "unless", "as", "as soon as", "so that", "therefore", "thus", "hence", "consequently", "however", "nevertheless", "moreover", "furthermore", "meanwhile", "then", "afterward", "otherwise", "instead", "for example", "in contrast", "as a result"];
+let english_interjectionsexclamation = ["ah!", "oh!", "ouch!", "ow!", "phew!", "whew!", "wow!", "ugh!", "oof!", "aah!", "yikes!", "help!", "fire!", "so hot!", "what heat!", "it burns!", "i am melting!", "what a relief!"];
+let latin_idioms = ["ex igne", "in ardore", "sub sole", "per ignem", "in calore", "ad solem", "ex cinere", "in flamma", "per aestum", "in fornace"];
+let abstractconcept_idioms_english = ["entropy", "transformation", "transmutation", "thermal memory", "latent heat", "renewal", "desire", "impermanence", "dissolution", "intensity", "equilibrium", "vitality", "purification", "absence", "saturation"];
+let english_presence_tangible = ["perspiration", "condensation", "thermal trace", "sweat stain", "salt deposit", "molten wax", "steam", "ember", "radiation", "heat imprint", "skin", "vapor", "breath", "ash", "glow", "residue"];
+let english_presence_being = ["embodied heat", "thermal memory", "vitality", "fever", "ardor", "desire", "warmth", "breath", "incandescence", "inner fire", "passion", "thirst"];
+let english_mythical_places_realms = ["desert", "inferno", "oasis", "solar temple", "volcanic realm", "underworld", "fiery abyss", "sea of flames", "furnace of the sun"];
+let english_mythical_beings_creatures_entities = ["Phoenix", "Prometheus", "fire dragon", "fire salamander", "Surya", "Agni", "Helios", "Hephaestus", "Vulcan", "Ra", "solar spirit"];
+let english_mystical_objects_artefacts = ["sacred flame", "solar disc", "alchemical furnace", "burning torch", "wax seal", "ember", "golden chalice", "obsidian mirror", "brazier", "sun stone"];
+let spanish_adjective = ["tibio", "térmico", "apacible", "bochornoso", "sofocante", "abrasador", "abrasante", "calcinante", "tórrido", "tropical", "chisporroteante", "humeante", "al rojo vivo", "al blanco vivo", "reseco", "geotérmico", "volcánico", "acogedor", "arropado", "calentito", "asfixiante", "agobiante", "quemante", "febril", "latente", "solar", "fundido", "sudoroso", "húmedo y pegajoso", "pegajoso", "húmedo", "humectado", "mojado", "empapado", "encharcado", "reluciente", "vidriado", "ceroso", "gelatinoso", "viscoso", "baboso", "gomoso", "flexible", "poroso", "hinchado", "ampollado", "arrugado", "quebradizo", "encostrado", "coriáceo", "chamuscado", "cristalizado", "termocrómico", "endotérmico", "exotérmico", "caliente", "cálido", "frío", "fresco", "seco", "calentado", "derretido", "inflamable", "combustible", "inflamado", "radiante", "saturado", "termosensible", "quemado", "punzante", "cordial"];
+let spanish_noun = ["ardor", "fervor", "pasión", "deseo", "lujuria", "añoranza", "celo", "intensidad", "excitación", "agitación", "ira", "rabia", "furia", "enojo", "cólera", "afecto", "ternura", "exuberancia", "calidez", "tibieza", "calor intenso", "calor", "temperatura", "ebullición", "evaporación", "vaporización", "condensación", "conducción", "convección", "radiación", "irradiación", "capacidad calorífica", "dilatación térmica", "flujo térmico", "gradiente", "equilibrio", "entropía", "enfriamiento", "derretimiento", "cocción a fuego lento", "aislamiento", "masa térmica", "conductividad térmica", "resistencia térmica", "combustión", "ignición", "llama", "fuego", "llamarada", "infierno", "conflagración", "brasa", "rescoldo", "ceniza", "carbonilla", "hollín", "humo", "resplandor", "incandescencia", "radiancia", "reverberación", "calima térmica", "espejismo", "centelleo", "parpadeo", "deslumbramiento", "luz solar", "ganancia solar", "insolación", "ola de calor", "sequía", "aridez", "desecación", "magma", "lava", "fumarola", "fricción", "sobrecalentamiento", "disipación térmica", "temple", "recocido", "revenido", "forja", "soldadura", "soldadura blanda", "fusión", "ablandamiento", "alabeo", "carbonización", "pirólisis", "calcinación", "sinterización", "vitrificación", "cocción", "horno cerámico", "horno industrial", "hogar", "chimenea", "radiador", "calefactor", "termostato", "confort térmico", "microclima", "isla de calor", "ventilación", "sombra", "cobijo", "refugio", "escozor", "rubefacción", "rubor", "sudoración", "transpiración", "fiebre", "hipertermia", "golpe de calor", "agotamiento por calor", "deshidratación", "metabolismo", "termogénesis", "termorregulación", "inflamación", "quemadura", "escaldadura", "cordialidad", "hospitalidad", "intimidad", "solidaridad", "debate acalorado", "presión", "punto de inflamación", "chispa", "encendido", "catalizador", "impulso", "agotamiento", "resplandor residual", "reavivamiento", "efervescencia", "volatilidad", "transformación", "transmutación", "alquimia", "purificación", "sacrificio", "renovación", "fénix", "prometeo", "vitalidad", "ánimo", "licuefacción", "descongelación", "goteo", "rezumamiento", "flujo", "viscosidad", "fluidez", "flexibilidad", "maleabilidad", "plasticidad", "combamiento", "pandeo", "contracción", "distorsión", "deformación", "delaminación", "agrietamiento", "burbujeo", "ampollamiento", "fluencia térmica", "colapso térmico", "sudor", "gotas de sudor", "sudores nocturnos", "sofocos", "sarpullido por calor", "sed", "letargo", "fatiga", "jadeo", "rozadura", "maceración", "vasodilatación", "opresión", "exudación", "humedad", "bochorno", "calor húmedo", "contenido de humedad", "humedad superficial", "saturación", "vapor", "vapor de agua", "neblina", "empañamiento", "gotas de agua", "condensación superficial", "punto de rocío", "temperatura de bulbo húmedo", "enfriamiento evaporativo", "higroscopicidad", "absorción de humedad", "transpiración vegetal", "evapotranspiración", "humedad tropical", "baño de vapor", "efecto invernadero", "cera", "parafina", "cera de abeja", "hielo", "nieve", "escarcha", "mantequilla", "chocolate", "grasa", "resina", "betún", "asfalto", "alquitrán", "termoplástico", "adhesivo termofusible", "vidrio fundido", "metal fundido", "material de cambio de fase", "pegajosidad", "cualidad resbaladiza", "lisura resbaladiza", "grasitud", "untuosidad", "brillo", "residuo", "mancha", "decoloración", "marca de agua", "mancha de sudor", "depósito salino", "eflorescencia salina", "huella térmica", "termocromismo", "memoria térmica", "fatiga térmica", "choque térmico", "punto de fusión", "transición vítrea", "resolidificación", "solidificación", "calor latente", "retención de calor", "acumulación de calor", "absorción de calor", "liberación de calor", "sensación térmica", "termorrecepción", "sensibilidad térmica", "aclimatación al calor", "estrés térmico"];
+let spanish_verb = ["calentar", "entibiar", "sobrecalentar", "derretir", "licuar", "disolver", "ablandar", "deformar", "dilatar", "contraer", "doblar", "colapsar", "sudar", "transpirar", "exudar", "rezumar", "gotear", "filtrarse", "empapar", "humedecer", "mojar", "saturar", "evaporar", "condensar", "secar", "marchitarse", "deshidratar", "quemar", "encender", "chamuscar", "arder sin llama", "resplandecer", "reverberar", "irradiar", "absorber", "liberar", "agrietarse", "ampollarse", "arrugarse", "manchar", "cristalizar", "solidificar", "asfixiar", "cocer a fuego lento", "fermentar", "transformar", "transmutar", "abrazar", "desear", "inflamar", "reavivar", "consumir", "extinguir", "hervir", "fluir", "ruborizarse", "descongelar", "enfriar", "vaporizar", "chisporrotear", "alabear", "carbonizar", "parpadear", "templar", "recocer", "revenir", "forjar", "soldar", "soldar con estaño", "vitrificar", "sinterizar", "jadear", "rozar", "enrojecer", "burbujear", "encoger", "combarse", "pandearse", "delaminar", "escaldar", "cocer", "congelar", "surgir", "propagarse", "intensificar", "disipar"];
+let spanish_adverb = ["cálidamente", "acaloradamente", "intensamente", "gradualmente", "lentamente", "rápidamente", "suavemente", "violentamente", "continuamente", "repentinamente", "cada vez más", "excesivamente", "térmicamente", "dolorosamente", "apasionadamente", "febrilmente", "ferozmente", "delicadamente", "profundamente", "apenas", "casi", "completamente", "parcialmente", "suficientemente", "demasiado", "muy", "más", "menos", "de nuevo", "todavía", "finalmente"];
+let spanish_preposition_sconnectors = ["a", "ante", "bajo", "cabe", "con", "contra", "de", "desde", "durante", "en", "entre", "hacia", "hasta", "mediante", "para", "por", "según", "sin", "so", "sobre", "tras", "versus", "vía", "dentro de", "fuera de", "a través de", "alrededor de", "debajo de", "encima de", "cerca de", "lejos de", "y", "e", "o", "u", "pero", "ni", "sino", "porque", "puesto que", "ya que", "aunque", "aun cuando", "mientras", "cuando", "siempre que", "si", "a menos que", "como", "en cuanto", "para que", "por lo tanto", "así", "por consiguiente", "sin embargo", "no obstante", "además", "asimismo", "mientras tanto", "entonces", "después", "de lo contrario", "en cambio", "por ejemplo", "como resultado"];
+let spanish_interjections_exclamation = ["¡ah!", "¡oh!", "¡ay!", "¡uf!", "¡uff!", "¡guau!", "¡puaj!", "¡uy!", "¡hala!", "¡socorro!", "¡fuego!", "¡qué calor!", "¡cómo quema!", "¡me derrito!", "¡qué bochorno!", "¡qué alivio!"];
+let spanish_latin_idioms = ["ex igne", "in ardore", "sub sole", "per ignem", "in calore", "ad solem", "ex cinere", "in flamma", "per aestum", "in fornace"];
+let abstractconcept_idioms_spanish = ["entropía", "transformación", "transmutación", "memoria térmica", "calor latente", "renovación", "deseo", "impermanencia", "disolución", "intensidad", "equilibrio", "vitalidad", "purificación", "ausencia", "saturación"];
+let spanish_presence_tangible = ["transpiración", "condensación", "huella térmica", "mancha de sudor", "depósito salino", "cera fundida", "vapor", "brasa", "radiación", "piel", "aliento", "ceniza", "resplandor", "residuo"];
+let spanish_presence_being = ["calor encarnado", "memoria térmica", "vitalidad", "fiebre", "ardor", "deseo", "calidez", "aliento", "incandescencia", "fuego interior", "pasión", "sed"];
+let spanish_mythical_places_realms = ["desierto", "infierno", "oasis", "templo solar", "reino volcánico", "inframundo", "abismo ardiente", "mar de llamas", "horno del sol"];
+let spanish_mythical_beings_creatures_entities = ["Fénix", "Prometeo", "dragón de fuego", "salamandra de fuego", "Surya", "Agni", "Helios", "Hefesto", "Vulcano", "Ra", "espíritu solar"];
+function getCleanToken(arr, isSpanish = false) {
+  let rawWord = poetryRandom(arr);
+  let cleanWord = rawWord.trim().replace(/\s+/g, ' ');
+  return { word: cleanWord, isSpanish: isSpanish };
+}
+
+function makeLineTokens() {
+  let pattern = Math.floor(poetryRandom(10));
+  let tokens = [];
+
+  if (pattern === 0) {
+    tokens = [
+      { word: "tu", isSpanish: true },
+      getCleanToken(spanish_presence_being, true),
+      { word: "es", isSpanish: true },
+      getCleanToken(spanish_adverb, true),
+      getCleanToken(english_adjective, false)
+    ];
+  } else if (pattern === 1) {
+    tokens = [
+      { word: "the", isSpanish: false },
+      getCleanToken(english_mythical_beings_creatures_entities, false),
+      getCleanToken(english_prepositionsconnectors, false),
+      getCleanToken(spanish_mythical_places_realms, true),
+      getCleanToken(english_verb, false),
+      getCleanToken(spanish_adverb, true)
+    ];
+  } else if (pattern === 2) {
+    tokens = [
+      getCleanToken(english_interjectionsexclamation, false),
+      getCleanToken(english_adjective, false),
+      getCleanToken(english_presence_tangible, false),
+      { word: "turns", isSpanish: false },
+      getCleanToken(abstractconcept_idioms_spanish, true)
+    ];
+  } else if (pattern === 3) {
+    tokens = [
+      getCleanToken(spanish_interjections_exclamation, true),
+      getCleanToken(spanish_verb, true),
+      getCleanToken(spanish_adverb, true),
+      getCleanToken(poetryRandom([latin_idioms, spanish_latin_idioms]), false)
+    ];
+  } else if (pattern === 4) {
+    tokens = [
+      { word: "sin", isSpanish: true },
+      getCleanToken(spanish_noun, true),
+      getCleanToken(spanish_preposition_sconnectors, true),
+      getCleanToken(spanish_presence_tangible, true)
+    ];
+  } else if (pattern === 5) {
+    tokens = [
+      getCleanToken(spanish_mythical_beings_creatures_entities, true),
+      getCleanToken(spanish_verb, true),
+      { word: "with", isSpanish: false },
+      getCleanToken(english_adjective, false),
+      getCleanToken(poetryRandom([spanish_presence_tangible, spanish_adjective]), true)
+    ];
+  } else if (pattern === 6) {
+    tokens = [
+      { word: "el", isSpanish: true },
+      getCleanToken(spanish_adjective, true),
+      getCleanToken(spanish_presence_being, true),
+      { word: "of", isSpanish: false },
+      getCleanToken(english_noun, false)
+    ];
+  } else if (pattern === 7) {
+    tokens = [
+      getCleanToken(english_mystical_objects_artefacts, false),
+      { word: "brilla", isSpanish: true },
+      getCleanToken(spanish_adverb, true),
+      getCleanToken(poetryRandom([abstractconcept_idioms_english, english_adverb]), false)
+    ];
+  } else if (pattern === 8) {
+    tokens = [
+      { word: "todo", isSpanish: true },
+      getCleanToken(spanish_verb, true),
+      { word: "inside", isSpanish: false },
+      getCleanToken(poetryRandom([english_noun, english_presence_being]), false)
+    ];
+  } else {
+    tokens = [
+      { word: "beyond", isSpanish: false },
+      getCleanToken(english_mythical_places_realms, false),
+      getCleanToken(spanish_presence_tangible, true),
+      getCleanToken(english_verb, false)
+    ];
+  }
+
+  return tokens;
+}
+
+function makePoemTokens(numStanzas = 4) {
+  let stanzas = [];
+  for (let s = 0; s < numStanzas; s++) {
+    let linesInStanza = Math.floor(poetryRandom(1, 3));
+    let stanzaLines = [];
+    for (let l = 0; l < linesInStanza; l++) {
+      stanzaLines.push(makeLineTokens());
+    }
+    stanzas.push(stanzaLines);
+  }
+  return stanzas;
+}
+
+
+function generate(){const stanzas=makePoemTokens(4);stanzas[3].push([{word:'I gave you the wind.',isSpanish:false}],[{word:'Ahora préstame tu aliento.',isSpanish:true}]);return stanzas;}
+function layout(){const rect=canvas.getBoundingClientRect();W=rect.width;H=rect.height;if(!W||!H)return;const d=devicePixelRatio||1;canvas.width=Math.round(W*d);canvas.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);particles=[];
+let rows=[];let size=18;function font(es){return (es?'700 ':'400 ')+size+'px monospace';}function measure(token){ctx.font=font(token.isSpanish);return ctx.measureText(token.word).width;}
+function wrap(){rows=[];poemLines.forEach((stanza,si)=>{if(si)rows.push(null);for(const line of stanza){let row=[],w=0;for(const token of line){let tw=measure(token),gap=row.length?size*.61:0;if(row.length&&w+gap+tw>W-24){rows.push(row);row=[];w=0;gap=0;}row.push(token);w+=gap+tw;}rows.push(row);}});}
+for(;size>6;size--){wrap();if(rows.reduce((n,r)=>n+(r?1.5:.8),0)*size<=H-24&&rows.every(r=>!r||r.every(t=>measure(t)<=W-24)))break;}wrap();let total=rows.reduce((n,r)=>n+(r?1.5:.8),0)*size,y=(H-total)/2;for(const row of rows){if(!row){y+=size*.8;continue;}let x=(W-row.reduce((n,t,i)=>n+measure(t)+(i?size*.61:0),0))/2;for(const token of row){ctx.font=font(token.isSpanish);for(const ch of token.word){let cw=ctx.measureText(ch).width;if(ch!==' ')particles.push({ch,x,y:y+size*.75,font:font(token.isSpanish),red:ch.toLowerCase()==='e',vx:(Math.random()-.35)*100,vy:-20-Math.random()*85,rot:(Math.random()-.5)*2,life:ch.toLowerCase()==='e'?1:.55+Math.random()*.25});x+=cw;}x+=size*.61;}y+=size*1.5;}}
+function invite(){if(!['LISTEN','READY'].includes(state))return;state='INVITE';stopRecognition();setSpeed(0);hits=[];poemLines=generate();$('poemStage').hidden=false;canvas.setAttribute('aria-label',poemLines.flat().map(line=>line.map(t=>t.word).join(' ')).join(' / '));layout();wait();}
+function wait(){if(state!=='INVITE')return;state='WAIT_BREATH';armedAt=performance.now()+700;breathSince=0;$('blow').disabled=false;$('poemNote').textContent='Read the poem, then gently exhale toward the microphone.';status('Waiting for breath','Read the poem, then return your breath.');}
+function disperse(power=1){if(state!=='WAIT_BREATH')return;state='DISPERSING';startFade=performance.now();fadePower=power;$('blow').disabled=true;$('poemNote').textContent='Breath received — language dissolves.';status('Receiving','Your breath is returning the air.');}
+function draw(t){if(!W||$('poemStage').hidden)return;ctx.clearRect(0,0,W,H);ctx.textBaseline='middle';let elapsed=state==='DISPERSING'?(t-startFade)/C.dispersion:0;for(const p of particles){let q=Math.min(1,elapsed/p.life),sec=elapsed*C.dispersion/1000;ctx.save();ctx.translate(p.x+p.vx*sec*fadePower,p.y+p.vy*sec*fadePower+Math.sin(sec*5+p.x)*6*elapsed);ctx.rotate(p.rot*sec);ctx.globalAlpha=1-q;ctx.font=p.font;ctx.fillStyle=p.red?'#e87963':'#e4e9df';ctx.fillText(p.ch,0,0);ctx.restore();}if(state==='DISPERSING'&&elapsed>=1){state='ACK';status('Your breath inhabits me.','Ahora respiramos juntos.');$('poemNote').textContent='Ahora respiramos juntos.';const token=session;setTimeout(()=>{if(token===session&&state==='ACK')listen()},1800);}}
+function analyze(t){
+  if(!analyser)return;
+  analyser.getFloatTimeDomainData(buffer);
+  let sum=0;
+  for(let i=0;i<buffer.length;i++)sum+=buffer[i]**2;
+  let db=20*Math.log10(Math.max(1e-8,Math.sqrt(sum/buffer.length)));
+  if(state==='LISTEN'&&db< -45)noiseFloor=.98*noiseFloor+.02*db;
+  let threshold=Number($('threshold').value);
+  let candidate=db>threshold;
+  $('meter').textContent=`Mic ${db.toFixed(1)} dBFS · trigger > ${threshold.toFixed(1)} dBFS · ${state==='WAIT_BREATH'&&candidate?'breath signal':'monitoring'}`;
+  if(state==='LISTEN'&&db>Math.max(-48,noiseFloor+12))lastVoice=t;
+  if(state==='WAIT_BREATH'&&t>=armedAt&&candidate){
+    if(!breathSince)breathSince=t;
+    if(t-breathSince>=C.hold)disperse(Math.min(2,Math.max(.7,(db-threshold)/12+1)));
+  }else breathSince=0;
+}
+function frame(t){analyze(t);if(state==='LISTEN'){hits=hits.filter(x=>t-x<C.window);let target=t-lastVoice>C.decay?0:hits.length>=8?3:hits.length>=4?2:hits.length?1:0;if(t-lastStep>800&&target!==speed){setSpeed(speed+Math.sign(target-speed));lastStep=t;}if(t-lastVoice>=C.silence&&speed===0)invite();}draw(t);requestAnimationFrame(frame);}
+$('start').onclick=async()=>{if(stream)return;const token=++session;$('start').disabled=true;try{if(!navigator.mediaDevices?.getUserMedia)throw Error('Use HTTPS or localhost');let media=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});if(token!==session){media.getTracks().forEach(t=>t.stop());return;}stream=media;ac=new (window.AudioContext||window.webkitAudioContext)();await ac.resume();analyser=ac.createAnalyser();analyser.fftSize=2048;ac.createMediaStreamSource(stream).connect(analyser);buffer=new Float32Array(analyser.fftSize);running=true;$('stop').disabled=false;listen();}catch(e){$('start').disabled=false;status('Microphone unavailable',e.message);}};
+$('stop').onclick=()=>{session++;running=false;state='READY';stopRecognition();if(stream)stream.getTracks().forEach(t=>t.stop());if(ac)ac.close();stream=null;analyser=null;hits=[];setSpeed(0);$('poemStage').hidden=true;$('start').disabled=false;$('stop').disabled=true;$('blow').disabled=true;$('meter').textContent='Microphone inactive';status('Ready','Enable the microphone and speak about heat.');};
+$('invite').onclick=invite;$('blow').onclick=()=>disperse();$('threshold').oninput=()=>{$('dbLabel').textContent=$('threshold').value+' dB'};$('lang').onchange=()=>{stopRecognition();startRecognition()};window.addEventListener('resize',()=>{if(['INVITE','WAIT_BREATH'].includes(state))layout()});requestAnimationFrame(frame);
+</script></body></html>
